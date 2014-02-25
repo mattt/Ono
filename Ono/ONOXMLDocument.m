@@ -1,0 +1,651 @@
+// ONOXMLDocument.m
+//
+// Copyright (c) 2014 Mattt Thompson (http://mattt.me/)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+#import "ONOXMLDocument.h"
+
+#import <libxml2/libxml/xmlreader.h>
+#import <libxml2/libxml/xpath.h>
+#import <libxml2/libxml/HTMLparser.h>
+
+static NSString * ONOXPathFromCSS(NSString *CSS) {
+    if (!CSS) {
+        return nil;
+    }
+
+    NSRange range = NSMakeRange(0, [CSS length]);
+
+    {
+        NSError *error = nil;
+        NSRegularExpression *elementRegularExpression = [NSRegularExpression regularExpressionWithPattern:@"^\\w+\\s*$" options:0 error:&error];
+        NSTextCheckingResult *result = [elementRegularExpression firstMatchInString:CSS options:0 range:range];
+        if (result && [result numberOfRanges] == 2) {
+            return [CSS substringWithRange:[result rangeAtIndex:1]];
+        }
+    }
+
+    {
+        NSError *error = nil;
+        NSRegularExpression *idRegularExpression = [NSRegularExpression regularExpressionWithPattern:@"^(\\w*)#(\\w+)\\s*$" options:0 error:&error];
+        NSTextCheckingResult *result = [idRegularExpression firstMatchInString:CSS options:0 range:range];
+        if (result && [result numberOfRanges] == 4) {
+            return [NSString stringWithFormat:@"%@[@id = '%@']", ([result rangeAtIndex:2].length == 0 ? @"*" : [CSS substringWithRange:[result rangeAtIndex:2]]), [CSS substringWithRange:[result rangeAtIndex:3]]];
+        }
+    }
+
+    {
+        NSError *error = nil;
+        NSRegularExpression *classRegularExpression = [NSRegularExpression regularExpressionWithPattern:@"^(\\w*)\\.(\\w+)\\s*$" options:0 error:&error];
+        NSTextCheckingResult *result = [classRegularExpression firstMatchInString:CSS options:0 range:range];
+        if (result && [result numberOfRanges] == 3) {
+            return [NSString stringWithFormat:@"%@[contains(concat(' ',normalize-space(@class),' '),' %@ ')]", ([result rangeAtIndex:2].length == 0 ? @"*" : [CSS substringWithRange:[result rangeAtIndex:1]]), [CSS substringWithRange:[result rangeAtIndex:3]]];
+        }
+    }
+
+    return CSS;
+}
+
+static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSString *namespace) {
+    BOOL matchingTag = !tag || [[NSString stringWithUTF8String:(const char *)node->name] compare:tag options:NSCaseInsensitiveSearch] == NSOrderedSame;
+    BOOL matchingNamespace = !namespace || [[NSString stringWithUTF8String:(const char *)node->ns->href] compare:tag options:NSCaseInsensitiveSearch] == NSOrderedSame;
+
+    return matchingTag && matchingNamespace;
+}
+
+@interface ONOXPathEnumerator : NSEnumerator <NSFastEnumeration>
+@end
+
+@interface ONOXPathEnumerator ()
+@property (readwrite, nonatomic, assign) xmlXPathObjectPtr xmlXPath;
+@property (readwrite, nonatomic, assign) NSUInteger cursor;
+@property (readwrite, nonatomic, strong) ONOXMLDocument *document;
+@end
+
+@interface ONOXMLElement ()
+@property (readwrite, nonatomic, assign) xmlNodePtr xmlNode;
+@property (readwrite, nonatomic, strong) ONOXMLDocument *document;
+@end
+
+@interface ONOXMLDocument ()
+@property (readwrite, nonatomic, assign) xmlDocPtr xmlDocument;
+@property (readwrite, nonatomic, strong) ONOXMLElement *rootElement;
+@property (readwrite, nonatomic, copy) NSString *version;
+
+- (ONOXMLElement *)elementWithNode:(xmlNodePtr)node;
+- (ONOXPathEnumerator *)enumeratorWithXPathObject:(xmlXPathObjectPtr)XPath;
+@end
+
+#pragma mark -
+
+@implementation ONOXPathEnumerator
+
+- (void)dealloc {
+    if (_xmlXPath) {
+        xmlXPathFreeObject(_xmlXPath);
+    }
+}
+
+- (id)objectAtIndex:(NSUInteger)idx {
+    if (idx >= xmlXPathNodeSetGetLength(self.xmlXPath->nodesetval)) {
+        return nil;
+    }
+
+    return [self.document elementWithNode:self.xmlXPath->nodesetval->nodeTab[idx]];
+}
+
+#pragma mark - NSEnumerator
+
+- (NSArray *)allObjects {
+    NSMutableArray *mutableObjects = [NSMutableArray arrayWithCapacity:(NSUInteger)self.xmlXPath->nodesetval->nodeNr];
+    for (NSInteger idx = 0; idx < xmlXPathNodeSetGetLength(self.xmlXPath->nodesetval); idx++) {
+        ONOXMLElement *element = [self objectAtIndex:idx];
+		if (element) {
+			[mutableObjects addObject:element];
+		}
+	}
+
+    return [NSArray arrayWithArray:mutableObjects];
+}
+
+- (id)nextObject {
+    if (self.cursor >= self.xmlXPath->nodesetval->nodeNr) {
+        return nil;
+    }
+
+    return [self objectAtIndex:_cursor++];
+}
+
+@end
+
+#pragma mark -
+
+@implementation ONOXMLDocument
+
++ (instancetype)XMLDocumentWithString:(NSString *)string
+                             encoding:(NSStringEncoding)encoding
+                                error:(NSError * __autoreleasing *)error
+{
+    return [self XMLDocumentWithData:[string dataUsingEncoding:encoding] error:error];
+}
+
++ (instancetype)XMLDocumentWithData:(NSData *)data
+                              error:(NSError * __autoreleasing *)error
+{
+    xmlDocPtr document = xmlReadMemory([data bytes], (int)[data length], "", nil, XML_PARSE_RECOVER);
+    if (!document) {
+        return nil;
+    }
+
+    return [[self alloc] initWithDocument:document];
+}
+
++ (instancetype)HTMLDocumentWithString:(NSString *)string
+                              encoding:(NSStringEncoding)encoding
+                                 error:(NSError * __autoreleasing *)error
+{
+    return [self HTMLDocumentWithData:[string dataUsingEncoding:encoding] error:error];
+}
+
++ (instancetype)HTMLDocumentWithData:(NSData *)data
+                               error:(NSError * __autoreleasing *)error
+{
+    xmlDocPtr document = htmlReadMemory([data bytes], (int)[data length], "", nil, HTML_PARSE_NOWARNING | HTML_PARSE_NOERROR);
+    if (!document) {
+        return nil;
+    }
+
+    return [[self alloc] initWithDocument:document];
+}
+
+#pragma mark -
+
+- (instancetype)initWithDocument:(xmlDocPtr)document {
+    self = [super init];
+    if (!self) {
+        return nil;
+    }
+
+    _xmlDocument = document;
+    if (self.xmlDocument) {
+        self.rootElement = [self elementWithNode:xmlDocGetRootElement(self.xmlDocument)];
+    }
+
+    return self;
+}
+
+- (void)dealloc {
+    if (_xmlDocument) {
+        xmlFreeDoc(_xmlDocument);
+    }
+}
+
+#pragma mark -
+
+- (ONOXMLElement *)elementWithNode:(xmlNodePtr)node {
+    if (!node) {
+        return nil;
+    }
+
+    ONOXMLElement *element = [[ONOXMLElement alloc] init];
+    element.xmlNode = node;
+    element.document = self;
+
+    return element;
+}
+
+- (ONOXPathEnumerator *)enumeratorWithXPathObject:(xmlXPathObjectPtr)XPath {
+    if (!XPath || xmlXPathNodeSetIsEmpty(XPath->nodesetval)) {
+        return nil;
+    }
+
+    ONOXPathEnumerator *enumerator = [[ONOXPathEnumerator alloc] init];
+    enumerator.xmlXPath = XPath;
+    enumerator.document = self;
+
+    return enumerator;
+}
+
+#pragma mark - ONOSearching
+
+- (id <NSFastEnumeration>)XPath:(NSString *)XPath {
+    return [self.rootElement XPath:XPath];
+}
+
+- (void)enumerateElementsWithXPath:(NSString *)XPath
+                             block:(void (^)(ONOXMLElement *))block
+{
+    [self.rootElement enumerateElementsWithXPath:XPath block:block];
+}
+
+- (id <NSFastEnumeration>)CSS:(NSString *)CSS {
+    return [self.rootElement CSS:CSS];
+}
+
+- (void)enumerateElementsWithCSS:(NSString *)CSS
+                           block:(void (^)(ONOXMLElement *))block
+{
+    [self.rootElement enumerateElementsWithCSS:CSS block:block];
+}
+
+#pragma mark -
+
+- (NSString *)version {
+    if (!_version) {
+        self.version = [NSString stringWithUTF8String:(const char *)self.xmlDocument->version];
+    }
+
+    return _version;
+}
+
+#pragma mark - NSObject
+
+- (NSString *)description {
+    return [self.rootElement description];
+}
+
+- (BOOL)isEqual:(id)object {
+    if (self == object) {
+        return YES;
+    }
+
+    if (![object isKindOfClass:[self class]]) {
+        return NO;
+    }
+
+    return [self hash] == [object hash];
+}
+
+- (NSUInteger)hash {
+    return (NSUInteger)self.xmlDocument;
+}
+
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone {
+    ONOXMLDocument *document = [[[self class] allocWithZone:zone] init];
+    document.version = self.version;
+    document.rootElement = self.rootElement;
+
+    return document;
+}
+
+#pragma mark - NSCoding
+
+- (id)initWithCoder:(NSCoder *)decoder {
+    self = [super init];
+    if (!self) {
+        return nil;
+    }
+
+    self.version = [decoder decodeObjectForKey:NSStringFromSelector(@selector(version))];
+    self.rootElement = [decoder decodeObjectForKey:NSStringFromSelector(@selector(rootElement))];
+
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [coder encodeObject:self.version forKey:NSStringFromSelector(@selector(version))];
+    [coder encodeObject:self.rootElement forKey:NSStringFromSelector(@selector(rootElement))];
+}
+
+@end
+
+#pragma mark -
+
+@interface ONOXMLElement ()
+@property (readwrite, nonatomic, copy) NSString *rawXMLString;
+@property (readwrite, nonatomic, copy) NSString *tag;
+@property (readwrite, nonatomic, strong) ONOXMLElement *parent;
+@property (readwrite, nonatomic, strong) NSArray *children;
+@property (readwrite, nonatomic, strong) ONOXMLElement *previousSibling;
+@property (readwrite, nonatomic, strong) ONOXMLElement *nextSibling;
+@property (readwrite, nonatomic, strong) NSDictionary *attributes;
+@property (readwrite, nonatomic, copy) NSString *stringValue;
+@property (readwrite, nonatomic, copy) NSNumber *numberValue;
+@property (readwrite, nonatomic, copy) NSDate *dateValue;
+@end
+
+@implementation ONOXMLElement
+
++ (NSNumberFormatter *)sharedNumberFormatter {
+    static NSNumberFormatter *_sharedNumberFormatter = nil;
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _sharedNumberFormatter = [[NSNumberFormatter alloc] init];
+        [_sharedNumberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    });
+
+    return _sharedNumberFormatter;
+}
+
++ (NSDateFormatter *)sharedDateFormatter {
+    static NSDateFormatter *_sharedDateFormatter = nil;
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _sharedDateFormatter = [[NSDateFormatter alloc] init];
+        [_sharedDateFormatter setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
+        [_sharedDateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
+    });
+
+    return _sharedDateFormatter;
+}
+
+- (NSString *)tag {
+    if (!_tag) {
+        self.tag = [NSString stringWithUTF8String:(const char *)self.xmlNode->name];
+    }
+
+    return _tag;
+}
+
+#pragma mark -
+
+- (NSDictionary *)attributes {
+    if (!_attributes) {
+        NSMutableDictionary *mutableAttributes = [NSMutableDictionary dictionary];
+        xmlAttrPtr attribute = self.xmlNode->properties;
+        while (attribute) {
+            NSString *key = [NSString stringWithUTF8String:(const char *)attribute->name];
+            mutableAttributes[key] = [self valueForAttribute:key];
+        }
+
+        self.attributes = [NSDictionary dictionaryWithDictionary:mutableAttributes];
+    }
+
+    return _attributes;
+}
+
+- (id)valueForAttribute:(NSString *)key {
+    id value = nil;
+    const unsigned char *xmlValue = xmlGetProp(self.xmlNode, (const xmlChar *)[key cStringUsingEncoding:NSUTF8StringEncoding]);
+    if (xmlValue) {
+        value = [NSString stringWithUTF8String:(const char *)xmlValue];
+        xmlFree((void *)xmlValue);
+    }
+
+    return value;
+}
+
+- (id)valueForAttribute:(NSString *)key
+            inNamespace:(NSString *)namespace
+{
+    id value = nil;
+    const unsigned char *xmlValue = xmlGetNsProp(self.xmlNode, (const xmlChar *)[key cStringUsingEncoding:NSUTF8StringEncoding], (const xmlChar *)[namespace cStringUsingEncoding:NSUTF8StringEncoding]);
+    if (xmlValue) {
+        value = [NSString stringWithUTF8String:(const char *)xmlValue];
+        xmlFree((void *)xmlValue);
+    }
+
+    return value;
+}
+
+#pragma mark -
+
+- (ONOXMLElement *)parent {
+    if (!_parent) {
+        self.parent = [self.document elementWithNode:self.xmlNode->parent];
+    }
+
+    return _parent;
+}
+
+- (NSArray *)children {
+    return [self childrenAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, NSIntegerMax)]];
+}
+
+- (ONOXMLElement *)firstChildWithTag:(NSString *)tag {
+    return [self firstChildWithTag:tag inNamespace:nil];
+}
+
+- (ONOXMLElement *)firstChildWithTag:(NSString *)tag
+                         inNamespace:(NSString *)namespace
+{
+    return [[self childrenAtIndexes:[self indexesOfChildrenPassingTest:^BOOL(xmlNodePtr node, BOOL *stop) {
+        *stop = ONOXMLNodeMatchesTagInNamespace(node, tag, namespace);
+        return *stop;
+    }]] firstObject];
+}
+
+- (NSArray *)childrenWithTag:(NSString *)tag {
+    return [self childrenWithTag:tag inNamespace:nil];
+}
+
+- (NSArray *)childrenWithTag:(NSString *)tag
+                 inNamespace:(NSString *)namespace
+{
+
+    return [self childrenAtIndexes:[self indexesOfChildrenPassingTest:^BOOL(xmlNodePtr node, BOOL *stop) {
+        return ONOXMLNodeMatchesTagInNamespace(node, tag, namespace);
+    }]];
+}
+
+- (NSArray *)childrenAtIndexes:(NSIndexSet *)indexes {
+    NSMutableArray *mutableChildren = [NSMutableArray arrayWithCapacity:[indexes count]];
+
+    xmlNodePtr cursor = self.xmlNode->children;
+    NSUInteger idx = 0;
+    while (cursor) {
+        if ([indexes containsIndex:idx] && cursor->type == XML_ELEMENT_NODE) {
+            [mutableChildren addObject:[self.document elementWithNode:cursor]];
+        }
+
+        cursor = cursor->next;
+        idx++;
+    }
+
+    return [NSArray arrayWithArray:mutableChildren];
+}
+
+- (NSIndexSet *)indexesOfChildrenPassingTest:(BOOL (^)(xmlNodePtr node, BOOL *stop))block {
+    if (!block) {
+        return nil;
+    }
+
+    NSMutableIndexSet *mutableIndexSet = [NSMutableIndexSet indexSet];
+
+    xmlNodePtr cursor = self.xmlNode->children;
+    NSUInteger idx = 0;
+    BOOL stop = NO;
+    while (cursor && !stop) {
+        if (block(cursor, &stop)) {
+            [mutableIndexSet addIndex:idx];
+        }
+
+        cursor = cursor->next;
+        idx++;
+    }
+
+    return mutableIndexSet;
+}
+
+- (ONOXMLElement *)previousSibling {
+    if (!_previousSibling) {
+        self.previousSibling = [self.document elementWithNode:self.xmlNode->prev];
+    }
+
+    return _previousSibling;
+}
+
+- (ONOXMLElement *)nextSibling {
+    if (!_nextSibling) {
+        self.nextSibling = [self.document elementWithNode:self.xmlNode->next];
+    }
+
+    return _nextSibling;
+}
+
+#pragma mark -
+
+- (BOOL)isBlank {
+    return [[self stringValue] length] == 0;
+}
+
+- (NSString *)stringValue {
+    if (!_stringValue) {
+        xmlChar *key = xmlNodeGetContent(self.xmlNode);
+        self.stringValue = key ? [NSString stringWithUTF8String:(const char *)key] : @"";
+        xmlFree(key);
+    }
+
+    return _stringValue;
+}
+
+- (NSNumber *)numberValue {
+    if (!_numberValue) {
+        self.numberValue = [[[self class] sharedNumberFormatter] numberFromString:[self stringValue]];
+    }
+
+    return _numberValue;
+}
+
+- (NSDate *)dateValue {
+    if (!_dateValue) {
+        self.dateValue = [[[self class] sharedDateFormatter] dateFromString:[self stringValue]];
+    }
+
+    return _dateValue;
+}
+
+#pragma mark -
+
+- (id)objectForKeyedSubscript:(id)key {
+    return [self valueForAttribute:key];
+}
+
+- (id)objectAtIndexedSubscript:(NSUInteger)idx {
+    return self.children[idx];
+}
+
+#pragma mark - NSObject
+
+- (NSString *)description {
+    xmlBufferPtr buffer = xmlBufferCreate();
+    xmlNodeDump(buffer, self.xmlNode->doc, self.xmlNode, 0, false);
+    NSString *rawXMLString = [NSString stringWithUTF8String:(const char *)xmlBufferContent(buffer)];
+    xmlBufferFree(buffer);
+
+    return rawXMLString;
+}
+
+- (BOOL)isEqual:(id)object {
+    if (self == object) {
+        return YES;
+    }
+
+    if (![object isKindOfClass:[self class]]) {
+        return NO;
+    }
+
+    return [self hash] == [object hash];
+}
+
+- (NSUInteger)hash {
+    return (NSUInteger)self.xmlNode;
+}
+
+#pragma mark - ONOSearching
+
+- (id <NSFastEnumeration>)XPath:(NSString *)XPath {
+    if (!XPath) {
+        return nil;
+    }
+
+    ONOXPathEnumerator *enumerator = nil;
+    xmlXPathContextPtr context = xmlXPathNewContext(self.xmlNode->doc);
+    xmlXPathSetContextNode(self.xmlNode, context);
+    if (context) {
+        enumerator = [self.document enumeratorWithXPathObject:xmlXPathEvalExpression((xmlChar *)[XPath cStringUsingEncoding:NSUTF8StringEncoding], context)];
+
+        xmlXPathFreeContext(context);
+    }
+
+    return enumerator;
+}
+
+- (void)enumerateElementsWithXPath:(NSString *)XPath
+                             block:(void (^)(ONOXMLElement *element))block
+{
+    if (!block) {
+        return;
+    }
+
+    for (ONOXMLElement *element in [self XPath:XPath]) {
+        block(element);
+    }
+}
+
+- (id <NSFastEnumeration>)CSS:(NSString *)CSS {
+    return [self XPath:ONOXPathFromCSS(CSS)];
+}
+
+- (void)enumerateElementsWithCSS:(NSString *)CSS
+                           block:(void (^)(ONOXMLElement *element))block
+{
+    [self enumerateElementsWithXPath:ONOXPathFromCSS(CSS) block:block];
+}
+
+
+#pragma mark - NSObject
+
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)selector {
+    return [[self stringValue] methodSignatureForSelector:selector];
+}
+
+- (void)forwardInvocation:(NSInvocation *)invocation {
+    [invocation invokeWithTarget:[self stringValue]];
+}
+
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone {
+    ONOXMLElement *element = [[[self class] allocWithZone:zone] init];
+    element.xmlNode = self.xmlNode;
+    element.document = self.document;
+
+    return element;
+}
+
+#pragma mark - NSCoding
+
+- (id)initWithCoder:(NSCoder *)decoder {
+    self = [super init];
+    if (!self) {
+        return nil;
+    }
+
+    self.tag = [decoder decodeObjectForKey:NSStringFromSelector(@selector(tag))];
+    self.attributes = [decoder decodeObjectForKey:NSStringFromSelector(@selector(attributes))];
+    self.stringValue = [decoder decodeObjectForKey:NSStringFromSelector(@selector(stringValue))];
+    self.children = [decoder decodeObjectForKey:NSStringFromSelector(@selector(children))];
+
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [coder encodeObject:self.tag forKey:NSStringFromSelector(@selector(tag))];
+    [coder encodeObject:self.attributes forKey:NSStringFromSelector(@selector(attributes))];
+    [coder encodeObject:self.stringValue forKey:NSStringFromSelector(@selector(stringValue))];
+    [coder encodeObject:self.children forKey:NSStringFromSelector(@selector(children))];
+}
+
+@end
