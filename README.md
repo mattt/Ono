@@ -1,5 +1,5 @@
 # Ono (斧)
-**A sensible way to deal with XML for iOS & Mac OS X**
+**A sensible way to deal with XML & HTML for iOS & Mac OS X**
 
 > Ono (斧) means "axe", in homage to [Nokogiri](http://nokogiri.org) (鋸), which means "saw".
 
