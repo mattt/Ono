@@ -17,7 +17,7 @@ for (ONOXMLElement *element in document.rootElement.children) {
 }
 
 // Automatic Conversion for Number & Date Values
-NSDate *date = [[document firstChildWithTag:@"CreatedAt"] dateValue]; // ISO 8601 Timestamp
+NSDate *date = [[document firstChildWithTag:@"CreatedAt"] dateValue]; // RFC 822 Timestamp
 NSInteger numberOfBytes = [[document firstChildWithTag:@"ContentSize"] numberValue] integerValue];
 BOOL isPublic = [[document firstChildWithTag:@"Public"] numberValue] boolValue];
 
