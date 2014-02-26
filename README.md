@@ -3,6 +3,8 @@
 
 > Ono (斧) means "axe", in homage to [Nokogiri](http://nokogiri.org) (鋸), which means "saw".
 
+_Whoa. I didn't expect an XML parsing library to garner so much interest so quickly. I'll work to have something production-worthy (CocoaPod, Documentation, Tests) by the end of the week. — Mattt_
+
 ## Usage
 
 ```objective-c
