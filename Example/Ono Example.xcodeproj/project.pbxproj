@@ -11,7 +11,24 @@
 		F897F97D18BFC44E0043A736 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F897F97C18BFC44E0043A736 /* main.m */; };
 		F897F98B18BFC4CE0043A736 /* ONOXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = F897F98A18BFC4CE0043A736 /* ONOXMLDocument.m */; };
 		F897F99018BFC5860043A736 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F897F98F18BFC5860043A736 /* libxml2.dylib */; };
+		F897F99D18BFCC9A0043A736 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F897F99C18BFCC9A0043A736 /* XCTest.framework */; };
+		F897F9A318BFCC9A0043A736 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F897F9A118BFCC9A0043A736 /* InfoPlist.strings */; };
+		F897F9A518BFCC9A0043A736 /* ONOXMLTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F897F9A418BFCC9A0043A736 /* ONOXMLTests.m */; };
+		F897F9AD18BFCEB60043A736 /* atom.xml in Resources */ = {isa = PBXBuildFile; fileRef = F897F9AC18BFCEB60043A736 /* atom.xml */; };
+		F897F9AF18BFCED00043A736 /* ONOAtomTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F897F9AE18BFCED00043A736 /* ONOAtomTests.m */; };
+		F897F9B018BFCF8E0043A736 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F897F98F18BFC5860043A736 /* libxml2.dylib */; };
+		F897F9B118BFCFC20043A736 /* ONOXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = F897F98A18BFC4CE0043A736 /* ONOXMLDocument.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F897F9A718BFCC9A0043A736 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F897F96E18BFC44E0043A736 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F897F97518BFC44E0043A736;
+			remoteInfo = "Ono Example";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		F897F97418BFC44E0043A736 /* CopyFiles */ = {
@@ -35,6 +52,13 @@
 		F897F98A18BFC4CE0043A736 /* ONOXMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ONOXMLDocument.m; sourceTree = "<group>"; };
 		F897F98D18BFC55B0043A736 /* nutrition.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = nutrition.xml; sourceTree = SOURCE_ROOT; };
 		F897F98F18BFC5860043A736 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
+		F897F99B18BFCC9A0043A736 /* Ono Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Ono Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F897F99C18BFCC9A0043A736 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		F897F9A018BFCC9A0043A736 /* Ono Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Ono Tests-Info.plist"; sourceTree = "<group>"; };
+		F897F9A218BFCC9A0043A736 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		F897F9A418BFCC9A0043A736 /* ONOXMLTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ONOXMLTests.m; sourceTree = "<group>"; };
+		F897F9AC18BFCEB60043A736 /* atom.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = atom.xml; sourceTree = "<group>"; };
+		F897F9AE18BFCED00043A736 /* ONOAtomTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ONOAtomTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,13 +71,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F897F99818BFCC9A0043A736 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F897F9B018BFCF8E0043A736 /* libxml2.dylib in Frameworks */,
+				F897F99D18BFCC9A0043A736 /* XCTest.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		F897F96D18BFC44E0043A736 = {
 			isa = PBXGroup;
 			children = (
-				F897F97B18BFC44E0043A736 /* Ono Example */,
+				F897F97B18BFC44E0043A736 /* Example */,
+				F897F99E18BFCC9A0043A736 /* Tests */,
 				F897F97818BFC44E0043A736 /* Frameworks */,
 				F897F97718BFC44E0043A736 /* Products */,
 				F897F98C18BFC4D10043A736 /* Vendor */,
@@ -64,6 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				F897F97618BFC44E0043A736 /* Ono Example */,
+				F897F99B18BFCC9A0043A736 /* Ono Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -73,17 +108,19 @@
 			children = (
 				F897F98F18BFC5860043A736 /* libxml2.dylib */,
 				F897F97918BFC44E0043A736 /* Foundation.framework */,
+				F897F99C18BFCC9A0043A736 /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		F897F97B18BFC44E0043A736 /* Ono Example */ = {
+		F897F97B18BFC44E0043A736 /* Example */ = {
 			isa = PBXGroup;
 			children = (
 				F897F97C18BFC44E0043A736 /* main.m */,
 				F897F98E18BFC5600043A736 /* Resources */,
 				F897F97E18BFC44E0043A736 /* Supporting Files */,
 			);
+			name = Example;
 			path = "Ono Example";
 			sourceTree = "<group>";
 		};
@@ -122,6 +159,27 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		F897F99E18BFCC9A0043A736 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				F897F9A418BFCC9A0043A736 /* ONOXMLTests.m */,
+				F897F9AE18BFCED00043A736 /* ONOAtomTests.m */,
+				F897F99F18BFCC9A0043A736 /* Supporting Files */,
+			);
+			name = Tests;
+			path = "Ono Tests";
+			sourceTree = "<group>";
+		};
+		F897F99F18BFCC9A0043A736 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F897F9A018BFCC9A0043A736 /* Ono Tests-Info.plist */,
+				F897F9A118BFCC9A0043A736 /* InfoPlist.strings */,
+				F897F9AC18BFCEB60043A736 /* atom.xml */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -142,6 +200,24 @@
 			productReference = F897F97618BFC44E0043A736 /* Ono Example */;
 			productType = "com.apple.product-type.tool";
 		};
+		F897F99A18BFCC9A0043A736 /* Ono Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F897F9A918BFCC9A0043A736 /* Build configuration list for PBXNativeTarget "Ono Tests" */;
+			buildPhases = (
+				F897F99718BFCC9A0043A736 /* Sources */,
+				F897F99818BFCC9A0043A736 /* Frameworks */,
+				F897F99918BFCC9A0043A736 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F897F9A818BFCC9A0043A736 /* PBXTargetDependency */,
+			);
+			name = "Ono Tests";
+			productName = "Ono Tests";
+			productReference = F897F99B18BFCC9A0043A736 /* Ono Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -150,6 +226,11 @@
 			attributes = {
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Mattt Thompson";
+				TargetAttributes = {
+					F897F99A18BFCC9A0043A736 = {
+						TestTargetID = F897F97518BFC44E0043A736;
+					};
+				};
 			};
 			buildConfigurationList = F897F97118BFC44E0043A736 /* Build configuration list for PBXProject "Ono Example" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -164,9 +245,22 @@
 			projectRoot = "";
 			targets = (
 				F897F97518BFC44E0043A736 /* Ono Example */,
+				F897F99A18BFCC9A0043A736 /* Ono Tests */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F897F99918BFCC9A0043A736 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F897F9AD18BFCEB60043A736 /* atom.xml in Resources */,
+				F897F9A318BFCC9A0043A736 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F897F97218BFC44E0043A736 /* Sources */ = {
@@ -178,7 +272,36 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F897F99718BFCC9A0043A736 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F897F9B118BFCFC20043A736 /* ONOXMLDocument.m in Sources */,
+				F897F9A518BFCC9A0043A736 /* ONOXMLTests.m in Sources */,
+				F897F9AF18BFCED00043A736 /* ONOAtomTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F897F9A818BFCC9A0043A736 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F897F97518BFC44E0043A736 /* Ono Example */;
+			targetProxy = F897F9A718BFCC9A0043A736 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		F897F9A118BFCC9A0043A736 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F897F9A218BFCC9A0043A736 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		F897F98218BFC44E0043A736 /* Debug */ = {
@@ -277,6 +400,50 @@
 			};
 			name = Release;
 		};
+		F897F9AA18BFCC9A0043A736 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SDK_DIR)\"/usr/include/libxml2",
+				);
+				INFOPLIST_FILE = "Ono Tests/Ono Tests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		F897F9AB18BFCC9A0043A736 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Prefix.pch;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SDK_DIR)\"/usr/include/libxml2",
+				);
+				INFOPLIST_FILE = "Ono Tests/Ono Tests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -297,6 +464,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		F897F9A918BFCC9A0043A736 /* Build configuration list for PBXNativeTarget "Ono Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F897F9AA18BFCC9A0043A736 /* Debug */,
+				F897F9AB18BFCC9A0043A736 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
