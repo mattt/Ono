@@ -468,7 +468,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 }
 
 - (NSArray *)childrenAtIndexes:(NSIndexSet *)indexes {
-    NSMutableArray *mutableChildren = [NSMutableArray arrayWithCapacity:[indexes count]];
+    NSMutableArray *mutableChildren = [NSMutableArray array];
 
     xmlNodePtr cursor = self.xmlNode->children;
     NSUInteger idx = 0;
