@@ -26,7 +26,7 @@
 #import <libxml2/libxml/xpath.h>
 #import <libxml2/libxml/HTMLparser.h>
 
-static NSString * ONOXPathFromCSS(NSString *CSS) {
+NSString * ONOXPathFromCSS(NSString *CSS) {
     NSMutableArray *mutableXPathExpressions = [NSMutableArray array];
     [[CSS componentsSeparatedByString:@","] enumerateObjectsUsingBlock:^(NSString *expression, NSUInteger idx, BOOL *stop) {
         if (expression && [expression length] > 0) {
@@ -93,7 +93,7 @@ static NSString * ONOXPathFromCSS(NSString *CSS) {
 
 static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSString *namespace) {
     BOOL matchingTag = !tag || [[NSString stringWithUTF8String:(const char *)node->name] compare:tag options:NSCaseInsensitiveSearch] == NSOrderedSame;
-    BOOL matchingNamespace = !namespace || [[NSString stringWithUTF8String:(const char *)node->ns->href] compare:tag options:NSCaseInsensitiveSearch] == NSOrderedSame;
+    BOOL matchingNamespace = !namespace || [[NSString stringWithUTF8String:(const char *)node->ns->href] compare:namespace options:NSCaseInsensitiveSearch] == NSOrderedSame;
 
     return matchingTag && matchingNamespace;
 }
@@ -116,6 +116,8 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 @property (readwrite, nonatomic, assign) xmlDocPtr xmlDocument;
 @property (readwrite, nonatomic, strong) ONOXMLElement *rootElement;
 @property (readwrite, nonatomic, copy) NSString *version;
+@property (readwrite, nonatomic, strong) NSNumberFormatter *numberFormatter;
+@property (readwrite, nonatomic, strong) NSDateFormatter *dateFormatter;
 
 - (ONOXMLElement *)elementWithNode:(xmlNodePtr)node;
 - (ONOXPathEnumerator *)enumeratorWithXPathObject:(xmlXPathObjectPtr)XPath;
@@ -223,6 +225,27 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
     if (_xmlDocument) {
         xmlFreeDoc(_xmlDocument);
     }
+}
+
+#pragma mark -
+
+- (NSNumberFormatter *)numberFormatter {
+    if (!_numberFormatter) {
+        _numberFormatter = [[NSNumberFormatter alloc] init];
+        [_numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    }
+
+    return _numberFormatter;
+}
+
+- (NSDateFormatter *)dateFormatter {
+    if (!_dateFormatter) {
+        _dateFormatter = [[NSDateFormatter alloc] init];
+        [_dateFormatter setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
+        [_dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
+    }
+
+    return _dateFormatter;
 }
 
 #pragma mark -
@@ -352,31 +375,6 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 @end
 
 @implementation ONOXMLElement
-
-+ (NSNumberFormatter *)sharedNumberFormatter {
-    static NSNumberFormatter *_sharedNumberFormatter = nil;
-
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        _sharedNumberFormatter = [[NSNumberFormatter alloc] init];
-        [_sharedNumberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
-    });
-
-    return _sharedNumberFormatter;
-}
-
-+ (NSDateFormatter *)sharedDateFormatter {
-    static NSDateFormatter *_sharedDateFormatter = nil;
-
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        _sharedDateFormatter = [[NSDateFormatter alloc] init];
-        [_sharedDateFormatter setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
-        [_sharedDateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
-    });
-
-    return _sharedDateFormatter;
-}
 
 - (NSString *)tag {
     if (!_tag) {
@@ -540,7 +538,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 
 - (NSNumber *)numberValue {
     if (!_numberValue) {
-        self.numberValue = [[[self class] sharedNumberFormatter] numberFromString:[self stringValue]];
+        self.numberValue = [self.document.numberFormatter numberFromString:[self stringValue]];
     }
 
     return _numberValue;
@@ -548,7 +546,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 
 - (NSDate *)dateValue {
     if (!_dateValue) {
-        self.dateValue = [[[self class] sharedDateFormatter] dateFromString:[self stringValue]];
+        self.dateValue = [self.document.dateFormatter dateFromString:[self stringValue]];
     }
 
     return _dateValue;

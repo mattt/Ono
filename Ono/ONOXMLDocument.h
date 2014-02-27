@@ -76,6 +76,20 @@
  */
 @property (readonly, nonatomic, strong) ONOXMLElement *rootElement;
 
+///
+
+/**
+ 
+ */
+@property (readonly, nonatomic, strong) NSNumberFormatter *numberFormatter;
+
+/**
+ 
+ */
+@property (readonly, nonatomic, strong) NSDateFormatter *dateFormatter;
+
+///
+
 /**
  
  */
