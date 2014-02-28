@@ -3,8 +3,6 @@
 
 > Ono (斧) means "axe", in homage to [Nokogiri](http://nokogiri.org) (鋸), which means "saw".
 
-_Whoa. I didn't expect an XML parsing library to garner so much interest so quickly. I'll work to have something production-worthy (CocoaPod, Documentation, Tests) by the end of the week. — Mattt_
-
 ## Usage
 
 ```objective-c
@@ -18,10 +16,17 @@ for (ONOXMLElement *element in document.rootElement.children) {
     NSLog(@"%@: %@", element.tag, element.attributes);
 }
 
+// Support for Namespaces
+NSString *author = [[document.rootElement firstChildWithTag:@"creator" inNamespace:@"dc"] stringValue];
+
 // Automatic Conversion for Number & Date Values
-NSDate *date = [[document firstChildWithTag:@"CreatedAt"] dateValue]; // RFC 822 Timestamp
-NSInteger numberOfBytes = [[document firstChildWithTag:@"ContentSize"] numberValue] integerValue];
-BOOL isPublic = [[document firstChildWithTag:@"Public"] numberValue] boolValue];
+NSDate *date = [[document.rootElement firstChildWithTag:@"created_at"] dateValue]; // ISO 8601 Timestamp
+NSInteger numberOfWords = [[document.rootElement firstChildWithTag:@"word_count"] numberValue] integerValue];
+BOOL isPublished = [[document.rootElement firstChildWithTag:@"is_published"] numberValue] boolValue];
+
+// Convenient Accessors for Attributes
+NSString *unit = [document.rootElement firstChildWithTag:@"Length"][@"unit"]
+NSDictionary *authorAttributes = [[document.rootElement firstChildWithTag:@"author"] attributes];
 
 // Support for XPath & CSS Queries
 [document enumerateElementsWithXPath:@"//Content" block:^(ONOXMLElement *element) {
