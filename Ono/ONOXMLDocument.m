@@ -401,9 +401,9 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
     return _attributes;
 }
 
-- (id)valueForAttribute:(NSString *)key {
+- (id)valueForAttribute:(NSString *)attribute {
     id value = nil;
-    const unsigned char *xmlValue = xmlGetProp(self.xmlNode, (const xmlChar *)[key cStringUsingEncoding:NSUTF8StringEncoding]);
+    const unsigned char *xmlValue = xmlGetProp(self.xmlNode, (const xmlChar *)[attribute cStringUsingEncoding:NSUTF8StringEncoding]);
     if (xmlValue) {
         value = [NSString stringWithUTF8String:(const char *)xmlValue];
         xmlFree((void *)xmlValue);
@@ -412,11 +412,11 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
     return value;
 }
 
-- (id)valueForAttribute:(NSString *)key
+- (id)valueForAttribute:(NSString *)attribute
             inNamespace:(NSString *)namespace
 {
     id value = nil;
-    const unsigned char *xmlValue = xmlGetNsProp(self.xmlNode, (const xmlChar *)[key cStringUsingEncoding:NSUTF8StringEncoding], (const xmlChar *)[namespace cStringUsingEncoding:NSUTF8StringEncoding]);
+    const unsigned char *xmlValue = xmlGetNsProp(self.xmlNode, (const xmlChar *)[attribute cStringUsingEncoding:NSUTF8StringEncoding], (const xmlChar *)[namespace cStringUsingEncoding:NSUTF8StringEncoding]);
     if (xmlValue) {
         value = [NSString stringWithUTF8String:(const char *)xmlValue];
         xmlFree((void *)xmlValue);
