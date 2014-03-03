@@ -393,6 +393,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
         while (attribute) {
             NSString *key = [NSString stringWithUTF8String:(const char *)attribute->name];
             mutableAttributes[key] = [self valueForAttribute:key];
+            attribute = attribute->next;
         }
 
         self.attributes = [NSDictionary dictionaryWithDictionary:mutableAttributes];
