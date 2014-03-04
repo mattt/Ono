@@ -22,6 +22,8 @@
 
 #import <Foundation/Foundation.h>
 
+NSString * ONOXPathFromCSS(NSString *CSS);
+
 @class ONOXMLElement;
 
 /**

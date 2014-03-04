@@ -22,6 +22,8 @@
 
 #import <XCTest/XCTest.h>
 
+#import "Ono.h"
+
 @interface ONOXMLTests : XCTestCase
 
 @end
@@ -30,6 +32,11 @@
 
 - (void)setUp {
     [super setUp];
+}
+
+- (void)testCSSToXpath {
+    NSString *path = ONOXPathFromCSS(@"#some-composed-id h3");
+    XCTAssertEqualObjects(@"//[@id = 'some-composed-id']/h3", path, @"Created Xpath should be '//[@id = 'some-composed-id']/h3'");
 }
 
 @end
