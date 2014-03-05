@@ -31,25 +31,23 @@ NSString * ONOXPathFromCSS(NSString *CSS) {
     [[CSS componentsSeparatedByString:@","] enumerateObjectsUsingBlock:^(NSString *expression, NSUInteger idx, BOOL *stop) {
         if (expression && [expression length] > 0) {
             __block NSMutableArray *mutableXPathComponents = [NSMutableArray arrayWithObject:@"/"];
+            __block NSString *prefix = nil;
 
             [[[expression stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] enumerateObjectsUsingBlock:^(NSString *token, NSUInteger idx, __unused BOOL *stop) {
                 if ([token isEqualToString:@"*"] && idx != 0) {
                     [mutableXPathComponents addObject:@"/*"];
                 } else if ([token isEqualToString:@">"]) {
-                    [mutableXPathComponents addObject:@""];
+                    prefix = @"";
                 } else if ([token isEqualToString:@"+"]) {
-                    [mutableXPathComponents addObject:@"following-sibling::*[1]/self::"];
+                    prefix = @"following-sibling::*[1]/self::";
                 } else if ([token isEqualToString:@"~"]) {
-                    [mutableXPathComponents addObject:@"following-sibling::"];
+                    prefix = @"following-sibling::";
                 } else {
-
                     NSRange symbolRange = [token rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"#.[]"]];
-                    if (symbolRange.location == NSNotFound) {
-                        [mutableXPathComponents addObject:token];
-                    } else {
+                    if (symbolRange.location != NSNotFound) {
                         NSMutableString *mutableXPathComponent = [NSMutableString stringWithString:[token substringToIndex:symbolRange.location]];
                         NSRange range = NSMakeRange(0, [token length]);
-                        
+
                         {
                             NSError *error = nil;
                             NSRegularExpression *idRegularExpression = [NSRegularExpression regularExpressionWithPattern:@"\\#([\\w-_]+)" options:0 error:&error];
@@ -79,8 +77,15 @@ NSString * ONOXPathFromCSS(NSString *CSS) {
                             }
                         }
 
-                        [mutableXPathComponents addObject:mutableXPathComponent];
+                        token = mutableXPathComponent;
                     }
+
+                    if (prefix) {
+                        token = [prefix stringByAppendingString:token];
+                        prefix = nil;
+                    }
+
+                    [mutableXPathComponents addObject:token];
                 }
             }];
 

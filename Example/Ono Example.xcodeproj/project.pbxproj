@@ -18,6 +18,7 @@
 		F897F9AF18BFCED00043A736 /* ONOAtomTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F897F9AE18BFCED00043A736 /* ONOAtomTests.m */; };
 		F897F9B018BFCF8E0043A736 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F897F98F18BFC5860043A736 /* libxml2.dylib */; };
 		F897F9B118BFCFC20043A736 /* ONOXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = F897F98A18BFC4CE0043A736 /* ONOXMLDocument.m */; };
+		F8DC5D9E18C78F9800D69DD8 /* ONOCSSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DC5D9D18C78F9800D69DD8 /* ONOCSSTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		F897F9A418BFCC9A0043A736 /* ONOXMLTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ONOXMLTests.m; sourceTree = "<group>"; };
 		F897F9AC18BFCEB60043A736 /* atom.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = atom.xml; sourceTree = "<group>"; };
 		F897F9AE18BFCED00043A736 /* ONOAtomTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ONOAtomTests.m; sourceTree = "<group>"; };
+		F8DC5D9D18C78F9800D69DD8 /* ONOCSSTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ONOCSSTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +166,7 @@
 			children = (
 				F897F9A418BFCC9A0043A736 /* ONOXMLTests.m */,
 				F897F9AE18BFCED00043A736 /* ONOAtomTests.m */,
+				F8DC5D9D18C78F9800D69DD8 /* ONOCSSTests.m */,
 				F897F99F18BFCC9A0043A736 /* Supporting Files */,
 			);
 			name = Tests;
@@ -276,6 +279,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8DC5D9E18C78F9800D69DD8 /* ONOCSSTests.m in Sources */,
 				F897F9B118BFCFC20043A736 /* ONOXMLDocument.m in Sources */,
 				F897F9A518BFCC9A0043A736 /* ONOXMLTests.m in Sources */,
 				F897F9AF18BFCED00043A736 /* ONOAtomTests.m in Sources */,
@@ -472,6 +476,7 @@
 				F897F9AB18BFCC9A0043A736 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
