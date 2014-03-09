@@ -43,6 +43,10 @@ NSString * ONOXPathFromCSS(NSString *CSS) {
                 } else if ([token isEqualToString:@"~"]) {
                     prefix = @"following-sibling::";
                 } else {
+                    if (!prefix && idx != 0) {
+                        prefix = @"descendant::";
+                    }
+
                     NSRange symbolRange = [token rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"#.[]"]];
                     if (symbolRange.location != NSNotFound) {
                         NSMutableString *mutableXPathComponent = [NSMutableString stringWithString:[token substringToIndex:symbolRange.location]];
