@@ -91,4 +91,16 @@
     XCTAssertTrue([entryElements count] == 1, @"should be 1 entry element");
 }
 
+- (void)testNamespace {
+    NSArray *entryElements = [self.document.rootElement childrenWithTag:@"entry"];
+    XCTAssertTrue([entryElements count] == 1, @"should be 1 entry element");
+
+    NSArray *namespacedElements = [[entryElements firstObject] childrenWithTag:@"language" inNamespace:@"dc"];
+    XCTAssertTrue([namespacedElements count] == 1, @"should be 1 entry element");
+    
+    ONOXMLElement *namespacedElement = [namespacedElements firstObject];
+    XCTAssertNotNil(namespacedElement.namespace, @"the namespace shouldn't be nil");
+    XCTAssertTrue([namespacedElement.namespace isEqualToString:@"dc"], @"Namespaces should match");
+}
+
 @end

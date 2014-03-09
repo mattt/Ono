@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <title>Example Feed</title>
   <subtitle>A subtitle.</subtitle>
   <link href="http://example.org/feed/" rel="self"/>
@@ -8,6 +8,7 @@
   <updated>2003-12-13T18:30:02Z</updated>
   <entry>
     <title>Atom-Powered Robots Run Amok</title>
+    <dc:language>en-us</dc:language>
     <link href="http://example.org/2003/12/13/atom03"/>
     <link rel="alternate" type="text/html" href="http://example.org/2003/12/13/atom03.html"/>
     <link rel="edit" href="http://example.org/2003/12/13/atom03/edit"/>
