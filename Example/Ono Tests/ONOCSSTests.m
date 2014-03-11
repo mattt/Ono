@@ -52,8 +52,8 @@ extern NSString * ONOXPathFromCSS(NSString *CSS);
     XCTAssertEqualObjects(ONOXPathFromCSS(@"html *"), @"//html//*");
 }
 
-- (void)testCSSChildSelector {
-    XCTAssertEqualObjects(ONOXPathFromCSS(@"html body"), @"//html/body");
+- (void)testCSSDescendantCombinatorSelector {
+    XCTAssertEqualObjects(ONOXPathFromCSS(@"body p"), @"//body/descendant::p");
 }
 
 - (void)testCSSChildCombinatorSelector {
