@@ -246,7 +246,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 - (NSDateFormatter *)dateFormatter {
     if (!_dateFormatter) {
         _dateFormatter = [[NSDateFormatter alloc] init];
-        [_dateFormatter setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
+        [_dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
         [_dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
     }
 
@@ -397,7 +397,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
         xmlAttrPtr attribute = self.xmlNode->properties;
         while (attribute) {
             NSString *key = [NSString stringWithUTF8String:(const char *)attribute->name];
-            mutableAttributes[key] = [self valueForAttribute:key];
+            [mutableAttributes setObject:[self valueForAttribute:key] forKey:key];
             attribute = attribute->next;
         }
 
@@ -452,10 +452,16 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 - (ONOXMLElement *)firstChildWithTag:(NSString *)tag
                          inNamespace:(NSString *)namespace
 {
-    return [[self childrenAtIndexes:[self indexesOfChildrenPassingTest:^BOOL(xmlNodePtr node, BOOL *stop) {
+    NSArray *children = [self childrenAtIndexes:[self indexesOfChildrenPassingTest:^BOOL(xmlNodePtr node, BOOL *stop) {
         *stop = ONOXMLNodeMatchesTagInNamespace(node, tag, namespace);
         return *stop;
-    }]] firstObject];
+    }]];
+
+    if ([children count] == 0) {
+        return nil;
+    }
+
+    return [children objectAtIndex:0];
 }
 
 - (NSArray *)childrenWithTag:(NSString *)tag {
@@ -565,7 +571,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 }
 
 - (id)objectAtIndexedSubscript:(NSUInteger)idx {
-    return self.children[idx];
+    return [self.children objectAtIndex:idx];
 }
 
 #pragma mark - NSObject
@@ -604,9 +610,11 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 
     ONOXPathEnumerator *enumerator = nil;
     xmlXPathContextPtr context = xmlXPathNewContext(self.xmlNode->doc);
-    xmlXPathSetContextNode(self.xmlNode, context);
     if (context) {
-        enumerator = [self.document enumeratorWithXPathObject:xmlXPathEvalExpression((xmlChar *)[XPath cStringUsingEncoding:NSUTF8StringEncoding], context)];
+        context->node = self.xmlNode;
+
+        xmlXPathObjectPtr xmlXPath = xmlXPathEvalExpression((xmlChar *)[XPath cStringUsingEncoding:NSUTF8StringEncoding], context);
+        enumerator = [self.document enumeratorWithXPathObject:xmlXPath];
 
         xmlXPathFreeContext(context);
     }

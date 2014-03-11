@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F8301EA018CF199900085EC9 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8301E9F18CF199900085EC9 /* libxml2.dylib */; };
 		F897F97A18BFC44E0043A736 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F897F97918BFC44E0043A736 /* Foundation.framework */; };
 		F897F97D18BFC44E0043A736 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F897F97C18BFC44E0043A736 /* main.m */; };
 		F897F98B18BFC4CE0043A736 /* ONOXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = F897F98A18BFC4CE0043A736 /* ONOXMLDocument.m */; };
-		F897F99018BFC5860043A736 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F897F98F18BFC5860043A736 /* libxml2.dylib */; };
 		F897F99D18BFCC9A0043A736 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F897F99C18BFCC9A0043A736 /* XCTest.framework */; };
 		F897F9A318BFCC9A0043A736 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F897F9A118BFCC9A0043A736 /* InfoPlist.strings */; };
 		F897F9A518BFCC9A0043A736 /* ONOXMLTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F897F9A418BFCC9A0043A736 /* ONOXMLTests.m */; };
@@ -44,6 +44,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		F8301E9D18CF198F00085EC9 /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/lib/libxml2.2.dylib; sourceTree = DEVELOPER_DIR; };
+		F8301E9F18CF199900085EC9 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/lib/libxml2.dylib; sourceTree = DEVELOPER_DIR; };
 		F897F97618BFC44E0043A736 /* Ono Example */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Ono Example"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F897F97918BFC44E0043A736 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F897F97C18BFC44E0043A736 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ../main.m; sourceTree = "<group>"; };
@@ -68,7 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F897F99018BFC5860043A736 /* libxml2.dylib in Frameworks */,
+				F8301EA018CF199900085EC9 /* libxml2.dylib in Frameworks */,
 				F897F97A18BFC44E0043A736 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -108,6 +110,8 @@
 		F897F97818BFC44E0043A736 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F8301E9F18CF199900085EC9 /* libxml2.dylib */,
+				F8301E9D18CF198F00085EC9 /* libxml2.2.dylib */,
 				F897F98F18BFC5860043A736 /* libxml2.dylib */,
 				F897F97918BFC44E0043A736 /* Foundation.framework */,
 				F897F99C18BFCC9A0043A736 /* XCTest.framework */,
@@ -386,7 +390,9 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SDK_DIR)\"/usr/include/libxml2",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.7;
 			};
 			name = Debug;
 		};
@@ -400,7 +406,9 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SDK_DIR)\"/usr/include/libxml2",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.7;
 			};
 			name = Release;
 		};
