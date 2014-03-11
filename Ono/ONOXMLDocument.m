@@ -98,8 +98,9 @@ NSString * ONOXPathFromCSS(NSString *CSS) {
 
 static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSString *namespace) {
     BOOL matchingTag = !tag || [[NSString stringWithUTF8String:(const char *)node->name] compare:tag options:NSCaseInsensitiveSearch] == NSOrderedSame;
-    BOOL matchingNamespace = !namespace || [[NSString stringWithUTF8String:(const char *)node->ns->href] compare:namespace options:NSCaseInsensitiveSearch] == NSOrderedSame;
-
+    
+    BOOL matchingNamespace = !namespace ? YES : (((node->ns != NULL) && (node->ns->prefix != NULL)) ? [[NSString stringWithUTF8String:(const char *)node->ns->prefix] compare:namespace options:NSCaseInsensitiveSearch] == NSOrderedSame : NO);
+    
     return matchingTag && matchingNamespace;
 }
 
@@ -369,6 +370,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 @interface ONOXMLElement ()
 @property (readwrite, nonatomic, copy) NSString *rawXMLString;
 @property (readwrite, nonatomic, copy) NSString *tag;
+@property (readwrite, nonatomic, copy) NSString *namespace;
 @property (readwrite, nonatomic, strong) ONOXMLElement *parent;
 @property (readwrite, nonatomic, strong) NSArray *children;
 @property (readwrite, nonatomic, strong) ONOXMLElement *previousSibling;
@@ -380,6 +382,14 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 @end
 
 @implementation ONOXMLElement
+
+- (NSString *)namespace {
+    if (!_namespace && self.xmlNode->ns != NULL) {
+        self.namespace = [NSString stringWithUTF8String:(const char *)self.xmlNode->ns->prefix];
+    }
+    
+    return _namespace;
+}
 
 - (NSString *)tag {
     if (!_tag) {

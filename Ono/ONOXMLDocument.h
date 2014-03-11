@@ -198,6 +198,11 @@
 /**
  The element's tag.
  */
+@property (readonly, nonatomic, copy) NSString *namespace;
+
+/**
+ The element's tag.
+ */
 @property (readonly, nonatomic, copy) NSString *tag;
 
 ///---------------------------
