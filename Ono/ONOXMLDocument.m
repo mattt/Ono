@@ -44,7 +44,7 @@ NSRegularExpression * ONOClassRegularExpression() {
 	return expression;
 }
 
-NSRegularExpression *ONOAttributeRegularExpression() {
+NSRegularExpression * ONOAttributeRegularExpression() {
 	static NSRegularExpression *expression = nil;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
