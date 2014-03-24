@@ -27,30 +27,33 @@
 #import <libxml2/libxml/HTMLparser.h>
 
 NSRegularExpression * ONOIdRegularExpression() {
-	static NSRegularExpression *expression = nil;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		expression = [NSRegularExpression regularExpressionWithPattern:@"\\#([\\w-_]+)" options:0 error:nil];
-	});
-	return expression;
+    static NSRegularExpression *expression = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        expression = [NSRegularExpression regularExpressionWithPattern:@"\\#([\\w-_]+)" options:0 error:nil];
+    });
+
+    return expression;
 }
 
 NSRegularExpression * ONOClassRegularExpression() {
-	static NSRegularExpression *expression = nil;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		expression = [NSRegularExpression regularExpressionWithPattern:@"\\.([^\\.]+)" options:0 error:nil];
-	});
-	return expression;
+    static NSRegularExpression *expression = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        expression = [NSRegularExpression regularExpressionWithPattern:@"\\.([^\\.]+)" options:0 error:nil];
+    });
+
+    return expression;
 }
 
 NSRegularExpression * ONOAttributeRegularExpression() {
-	static NSRegularExpression *expression = nil;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		expression = [NSRegularExpression regularExpressionWithPattern:@"\\[(\\w+)\\]" options:0 error:nil];
-	});
-	return expression;
+    static NSRegularExpression *expression = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        expression = [NSRegularExpression regularExpressionWithPattern:@"\\[(\\w+)\\]" options:0 error:nil];
+    });
+
+    return expression;
 }
 
 NSString * ONOXPathFromCSS(NSString *CSS) {
@@ -126,9 +129,9 @@ NSString * ONOXPathFromCSS(NSString *CSS) {
 
 static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSString *namespace) {
     BOOL matchingTag = !tag || [[NSString stringWithUTF8String:(const char *)node->name] compare:tag options:NSCaseInsensitiveSearch] == NSOrderedSame;
-    
+
     BOOL matchingNamespace = !namespace ? YES : (((node->ns != NULL) && (node->ns->prefix != NULL)) ? [[NSString stringWithUTF8String:(const char *)node->ns->prefix] compare:namespace options:NSCaseInsensitiveSearch] == NSOrderedSame : NO);
-    
+
     return matchingTag && matchingNamespace;
 }
 
@@ -181,10 +184,10 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
     NSMutableArray *mutableObjects = [NSMutableArray arrayWithCapacity:(NSUInteger)self.xmlXPath->nodesetval->nodeNr];
     for (NSInteger idx = 0; idx < xmlXPathNodeSetGetLength(self.xmlXPath->nodesetval); idx++) {
         ONOXMLElement *element = [self objectAtIndex:idx];
-		if (element) {
-			[mutableObjects addObject:element];
-		}
-	}
+        if (element) {
+            [mutableObjects addObject:element];
+        }
+    }
 
     return [NSArray arrayWithArray:mutableObjects];
 }
@@ -415,7 +418,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
     if (!_namespace && self.xmlNode->ns != NULL) {
         self.namespace = [NSString stringWithUTF8String:(const char *)self.xmlNode->ns->prefix];
     }
-    
+
     return _namespace;
 }
 
