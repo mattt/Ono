@@ -26,6 +26,33 @@
 #import <libxml2/libxml/xpath.h>
 #import <libxml2/libxml/HTMLparser.h>
 
+NSRegularExpression * ONOIdRegularExpression() {
+	static NSRegularExpression *expression = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		expression = [NSRegularExpression regularExpressionWithPattern:@"\\#([\\w-_]+)" options:0 error:nil];
+	});
+	return expression;
+}
+
+NSRegularExpression * ONOClassRegularExpression() {
+	static NSRegularExpression *expression = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		expression = [NSRegularExpression regularExpressionWithPattern:@"\\.([^\\.]+)" options:0 error:nil];
+	});
+	return expression;
+}
+
+NSRegularExpression * ONOAttributeRegularExpression() {
+	static NSRegularExpression *expression = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		expression = [NSRegularExpression regularExpressionWithPattern:@"\\[(\\w+)\\]" options:0 error:nil];
+	});
+	return expression;
+}
+
 NSString * ONOXPathFromCSS(NSString *CSS) {
     NSMutableArray *mutableXPathExpressions = [NSMutableArray array];
     [[CSS componentsSeparatedByString:@","] enumerateObjectsUsingBlock:^(NSString *expression, NSUInteger idx, BOOL *stop) {
@@ -53,8 +80,7 @@ NSString * ONOXPathFromCSS(NSString *CSS) {
                         NSRange range = NSMakeRange(0, [token length]);
 
                         {
-                            NSError *error = nil;
-                            NSRegularExpression *idRegularExpression = [NSRegularExpression regularExpressionWithPattern:@"\\#([\\w-_]+)" options:0 error:&error];
+                            NSRegularExpression *idRegularExpression = ONOIdRegularExpression();
                             NSTextCheckingResult *result = [idRegularExpression firstMatchInString:CSS options:0 range:range];
                             if ([result numberOfRanges] > 1) {
                                 [mutableXPathComponent appendFormat:@"[@id = '%@']", [token substringWithRange:[result rangeAtIndex:1]]];
@@ -62,8 +88,7 @@ NSString * ONOXPathFromCSS(NSString *CSS) {
                         }
 
                         {
-                            NSError *error = nil;
-                            NSRegularExpression *classRegularExpression = [NSRegularExpression regularExpressionWithPattern:@"\\.([^\\.]+)" options:0 error:&error];
+                            NSRegularExpression *classRegularExpression = ONOClassRegularExpression();
                             for (NSTextCheckingResult *result in [classRegularExpression matchesInString:token options:0 range:range]) {
                                 if ([result numberOfRanges] > 1) {
                                     [mutableXPathComponent appendFormat:@"[contains(concat(' ',normalize-space(@class),' '),' %@ ')]", [token substringWithRange:[result rangeAtIndex:1]]];
@@ -72,8 +97,7 @@ NSString * ONOXPathFromCSS(NSString *CSS) {
                         }
 
                         {
-                            NSError *error = nil;
-                            NSRegularExpression *attributeRegularExpression = [NSRegularExpression regularExpressionWithPattern:@"\\[(\\w+)\\]" options:0 error:&error];
+                            NSRegularExpression *attributeRegularExpression = ONOAttributeRegularExpression();
                             for (NSTextCheckingResult *result in [attributeRegularExpression matchesInString:token options:0 range:range]) {
                                 if ([result numberOfRanges] > 1) {
                                     [mutableXPathComponent appendFormat:@"[@%@]", [token substringWithRange:[result rangeAtIndex:1]]];
