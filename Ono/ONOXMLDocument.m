@@ -26,7 +26,7 @@
 #import <libxml2/libxml/xpath.h>
 #import <libxml2/libxml/HTMLparser.h>
 
-NSRegularExpression * ONOIdRegularExpression() {
+static NSRegularExpression * ONOIdRegularExpression() {
     static NSRegularExpression *expression = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -36,7 +36,7 @@ NSRegularExpression * ONOIdRegularExpression() {
     return expression;
 }
 
-NSRegularExpression * ONOClassRegularExpression() {
+static NSRegularExpression * ONOClassRegularExpression() {
     static NSRegularExpression *expression = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -46,7 +46,7 @@ NSRegularExpression * ONOClassRegularExpression() {
     return expression;
 }
 
-NSRegularExpression * ONOAttributeRegularExpression() {
+static NSRegularExpression * ONOAttributeRegularExpression() {
     static NSRegularExpression *expression = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
