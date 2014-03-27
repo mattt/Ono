@@ -75,7 +75,7 @@
     XCTAssertTrue(idx == 1, @"fewer than one element found");
 }
 
-- (void)testIdCss {
+- (void)testIDCSS {
     NSUInteger idx = 0;
     for (ONOXMLElement *element in [self.document CSS:@"#account_settings"]) {
         XCTAssertTrue(idx == 0, @"more than one element found");
