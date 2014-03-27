@@ -58,7 +58,7 @@
 - (void)testTitleXPath {
     NSUInteger idx = 0;
     for (ONOXMLElement *element in [self.document XPath:@"//head/title"]) {
-        XCTAssertTrue(idx == 0, @"more than one  element found");
+        XCTAssertTrue(idx == 0, @"more than one element found");
         XCTAssertEqualObjects([element stringValue], @"mattt/Ono", @"title mismatch");
         idx++;
     }
@@ -68,8 +68,18 @@
 - (void)testTitleCSS {
     NSUInteger idx = 0;
     for (ONOXMLElement *element in [self.document CSS:@"head title"]) {
-        XCTAssertTrue(idx == 0, @"more than one  element found");
+        XCTAssertTrue(idx == 0, @"more than one element found");
         XCTAssertEqualObjects([element stringValue], @"mattt/Ono", @"title mismatch");
+        idx++;
+    }
+    XCTAssertTrue(idx == 1, @"fewer than one element found");
+}
+
+- (void)testIdCss {
+    NSUInteger idx = 0;
+    for (ONOXMLElement *element in [self.document CSS:@"#account_settings"]) {
+        XCTAssertTrue(idx == 0, @"more than one element found");
+        XCTAssertEqualObjects(element[@"href"], @"/settings/profile", @"href mismatch");
         idx++;
     }
     XCTAssertTrue(idx == 1, @"fewer than one element found");

@@ -44,8 +44,12 @@ extern NSString * ONOXPathFromCSS(NSString *CSS);
     XCTAssertEqualObjects(ONOXPathFromCSS(@"span.highlighted"), @"//span[contains(concat(' ',normalize-space(@class),' '),' highlighted ')]");
 }
 
-- (void)testCSSIDSelector {
+- (void)testCSSElementAndIDSelector {
     XCTAssertEqualObjects(ONOXPathFromCSS(@"h1#logo"), @"//h1[@id = 'logo']");
+}
+
+- (void)testCSSIDSelector {
+    XCTAssertEqualObjects(ONOXPathFromCSS(@"#logo"), @"//*[@id = 'logo']");
 }
 
 - (void)testCSSWildcardChildSelector {

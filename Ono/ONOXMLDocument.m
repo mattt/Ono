@@ -86,7 +86,7 @@ NSString * ONOXPathFromCSS(NSString *CSS) {
                             NSRegularExpression *idRegularExpression = ONOIdRegularExpression();
                             NSTextCheckingResult *result = [idRegularExpression firstMatchInString:CSS options:0 range:range];
                             if ([result numberOfRanges] > 1) {
-                                [mutableXPathComponent appendFormat:@"[@id = '%@']", [token substringWithRange:[result rangeAtIndex:1]]];
+                                [mutableXPathComponent appendFormat:@"%@[@id = '%@']", (symbolRange.location == 0) ? @"*" : @"", [token substringWithRange:[result rangeAtIndex:1]]];
                             }
                         }
 
