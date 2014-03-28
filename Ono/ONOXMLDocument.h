@@ -193,7 +193,7 @@
 /**
  The document containing the element.
  */
-@property (readonly, nonatomic, strong) ONOXMLDocument *document;
+@property (readonly, nonatomic, assign) ONOXMLDocument *document;
 
 /**
  The element's tag.
