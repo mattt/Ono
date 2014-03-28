@@ -146,7 +146,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 
 @interface ONOXMLElement ()
 @property (readwrite, nonatomic, assign) xmlNodePtr xmlNode;
-@property (readwrite, nonatomic, strong) ONOXMLDocument *document;
+@property (readwrite, nonatomic, weak) ONOXMLDocument *document;
 @end
 
 @interface ONOXMLDocument ()
