@@ -83,7 +83,7 @@
     dateComponents.minute = 30;
     dateComponents.second = 2;
 
-    XCTAssertEqualObjects([updatedElement dateValue], [[NSCalendar calendarWithIdentifier:NSGregorianCalendar] dateFromComponents:dateComponents], @"dateValue should be equal to December 13, 2003 6:30:02 PM");
+    XCTAssertEqualObjects([updatedElement dateValue], [[NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian] dateFromComponents:dateComponents], @"dateValue should be equal to December 13, 2003 6:30:02 PM");
 }
 
 - (void)testEntries {
