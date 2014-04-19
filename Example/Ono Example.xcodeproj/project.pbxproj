@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F8301EA018CF199900085EC9 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8301E9F18CF199900085EC9 /* libxml2.dylib */; };
+		3D4BE0B41902F4F700F99600 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F897F98F18BFC5860043A736 /* libxml2.dylib */; };
 		F8301EA218CF1E4600085EC9 /* web.html in Resources */ = {isa = PBXBuildFile; fileRef = F8301EA118CF1E4600085EC9 /* web.html */; };
 		F8301EA518CF1E5700085EC9 /* ONOHTMLTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F8301EA418CF1E5700085EC9 /* ONOHTMLTests.m */; };
 		F897F97A18BFC44E0043A736 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F897F97918BFC44E0043A736 /* Foundation.framework */; };
@@ -46,14 +46,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		F8301E9D18CF198F00085EC9 /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/lib/libxml2.2.dylib; sourceTree = DEVELOPER_DIR; };
-		F8301E9F18CF199900085EC9 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/lib/libxml2.dylib; sourceTree = DEVELOPER_DIR; };
 		F8301EA118CF1E4600085EC9 /* web.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = web.html; sourceTree = "<group>"; };
 		F8301EA418CF1E5700085EC9 /* ONOHTMLTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ONOHTMLTests.m; sourceTree = "<group>"; };
 		F897F97618BFC44E0043A736 /* Ono Example */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Ono Example"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F897F97918BFC44E0043A736 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		F897F97C18BFC44E0043A736 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ../main.m; sourceTree = "<group>"; };
-		F897F97F18BFC44E0043A736 /* Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Prefix.pch; path = ../Prefix.pch; sourceTree = "<group>"; };
+		F897F97C18BFC44E0043A736 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		F897F97F18BFC44E0043A736 /* Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = SOURCE_ROOT; };
 		F897F98818BFC4CE0043A736 /* Ono.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ono.h; sourceTree = "<group>"; };
 		F897F98918BFC4CE0043A736 /* ONOXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ONOXMLDocument.h; sourceTree = "<group>"; };
 		F897F98A18BFC4CE0043A736 /* ONOXMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ONOXMLDocument.m; sourceTree = "<group>"; };
@@ -74,8 +72,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8301EA018CF199900085EC9 /* libxml2.dylib in Frameworks */,
 				F897F97A18BFC44E0043A736 /* Foundation.framework in Frameworks */,
+				3D4BE0B41902F4F700F99600 /* libxml2.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,8 +112,6 @@
 		F897F97818BFC44E0043A736 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F8301E9F18CF199900085EC9 /* libxml2.dylib */,
-				F8301E9D18CF198F00085EC9 /* libxml2.2.dylib */,
 				F897F98F18BFC5860043A736 /* libxml2.dylib */,
 				F897F97918BFC44E0043A736 /* Foundation.framework */,
 				F897F99C18BFCC9A0043A736 /* XCTest.framework */,
@@ -131,8 +127,7 @@
 				F897F97E18BFC44E0043A736 /* Supporting Files */,
 			);
 			name = Example;
-			path = "Ono Example";
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 		F897F97E18BFC44E0043A736 /* Supporting Files */ = {
 			isa = PBXGroup;
