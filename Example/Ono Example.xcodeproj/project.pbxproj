@@ -52,8 +52,8 @@
 		F8301EA418CF1E5700085EC9 /* ONOHTMLTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ONOHTMLTests.m; sourceTree = "<group>"; };
 		F897F97618BFC44E0043A736 /* Ono Example */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Ono Example"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F897F97918BFC44E0043A736 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		F897F97C18BFC44E0043A736 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ../main.m; sourceTree = "<group>"; };
-		F897F97F18BFC44E0043A736 /* Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Prefix.pch; path = ../Prefix.pch; sourceTree = "<group>"; };
+		F897F97C18BFC44E0043A736 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		F897F97F18BFC44E0043A736 /* Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = SOURCE_ROOT; };
 		F897F98818BFC4CE0043A736 /* Ono.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ono.h; sourceTree = "<group>"; };
 		F897F98918BFC4CE0043A736 /* ONOXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ONOXMLDocument.h; sourceTree = "<group>"; };
 		F897F98A18BFC4CE0043A736 /* ONOXMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ONOXMLDocument.m; sourceTree = "<group>"; };
@@ -131,8 +131,7 @@
 				F897F97E18BFC44E0043A736 /* Supporting Files */,
 			);
 			name = Example;
-			path = "Ono Example";
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 		F897F97E18BFC44E0043A736 /* Supporting Files */ = {
 			isa = PBXGroup;
