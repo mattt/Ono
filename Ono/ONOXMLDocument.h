@@ -144,7 +144,7 @@
 /**
  Creates and returns an instance of ONOXMLDocument from XML data.
 
- @param string The XML data.
+ @param data The XML data.
  @param error The error error that occured while parsing the XML, or `nil`.
 
  @return An `ONOXMLDocument` with the contents of the specified XML data.
@@ -172,8 +172,7 @@
 /**
  Creates and returns an instance of ONOXMLDocument from HTML data.
 
- @param string The HTML string.
- @param encoding The string encoding.
+ @param data The HTML string.
  @param error The error error that occured while parsing the HTML, or `nil`.
 
  @return An `ONOXMLDocument` with the contents of the specified HTML string.

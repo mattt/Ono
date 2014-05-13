@@ -30,7 +30,7 @@ static NSRegularExpression * ONOIdRegularExpression() {
     static NSRegularExpression *_ONOIdRegularExpression = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _ONOIdRegularExpression = [NSRegularExpression regularExpressionWithPattern:@"\\#([\\w-_]+)" options:0 error:nil];
+        _ONOIdRegularExpression = [NSRegularExpression regularExpressionWithPattern:@"\\#([\\w-_]+)" options:(NSRegularExpressionOptions)0 error:nil];
     });
 
     return _ONOIdRegularExpression;
@@ -40,7 +40,7 @@ static NSRegularExpression * ONOClassRegularExpression() {
     static NSRegularExpression *_ONOClassRegularExpression = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _ONOClassRegularExpression = [NSRegularExpression regularExpressionWithPattern:@"\\.([^\\.]+)" options:0 error:nil];
+        _ONOClassRegularExpression = [NSRegularExpression regularExpressionWithPattern:@"\\.([^\\.]+)" options:(NSRegularExpressionOptions)0 error:nil];
     });
 
     return _ONOClassRegularExpression;
@@ -50,7 +50,7 @@ static NSRegularExpression * ONOAttributeRegularExpression() {
     static NSRegularExpression *_ONOAttributeRegularExpression = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _ONOAttributeRegularExpression = [NSRegularExpression regularExpressionWithPattern:@"\\[(\\w+)\\]" options:0 error:nil];
+        _ONOAttributeRegularExpression = [NSRegularExpression regularExpressionWithPattern:@"\\[(\\w+)\\]" options:(NSRegularExpressionOptions)0 error:nil];
     });
 
     return _ONOAttributeRegularExpression;
@@ -83,14 +83,14 @@ NSString * ONOXPathFromCSS(NSString *CSS) {
                         NSRange range = NSMakeRange(0, [token length]);
 
                         {
-                            NSTextCheckingResult *result = [ONOIdRegularExpression() firstMatchInString:CSS options:0 range:range];
+                            NSTextCheckingResult *result = [ONOIdRegularExpression() firstMatchInString:CSS options:(NSMatchingOptions)0 range:range];
                             if ([result numberOfRanges] > 1) {
                                 [mutableXPathComponent appendFormat:@"%@[@id = '%@']", (symbolRange.location == 0) ? @"*" : @"", [token substringWithRange:[result rangeAtIndex:1]]];
                             }
                         }
 
                         {
-                            for (NSTextCheckingResult *result in [ONOClassRegularExpression() matchesInString:token options:0 range:range]) {
+                            for (NSTextCheckingResult *result in [ONOClassRegularExpression() matchesInString:token options:(NSMatchingOptions)0 range:range]) {
                                 if ([result numberOfRanges] > 1) {
                                     [mutableXPathComponent appendFormat:@"[contains(concat(' ',normalize-space(@class),' '),' %@ ')]", [token substringWithRange:[result rangeAtIndex:1]]];
                                 }
@@ -98,7 +98,7 @@ NSString * ONOXPathFromCSS(NSString *CSS) {
                         }
 
                         {
-                            for (NSTextCheckingResult *result in [ONOAttributeRegularExpression() matchesInString:token options:0 range:range]) {
+                            for (NSTextCheckingResult *result in [ONOAttributeRegularExpression() matchesInString:token options:(NSMatchingOptions)0 range:range]) {
                                 if ([result numberOfRanges] > 1) {
                                     [mutableXPathComponent appendFormat:@"[@%@]", [token substringWithRange:[result rangeAtIndex:1]]];
                                 }
@@ -168,7 +168,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 }
 
 - (id)objectAtIndex:(NSUInteger)idx {
-    if (idx >= xmlXPathNodeSetGetLength(self.xmlXPath->nodesetval)) {
+    if (idx >= (NSUInteger)xmlXPathNodeSetGetLength(self.xmlXPath->nodesetval)) {
         return nil;
     }
 
@@ -190,11 +190,11 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 }
 
 - (id)nextObject {
-    if (self.cursor >= self.xmlXPath->nodesetval->nodeNr) {
+    if (self.cursor >= (NSUInteger)self.xmlXPath->nodesetval->nodeNr) {
         return nil;
     }
 
-    return [self objectAtIndex:_cursor++];
+    return [self objectAtIndex:((NSUInteger)self.cursor++)];
 }
 
 @end
@@ -410,6 +410,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 @end
 
 @implementation ONOXMLElement
+@dynamic children;
 
 - (NSString *)namespace {
     if (!_namespace && self.xmlNode->ns != NULL) {
