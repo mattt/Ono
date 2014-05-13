@@ -1,11 +1,11 @@
 # Ono (斧)
 **A sensible way to deal with XML & HTML for iOS & Mac OS X**
 
-XML support in Cocoa isn't great (unless, of course, the XML in question is a `.plist`). `NSXMLParser` forces an cumbersome delegate model, which is extremely inconvenient to implement. `NSXMLDocument` is a bit nicer to use, but only works on Mac OS X, and has a large memory footprint.
+XML support in Cocoa isn't great (unless, of course, the XML in question is a `.plist`). `NSXMLParser` forces a cumbersome delegate model, which is extremely inconvenient to implement. `NSXMLDocument` is a bit nicer to use, but only works on Mac OS X, and has a large memory footprint.
 
 **Ono makes working with XML & HTML as nice as JSON.**
 
-Whether your app needs to interface with a XML-RPC webservice, scape a website, or parse an RSS feed, Ono will make your day a whole lot less terrible.
+Whether your app needs to interface with a XML-RPC webservice, scrape a website, or parse an RSS feed, Ono will make your day a whole lot less terrible.
 
 > Ono (斧) means "axe", in homage to [Nokogiri](http://nokogiri.org) (鋸), which means "saw".
 
