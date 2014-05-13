@@ -27,33 +27,33 @@
 #import <libxml2/libxml/HTMLparser.h>
 
 static NSRegularExpression * ONOIdRegularExpression() {
-    static NSRegularExpression *expression = nil;
+    static NSRegularExpression *_ONOIdRegularExpression = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        expression = [NSRegularExpression regularExpressionWithPattern:@"\\#([\\w-_]+)" options:0 error:nil];
+        _ONOIdRegularExpression = [NSRegularExpression regularExpressionWithPattern:@"\\#([\\w-_]+)" options:0 error:nil];
     });
 
-    return expression;
+    return _ONOIdRegularExpression;
 }
 
 static NSRegularExpression * ONOClassRegularExpression() {
-    static NSRegularExpression *expression = nil;
+    static NSRegularExpression *_ONOClassRegularExpression = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        expression = [NSRegularExpression regularExpressionWithPattern:@"\\.([^\\.]+)" options:0 error:nil];
+        _ONOClassRegularExpression = [NSRegularExpression regularExpressionWithPattern:@"\\.([^\\.]+)" options:0 error:nil];
     });
 
-    return expression;
+    return _ONOClassRegularExpression;
 }
 
 static NSRegularExpression * ONOAttributeRegularExpression() {
-    static NSRegularExpression *expression = nil;
+    static NSRegularExpression *_ONOAttributeRegularExpression = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        expression = [NSRegularExpression regularExpressionWithPattern:@"\\[(\\w+)\\]" options:0 error:nil];
+        _ONOAttributeRegularExpression = [NSRegularExpression regularExpressionWithPattern:@"\\[(\\w+)\\]" options:0 error:nil];
     });
 
-    return expression;
+    return _ONOAttributeRegularExpression;
 }
 
 NSString * ONOXPathFromCSS(NSString *CSS) {
@@ -83,16 +83,14 @@ NSString * ONOXPathFromCSS(NSString *CSS) {
                         NSRange range = NSMakeRange(0, [token length]);
 
                         {
-                            NSRegularExpression *idRegularExpression = ONOIdRegularExpression();
-                            NSTextCheckingResult *result = [idRegularExpression firstMatchInString:CSS options:0 range:range];
+                            NSTextCheckingResult *result = [ONOIdRegularExpression() firstMatchInString:CSS options:0 range:range];
                             if ([result numberOfRanges] > 1) {
                                 [mutableXPathComponent appendFormat:@"%@[@id = '%@']", (symbolRange.location == 0) ? @"*" : @"", [token substringWithRange:[result rangeAtIndex:1]]];
                             }
                         }
 
                         {
-                            NSRegularExpression *classRegularExpression = ONOClassRegularExpression();
-                            for (NSTextCheckingResult *result in [classRegularExpression matchesInString:token options:0 range:range]) {
+                            for (NSTextCheckingResult *result in [ONOClassRegularExpression() matchesInString:token options:0 range:range]) {
                                 if ([result numberOfRanges] > 1) {
                                     [mutableXPathComponent appendFormat:@"[contains(concat(' ',normalize-space(@class),' '),' %@ ')]", [token substringWithRange:[result rangeAtIndex:1]]];
                                 }
@@ -100,8 +98,7 @@ NSString * ONOXPathFromCSS(NSString *CSS) {
                         }
 
                         {
-                            NSRegularExpression *attributeRegularExpression = ONOAttributeRegularExpression();
-                            for (NSTextCheckingResult *result in [attributeRegularExpression matchesInString:token options:0 range:range]) {
+                            for (NSTextCheckingResult *result in [ONOAttributeRegularExpression() matchesInString:token options:0 range:range]) {
                                 if ([result numberOfRanges] > 1) {
                                     [mutableXPathComponent appendFormat:@"[@%@]", [token substringWithRange:[result rangeAtIndex:1]]];
                                 }
