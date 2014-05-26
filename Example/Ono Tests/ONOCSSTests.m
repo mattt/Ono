@@ -34,50 +34,50 @@ extern NSString * ONOXPathFromCSS(NSString *CSS);
 #pragma mark -
 
 - (void)testCSSWildcardSelector {
-    XCTAssertEqualObjects(ONOXPathFromCSS(@"*"), @"//*");
+    XCTAssertEqualObjects(ONOXPathFromCSS(@"*"), @".//*");
 }
 - (void)testCSSElementSelector {
-    XCTAssertEqualObjects(ONOXPathFromCSS(@"div"), @"//div");
+    XCTAssertEqualObjects(ONOXPathFromCSS(@"div"), @".//div");
 }
 
 - (void)testCSSClassSelector {
-    XCTAssertEqualObjects(ONOXPathFromCSS(@"span.highlighted"), @"//span[contains(concat(' ',normalize-space(@class),' '),' highlighted ')]");
+    XCTAssertEqualObjects(ONOXPathFromCSS(@"span.highlighted"), @".//span[contains(concat(' ',normalize-space(@class),' '),' highlighted ')]");
 }
 
 - (void)testCSSElementAndIDSelector {
-    XCTAssertEqualObjects(ONOXPathFromCSS(@"h1#logo"), @"//h1[@id = 'logo']");
+    XCTAssertEqualObjects(ONOXPathFromCSS(@"h1#logo"), @".//h1[@id = 'logo']");
 }
 
 - (void)testCSSIDSelector {
-    XCTAssertEqualObjects(ONOXPathFromCSS(@"#logo"), @"//*[@id = 'logo']");
+    XCTAssertEqualObjects(ONOXPathFromCSS(@"#logo"), @".//*[@id = 'logo']");
 }
 
 - (void)testCSSWildcardChildSelector {
-    XCTAssertEqualObjects(ONOXPathFromCSS(@"html *"), @"//html//*");
+    XCTAssertEqualObjects(ONOXPathFromCSS(@"html *"), @".//html//*");
 }
 
 - (void)testCSSDescendantCombinatorSelector {
-    XCTAssertEqualObjects(ONOXPathFromCSS(@"body p"), @"//body/descendant::p");
+    XCTAssertEqualObjects(ONOXPathFromCSS(@"body p"), @".//body/descendant::p");
 }
 
 - (void)testCSSChildCombinatorSelector {
-    XCTAssertEqualObjects(ONOXPathFromCSS(@"ul > li"), @"//ul/li");
+    XCTAssertEqualObjects(ONOXPathFromCSS(@"ul > li"), @".//ul/li");
 }
 
 - (void)testCSSAdjacentSiblingCombinatorSelector {
-    XCTAssertEqualObjects(ONOXPathFromCSS(@"h1 + p"), @"//h1/following-sibling::*[1]/self::p");
+    XCTAssertEqualObjects(ONOXPathFromCSS(@"h1 + p"), @".//h1/following-sibling::*[1]/self::p");
 }
 
 - (void)testCSSGeneralSiblingCombinatorSelector {
-    XCTAssertEqualObjects(ONOXPathFromCSS(@"p ~ p"), @"//p/following-sibling::p");
+    XCTAssertEqualObjects(ONOXPathFromCSS(@"p ~ p"), @".//p/following-sibling::p");
 }
 
 - (void)testCSSMultipleExpressionSelector {
-    XCTAssertEqualObjects(ONOXPathFromCSS(@"ul, ol"), @"//ul | //ol");
+    XCTAssertEqualObjects(ONOXPathFromCSS(@"ul, ol"), @".//ul | .//ol");
 }
 
 - (void)testCSSAttributeSelector {
-    XCTAssertEqualObjects(ONOXPathFromCSS(@"img[alt]"), @"//img[@alt]");
+    XCTAssertEqualObjects(ONOXPathFromCSS(@"img[alt]"), @".//img[@alt]");
 }
 
 /*
