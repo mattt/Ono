@@ -36,16 +36,17 @@ extern NSString * ONOXPathFromCSS(NSString *CSS);
 - (void)testCSSWildcardSelector {
     XCTAssertEqualObjects(ONOXPathFromCSS(@"*"), @".//*");
 }
+
 - (void)testCSSElementSelector {
     XCTAssertEqualObjects(ONOXPathFromCSS(@"div"), @".//div");
 }
 
-- (void)testCSSElementAndClassSelector {
-    XCTAssertEqualObjects(ONOXPathFromCSS(@"span.highlighted"), @".//span[contains(concat(' ',normalize-space(@class),' '),' highlighted ')]");
-}
-
 - (void)testCSSClassSelector {
 	XCTAssertEqualObjects(ONOXPathFromCSS(@".highlighted"), @".//*[contains(concat(' ',normalize-space(@class),' '),' highlighted ')]");
+}
+
+- (void)testCSSElementAndClassSelector {
+    XCTAssertEqualObjects(ONOXPathFromCSS(@"span.highlighted"), @".//span[contains(concat(' ',normalize-space(@class),' '),' highlighted ')]");
 }
 
 - (void)testCSSElementAndIDSelector {
