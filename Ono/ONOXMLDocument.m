@@ -92,7 +92,7 @@ NSString * ONOXPathFromCSS(NSString *CSS) {
                         {
                             for (NSTextCheckingResult *result in [ONOClassRegularExpression() matchesInString:token options:(NSMatchingOptions)0 range:range]) {
                                 if ([result numberOfRanges] > 1) {
-                                    [mutableXPathComponent appendFormat:@"[contains(concat(' ',normalize-space(@class),' '),' %@ ')]", [token substringWithRange:[result rangeAtIndex:1]]];
+                                    [mutableXPathComponent appendFormat:@"%@[contains(concat(' ',normalize-space(@class),' '),' %@ ')]", (symbolRange.location == 0) ? @"*" : @"", [token substringWithRange:[result rangeAtIndex:1]]];
                                 }
                             }
                         }
