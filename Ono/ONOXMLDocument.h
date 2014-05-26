@@ -54,6 +54,17 @@
 - (void)enumerateElementsWithXPath:(NSString *)XPath
                              block:(void (^)(ONOXMLElement *element))block;
 
+/**
+ Enumerate elements matching an XPath selector.
+ 
+ @param XPath The XPath selector
+ @param block A block that is executed for each result. This block has no return value and takes two arguments:
+    element: the enumerated element.
+    stop: the block can set the value to `YES` to stop further processing of the elements. The stop argument is an out-only argument. You should only ever set this BOOL to `YES` within the block.
+ */
+- (void)enumerateElementsWithXPath:(NSString *)XPath
+                             stoppableBlock:(void (^)(ONOXMLElement *element, BOOL *stop))block;
+
 ///---------------------------
 /// @name Searching with CSS
 ///---------------------------
@@ -75,6 +86,17 @@
  */
 - (void)enumerateElementsWithCSS:(NSString *)CSS
                            block:(void (^)(ONOXMLElement *element))block;
+
+/**
+ Enumerate elements matching a CSS selector.
+ 
+ @param CSS The CSS selector
+ @param block A block that is executed for each result. This block has no return value and takes two arguments:
+    element: the enumerated element.
+    stop: the block can set the value to `YES` to stop further processing of the elements. The stop argument is an out-only argument. You should only ever set this BOOL to `YES` within the block.
+ */
+- (void)enumerateElementsWithCSS:(NSString *)CSS
+                           stoppableBlock:(void (^)(ONOXMLElement *element, BOOL *stop))block;
 @end
 
 #pragma mark -
