@@ -60,7 +60,7 @@ NSString * ONOXPathFromCSS(NSString *CSS) {
     NSMutableArray *mutableXPathExpressions = [NSMutableArray array];
     [[CSS componentsSeparatedByString:@","] enumerateObjectsUsingBlock:^(NSString *expression, NSUInteger idx, BOOL *stop) {
         if (expression && [expression length] > 0) {
-            __block NSMutableArray *mutableXPathComponents = [NSMutableArray arrayWithObject:@"/"];
+            __block NSMutableArray *mutableXPathComponents = [NSMutableArray arrayWithObject:@"./"];
             __block NSString *prefix = nil;
 
             [[[expression stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] enumerateObjectsUsingBlock:^(NSString *token, NSUInteger idx, __unused BOOL *stop) {
