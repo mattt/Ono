@@ -65,6 +65,15 @@
 - (void)enumerateElementsWithXPath:(NSString *)XPath
                              stoppableBlock:(void (^)(ONOXMLElement *element, BOOL *stop))block;
 
+/**
+ Returns the first elements matching an XPath selector, or `nil` if there are no results.
+ 
+ @param XPath The XPath selector
+ 
+ @return The child element.
+ */
+- (ONOXMLElement *)firstChildWithXPath:(NSString *)XPath;
+
 ///---------------------------
 /// @name Searching with CSS
 ///---------------------------
@@ -97,6 +106,16 @@
  */
 - (void)enumerateElementsWithCSS:(NSString *)CSS
                            stoppableBlock:(void (^)(ONOXMLElement *element, BOOL *stop))block;
+
+/**
+ Returns the first elements matching a CSS selector, or `nil` if there are no results.
+ 
+ @param CSS The CSS selector
+ 
+ @return The child element.
+ */
+- (ONOXMLElement *)firstChildWithCSS:(NSString *)CSS;
+
 @end
 
 #pragma mark -

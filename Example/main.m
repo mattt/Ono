@@ -62,10 +62,21 @@ int main(int argc, const char * argv[]) {
         NSLog(@"\n");
         XPath = @"//food/name";
         NSLog(@"XPath Search: %@", XPath);
+        __block ONOXMLElement *blockElement = nil;
+        __block NSUInteger count = 0;
         [document enumerateElementsWithXPath:XPath stoppableBlock:^(ONOXMLElement *element, BOOL *stop) {
-            NSLog(@"First element: %@", element);
-            *stop = YES;
+            *stop = count++ == 1;
+            if (*stop) {
+                blockElement = element;
+            }
         }];
+        NSLog(@"Second element: %@", blockElement);
+        
+        NSLog(@"\n");
+        XPath = @"//food/name";
+        NSLog(@"XPath Search: %@", XPath);
+        ONOXMLElement *firstElement = [document firstChildWithXPath:XPath];
+        NSLog(@"First element: %@", firstElement);
     }
 
     return 0;

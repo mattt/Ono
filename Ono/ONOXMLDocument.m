@@ -325,6 +325,11 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
     [self.rootElement enumerateElementsWithXPath:XPath stoppableBlock:block];
 }
 
+- (ONOXMLElement *)firstChildWithXPath:(NSString *)XPath
+{
+    return [self.rootElement firstChildWithXPath:XPath];
+}
+
 - (id <NSFastEnumeration>)CSS:(NSString *)CSS {
     return [self.rootElement CSS:CSS];
 }
@@ -338,6 +343,11 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 - (void)enumerateElementsWithCSS:(NSString *)CSS stoppableBlock:(void (^)(ONOXMLElement *, BOOL *))block
 {
     [self.rootElement enumerateElementsWithCSS:CSS stoppableBlock:block];
+}
+
+- (ONOXMLElement *)firstChildWithCSS:(NSString *)CSS
+{
+    return [self.rootElement firstChildWithCSS:CSS];
 }
 
 #pragma mark -
@@ -698,6 +708,14 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
     }
 }
 
+- (ONOXMLElement *)firstChildWithXPath:(NSString *)XPath
+{
+    for (ONOXMLElement *element in [self XPath:XPath]) {
+        return element;
+    }
+    return nil;
+}
+
 - (id <NSFastEnumeration>)CSS:(NSString *)CSS {
     return [self XPath:ONOXPathFromCSS(CSS)];
 }
@@ -711,6 +729,14 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 - (void)enumerateElementsWithCSS:(NSString *)CSS stoppableBlock:(void (^)(ONOXMLElement *, BOOL *))block
 {
     [self enumerateElementsWithXPath:ONOXPathFromCSS(CSS) stoppableBlock:block];
+}
+
+- (ONOXMLElement *)firstChildWithCSS:(NSString *)CSS
+{
+    for (ONOXMLElement *element in [self CSS:CSS]) {
+        return element;
+    }
+    return nil;
 }
 
 #pragma mark - NSObject
