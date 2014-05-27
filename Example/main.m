@@ -63,9 +63,8 @@ int main(int argc, const char * argv[]) {
         XPath = @"//food/name";
         NSLog(@"XPath Search: %@", XPath);
         __block ONOXMLElement *blockElement = nil;
-        __block NSUInteger count = 0;
-        [document enumerateElementsWithXPath:XPath stoppableBlock:^(ONOXMLElement *element, BOOL *stop) {
-            *stop = count++ == 1;
+        [document enumerateElementsWithXPath:XPath stoppableBlock:^(ONOXMLElement *element, NSUInteger idx, BOOL *stop) {
+            *stop = idx == 1;
             if (*stop) {
                 blockElement = element;
             }

@@ -320,7 +320,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
     [self.rootElement enumerateElementsWithXPath:XPath block:block];
 }
 
-- (void)enumerateElementsWithXPath:(NSString *)XPath stoppableBlock:(void (^)(ONOXMLElement *, BOOL *))block
+- (void)enumerateElementsWithXPath:(NSString *)XPath stoppableBlock:(void (^)(ONOXMLElement *, NSUInteger, BOOL *))block
 {
     [self.rootElement enumerateElementsWithXPath:XPath stoppableBlock:block];
 }
@@ -340,7 +340,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
     [self.rootElement enumerateElementsWithCSS:CSS block:block];
 }
 
-- (void)enumerateElementsWithCSS:(NSString *)CSS stoppableBlock:(void (^)(ONOXMLElement *, BOOL *))block
+- (void)enumerateElementsWithCSS:(NSString *)CSS stoppableBlock:(void (^)(ONOXMLElement *, NSUInteger, BOOL *))block
 {
     [self.rootElement enumerateElementsWithCSS:CSS stoppableBlock:block];
 }
@@ -688,20 +688,21 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
         return;
     }
 
-    [self enumerateElementsWithXPath:XPath stoppableBlock:^(ONOXMLElement *element, BOOL *stop) {
+    [self enumerateElementsWithXPath:XPath stoppableBlock:^(ONOXMLElement *element, NSUInteger idx, BOOL *stop) {
         block(element);
     }];
 }
 
-- (void)enumerateElementsWithXPath:(NSString *)XPath stoppableBlock:(void (^)(ONOXMLElement *, BOOL *))block
+- (void)enumerateElementsWithXPath:(NSString *)XPath stoppableBlock:(void (^)(ONOXMLElement *, NSUInteger, BOOL *))block
 {
     if (!block) {
         return;
     }
     
+    NSUInteger currentIndex = 0;
     for (ONOXMLElement *element in [self XPath:XPath]) {
         BOOL stop = NO;
-        block(element, &stop);
+        block(element, currentIndex++, &stop);
         if (stop) {
             break;
         }
@@ -726,7 +727,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
     [self enumerateElementsWithXPath:ONOXPathFromCSS(CSS) block:block];
 }
 
-- (void)enumerateElementsWithCSS:(NSString *)CSS stoppableBlock:(void (^)(ONOXMLElement *, BOOL *))block
+- (void)enumerateElementsWithCSS:(NSString *)CSS stoppableBlock:(void (^)(ONOXMLElement *, NSUInteger, BOOL *))block
 {
     [self enumerateElementsWithXPath:ONOXPathFromCSS(CSS) stoppableBlock:block];
 }
