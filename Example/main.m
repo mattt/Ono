@@ -58,6 +58,24 @@ int main(int argc, const char * argv[]) {
         [document enumerateElementsWithCSS:CSS block:^(ONOXMLElement *element) {
             NSLog(@"%@", element);
         }];
+        
+        NSLog(@"\n");
+        XPath = @"//food/name";
+        NSLog(@"XPath Search: %@", XPath);
+        __block ONOXMLElement *blockElement = nil;
+        [document enumerateElementsWithXPath:XPath stoppableBlock:^(ONOXMLElement *element, NSUInteger idx, BOOL *stop) {
+            *stop = idx == 1;
+            if (*stop) {
+                blockElement = element;
+            }
+        }];
+        NSLog(@"Second element: %@", blockElement);
+        
+        NSLog(@"\n");
+        XPath = @"//food/name";
+        NSLog(@"XPath Search: %@", XPath);
+        ONOXMLElement *firstElement = [document firstChildWithXPath:XPath];
+        NSLog(@"First element: %@", firstElement);
     }
 
     return 0;

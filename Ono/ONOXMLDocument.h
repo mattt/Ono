@@ -54,6 +54,27 @@
 - (void)enumerateElementsWithXPath:(NSString *)XPath
                              block:(void (^)(ONOXMLElement *element))block;
 
+/**
+ Enumerate elements matching an XPath selector.
+ 
+ @param XPath The XPath selector
+ @param block A block that is executed for each result. This block has no return value and takes three arguments:
+    element: the enumerated element.
+    idx: the index of the current item.
+    stop: the block can set the value to `YES` to stop further processing of the elements. The stop argument is an out-only argument. You should only ever set this BOOL to `YES` within the block.
+ */
+- (void)enumerateElementsWithXPath:(NSString *)XPath
+                             stoppableBlock:(void (^)(ONOXMLElement *element, NSUInteger idx, BOOL *stop))block;
+
+/**
+ Returns the first elements matching an XPath selector, or `nil` if there are no results.
+ 
+ @param XPath The XPath selector
+ 
+ @return The child element.
+ */
+- (ONOXMLElement *)firstChildWithXPath:(NSString *)XPath;
+
 ///---------------------------
 /// @name Searching with CSS
 ///---------------------------
@@ -75,6 +96,28 @@
  */
 - (void)enumerateElementsWithCSS:(NSString *)CSS
                            block:(void (^)(ONOXMLElement *element))block;
+
+/**
+ Enumerate elements matching a CSS selector.
+ 
+ @param CSS The CSS selector
+ @param block A block that is executed for each result. This block has no return value and takes three arguments:
+    element: the enumerated element.
+    idx: the index of the current item.
+    stop: the block can set the value to `YES` to stop further processing of the elements. The stop argument is an out-only argument. You should only ever set this BOOL to `YES` within the block.
+ */
+- (void)enumerateElementsWithCSS:(NSString *)CSS
+                           stoppableBlock:(void (^)(ONOXMLElement *element, NSUInteger idx, BOOL *stop))block;
+
+/**
+ Returns the first elements matching a CSS selector, or `nil` if there are no results.
+ 
+ @param CSS The CSS selector
+ 
+ @return The child element.
+ */
+- (ONOXMLElement *)firstChildWithCSS:(NSString *)CSS;
+
 @end
 
 #pragma mark -
