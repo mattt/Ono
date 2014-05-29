@@ -48,16 +48,34 @@ int main(int argc, const char * argv[]) {
         NSLog(@"\n");
         NSString *XPath = @"//food/name";
         NSLog(@"XPath Search: %@", XPath);
-        [document enumerateElementsWithXPath:XPath block:^(ONOXMLElement *element) {
+        [document enumerateElementsWithXPath:XPath usingBlock:^(ONOXMLElement *element, __unused NSUInteger idx, __unused BOOL *stop) {
             NSLog(@"%@", element);
         }];
 
         NSLog(@"\n");
         NSString *CSS = @"food > serving[units]";
         NSLog(@"CSS Search: %@", CSS);
-        [document enumerateElementsWithCSS:CSS block:^(ONOXMLElement *element) {
+        [document enumerateElementsWithCSS:CSS usingBlock:^(ONOXMLElement *element, __unused NSUInteger idx, __unused BOOL *stop) {
             NSLog(@"%@", element);
         }];
+        
+        NSLog(@"\n");
+        XPath = @"//food/name";
+        NSLog(@"XPath Search: %@", XPath);
+        __block ONOXMLElement *blockElement = nil;
+        [document enumerateElementsWithXPath:XPath usingBlock:^(ONOXMLElement *element, NSUInteger idx, BOOL *stop) {
+            *stop = idx == 1;
+            if (*stop) {
+                blockElement = element;
+            }
+        }];
+        NSLog(@"Second element: %@", blockElement);
+        
+        NSLog(@"\n");
+        XPath = @"//food/name";
+        NSLog(@"XPath Search: %@", XPath);
+        ONOXMLElement *firstElement = [document firstChildWithXPath:XPath];
+        NSLog(@"First element: %@", firstElement);
     }
 
     return 0;
