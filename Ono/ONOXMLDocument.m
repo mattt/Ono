@@ -124,10 +124,10 @@ NSString * ONOXPathFromCSS(NSString *CSS) {
     return [mutableXPathExpressions componentsJoinedByString:@" | "];
 }
 
-static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSString *namespace) {
+static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSString *ns) {
     BOOL matchingTag = !tag || [[NSString stringWithUTF8String:(const char *)node->name] compare:tag options:NSCaseInsensitiveSearch] == NSOrderedSame;
 
-    BOOL matchingNamespace = !namespace ? YES : (((node->ns != NULL) && (node->ns->prefix != NULL)) ? [[NSString stringWithUTF8String:(const char *)node->ns->prefix] compare:namespace options:NSCaseInsensitiveSearch] == NSOrderedSame : NO);
+    BOOL matchingNamespace = !ns ? YES : (((node->ns != NULL) && (node->ns->prefix != NULL)) ? [[NSString stringWithUTF8String:(const char *)node->ns->prefix] compare:ns options:NSCaseInsensitiveSearch] == NSOrderedSame : NO);
 
     return matchingTag && matchingNamespace;
 }
@@ -486,10 +486,10 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 }
 
 - (id)valueForAttribute:(NSString *)attribute
-            inNamespace:(NSString *)namespace
+            inNamespace:(NSString *)ns
 {
     id value = nil;
-    const unsigned char *xmlValue = xmlGetNsProp(self.xmlNode, (const xmlChar *)[attribute cStringUsingEncoding:NSUTF8StringEncoding], (const xmlChar *)[namespace cStringUsingEncoding:NSUTF8StringEncoding]);
+    const unsigned char *xmlValue = xmlGetNsProp(self.xmlNode, (const xmlChar *)[attribute cStringUsingEncoding:NSUTF8StringEncoding], (const xmlChar *)[ns cStringUsingEncoding:NSUTF8StringEncoding]);
     if (xmlValue) {
         value = [NSString stringWithUTF8String:(const char *)xmlValue];
         xmlFree((void *)xmlValue);
@@ -517,10 +517,10 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 }
 
 - (ONOXMLElement *)firstChildWithTag:(NSString *)tag
-                         inNamespace:(NSString *)namespace
+                         inNamespace:(NSString *)ns
 {
     NSArray *children = [self childrenAtIndexes:[self indexesOfChildrenPassingTest:^BOOL(xmlNodePtr node, BOOL *stop) {
-        *stop = ONOXMLNodeMatchesTagInNamespace(node, tag, namespace);
+        *stop = ONOXMLNodeMatchesTagInNamespace(node, tag, ns);
         return *stop;
     }]];
 
@@ -536,11 +536,11 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 }
 
 - (NSArray *)childrenWithTag:(NSString *)tag
-                 inNamespace:(NSString *)namespace
+                 inNamespace:(NSString *)ns
 {
 
     return [self childrenAtIndexes:[self indexesOfChildrenPassingTest:^BOOL(xmlNodePtr node, BOOL *stop) {
-        return ONOXMLNodeMatchesTagInNamespace(node, tag, namespace);
+        return ONOXMLNodeMatchesTagInNamespace(node, tag, ns);
     }]];
 }
 

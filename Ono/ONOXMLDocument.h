@@ -263,12 +263,12 @@
  Returns the value for an attribute in a particular namespace.
 
  @param attribute The attribute name.
- @param namespace The attribute namespace.
+ @param ns The attribute namespace.
 
  @return The associated value.
  */
 - (id)valueForAttribute:(NSString *)attribute
-            inNamespace:(NSString *)namespace;
+            inNamespace:(NSString *)ns;
 
 ///----------------------------------------------------
 /// @name Accessing Parent, Child, and Sibling Elements
@@ -307,12 +307,12 @@
  Returns the first child element with a tag in a particular namespace, or `nil` if no such element exists.
 
  @param tag The tag name.
- @param namespace The namespace.
+ @param ns The namespace.
 
  @return The child element.
  */
 - (ONOXMLElement *)firstChildWithTag:(NSString *)tag
-                         inNamespace:(NSString *)namespace;
+                         inNamespace:(NSString *)ns;
 
 /**
  Returns all children elements with the specified tag.
@@ -327,12 +327,12 @@
  Returns all children elements with the specified tag.
 
  @param tag The tag name.
- @param namespace The namepsace.
+ @param ns The namepsace.
 
  @return The children elements.
  */
 - (NSArray *)childrenWithTag:(NSString *)tag
-                 inNamespace:(NSString *)namespace;
+                 inNamespace:(NSString *)ns;
 
 ///------------------------
 /// @name Accessing Content
