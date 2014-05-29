@@ -232,7 +232,7 @@
 @property (readonly, nonatomic, weak) ONOXMLDocument *document;
 
 /**
- The element's tag.
+ The element's namespace.
  */
 @property (readonly, nonatomic, copy) NSString *namespace;
 
