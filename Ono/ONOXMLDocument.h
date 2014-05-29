@@ -234,7 +234,11 @@
 /**
  The element's namespace.
  */
+#ifdef __cplusplus
+@property (readonly, nonatomic, copy) NSString *ns;
+#else
 @property (readonly, nonatomic, copy) NSString *namespace;
+#endif
 
 /**
  The element's tag.

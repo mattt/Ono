@@ -426,7 +426,11 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 @interface ONOXMLElement ()
 @property (readwrite, nonatomic, copy) NSString *rawXMLString;
 @property (readwrite, nonatomic, copy) NSString *tag;
+#ifdef __cplusplus
+@property (readwrite, nonatomic, copy) NSString *ns;
+#else
 @property (readwrite, nonatomic, copy) NSString *namespace;
+#endif
 @property (readwrite, nonatomic, strong) ONOXMLElement *parent;
 @property (readwrite, nonatomic, strong) NSArray *children;
 @property (readwrite, nonatomic, strong) ONOXMLElement *previousSibling;
@@ -440,6 +444,15 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 @implementation ONOXMLElement
 @dynamic children;
 
+#ifdef __cplusplus
+- (NSString *)ns {
+    if (!_ns && self.xmlNode->ns != NULL) {
+        self.ns = [NSString stringWithUTF8String:(const char *)self.xmlNode->ns->prefix];
+    }
+
+    return _ns;
+}
+#else
 - (NSString *)namespace {
     if (!_namespace && self.xmlNode->ns != NULL) {
         self.namespace = [NSString stringWithUTF8String:(const char *)self.xmlNode->ns->prefix];
@@ -447,6 +460,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 
     return _namespace;
 }
+#endif
 
 - (NSString *)tag {
     if (!_tag) {
