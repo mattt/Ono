@@ -24,6 +24,7 @@
 
 #import <libxml2/libxml/xmlreader.h>
 #import <libxml2/libxml/xpath.h>
+#import <libxml2/libxml/xpathInternals.h>
 #import <libxml2/libxml/HTMLparser.h>
 
 static NSRegularExpression * ONOIdRegularExpression() {
@@ -693,7 +694,13 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
     xmlXPathContextPtr context = xmlXPathNewContext(self.xmlNode->doc);
     if (context) {
         context->node = self.xmlNode;
-
+        xmlNsPtr ns = self.xmlNode->ns;
+        while (ns != NULL) {
+            if (ns->prefix) {
+                xmlXPathRegisterNs(context, ns->prefix, ns->href);
+            }
+            ns = ns->next;
+        }
         xmlXPathObjectPtr xmlXPath = xmlXPathEvalExpression((xmlChar *)[XPath cStringUsingEncoding:NSUTF8StringEncoding], context);
         enumerator = [self.document enumeratorWithXPathObject:xmlXPath];
 
