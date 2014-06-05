@@ -103,4 +103,15 @@
     XCTAssertTrue([namespacedElement.namespace isEqualToString:@"dc"], @"Namespaces should match");
 }
 
+-(void)testXPathWithNamespaces {
+
+    __block NSUInteger count = 0;
+    [self.document enumerateElementsWithXPath:@"//dc:language" usingBlock:^(ONOXMLElement *element, NSUInteger idx, BOOL *stop) {
+        XCTAssertNotNil(element.namespace, @"the namespace shouldn't be nil");
+        XCTAssertTrue([element.namespace isEqualToString:@"dc"], @"Namespaces should match");
+        count = idx + 1;
+    }];
+    XCTAssertEqual(count, 1, @"should be 1 entry element");
+}
+
 @end
