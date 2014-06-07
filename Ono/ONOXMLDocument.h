@@ -131,7 +131,7 @@
 @property (readonly, nonatomic, copy) NSString *version;
 
 /**
- The string encoding for the document.
+ The string encoding for the document. This is 0 if no encoding is set, or it cannot be calculated.
  */
 @property (readonly, nonatomic, assign) NSStringEncoding encoding;
 
