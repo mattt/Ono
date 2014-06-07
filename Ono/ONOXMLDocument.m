@@ -372,7 +372,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 
 - (NSStringEncoding)encoding
 {
-    if (_encoding == 0) {
+    if (_encoding == 0 && self.xmlDocument->encoding != NULL) {
         NSString *encodingString = [NSString stringWithUTF8String:(const char *)self.xmlDocument->encoding];
         CFStringEncoding cfEncoding = CFStringConvertIANACharSetNameToEncoding((CFStringRef) encodingString);
         if (cfEncoding != kCFStringEncodingInvalidId) {
