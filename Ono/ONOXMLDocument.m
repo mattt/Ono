@@ -151,6 +151,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 @property (readwrite, nonatomic, assign) xmlDocPtr xmlDocument;
 @property (readwrite, nonatomic, strong) ONOXMLElement *rootElement;
 @property (readwrite, nonatomic, copy) NSString *version;
+@property (readwrite, nonatomic, assign) NSStringEncoding encoding;
 @property (readwrite, nonatomic, strong) NSNumberFormatter *numberFormatter;
 @property (readwrite, nonatomic, strong) NSDateFormatter *dateFormatter;
 
@@ -367,6 +368,18 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
     }
 
     return _version;
+}
+
+- (NSStringEncoding)encoding
+{
+    if (_encoding == 0) {
+        NSString *encodingString = [NSString stringWithUTF8String:(const char *)self.xmlDocument->encoding];
+        CFStringEncoding cfEncoding = CFStringConvertIANACharSetNameToEncoding((CFStringRef) encodingString);
+        if (cfEncoding != kCFStringEncodingInvalidId) {
+            _encoding = CFStringConvertEncodingToNSStringEncoding(cfEncoding);
+        }
+    }
+    return _encoding;
 }
 
 #pragma mark - NSObject
