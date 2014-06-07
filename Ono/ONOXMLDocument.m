@@ -363,7 +363,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 #pragma mark -
 
 - (NSString *)version {
-    if (!_version) {
+    if (!_version && self.xmlDocument->version != NULL) {
         self.version = [NSString stringWithUTF8String:(const char *)self.xmlDocument->version];
     }
 
