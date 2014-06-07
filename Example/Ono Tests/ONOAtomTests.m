@@ -47,6 +47,10 @@
     XCTAssertEqualObjects(self.document.version, @"1.0", @"XML version should be 1.0");
 }
 
+- (void)testXMLEncoding {
+    XCTAssertEqual(self.document.encoding, NSUTF8StringEncoding, @"XML encoding should be UTF-8");
+}
+
 - (void)testRootElement {
     XCTAssertEqualObjects(self.document.rootElement.tag, @"feed", @"root element should be feed");
 //    XCTAssertEqualObjects(self.document.rootElement[@"xmlns"], @"http://www.w3.org/2005/Atom", @"XML namespace should be Atom");
