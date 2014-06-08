@@ -47,6 +47,10 @@
     XCTAssertEqualObjects(self.document.version, @"1.0", @"XML version should be 1.0");
 }
 
+- (void)testXMLEncoding {
+    XCTAssertEqual(self.document.encoding, NSUTF8StringEncoding, @"XML encoding should be UTF-8");
+}
+
 - (void)testRootElement {
     XCTAssertEqualObjects(self.document.rootElement.tag, @"feed", @"root element should be feed");
 //    XCTAssertEqualObjects(self.document.rootElement[@"xmlns"], @"http://www.w3.org/2005/Atom", @"XML namespace should be Atom");
@@ -101,6 +105,17 @@
     ONOXMLElement *namespacedElement = [namespacedElements firstObject];
     XCTAssertNotNil(namespacedElement.namespace, @"the namespace shouldn't be nil");
     XCTAssertTrue([namespacedElement.namespace isEqualToString:@"dc"], @"Namespaces should match");
+}
+
+-(void)testXPathWithNamespaces {
+
+    __block NSUInteger count = 0;
+    [self.document enumerateElementsWithXPath:@"//dc:language" usingBlock:^(ONOXMLElement *element, NSUInteger idx, BOOL *stop) {
+        XCTAssertNotNil(element.namespace, @"the namespace shouldn't be nil");
+        XCTAssertTrue([element.namespace isEqualToString:@"dc"], @"Namespaces should match");
+        count = idx + 1;
+    }];
+    XCTAssertEqual(count, 1, @"should be 1 entry element");
 }
 
 @end

@@ -24,6 +24,7 @@
 
 #import <libxml2/libxml/xmlreader.h>
 #import <libxml2/libxml/xpath.h>
+#import <libxml2/libxml/xpathInternals.h>
 #import <libxml2/libxml/HTMLparser.h>
 
 static NSRegularExpression * ONOIdRegularExpression() {
@@ -150,6 +151,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 @property (readwrite, nonatomic, assign) xmlDocPtr xmlDocument;
 @property (readwrite, nonatomic, strong) ONOXMLElement *rootElement;
 @property (readwrite, nonatomic, copy) NSString *version;
+@property (readwrite, nonatomic, assign) NSStringEncoding encoding;
 @property (readwrite, nonatomic, strong) NSNumberFormatter *numberFormatter;
 @property (readwrite, nonatomic, strong) NSDateFormatter *dateFormatter;
 
@@ -361,11 +363,23 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 #pragma mark -
 
 - (NSString *)version {
-    if (!_version) {
+    if (!_version && self.xmlDocument->version != NULL) {
         self.version = [NSString stringWithUTF8String:(const char *)self.xmlDocument->version];
     }
 
     return _version;
+}
+
+- (NSStringEncoding)encoding
+{
+    if (_encoding == 0 && self.xmlDocument->encoding != NULL) {
+        NSString *encodingString = [NSString stringWithUTF8String:(const char *)self.xmlDocument->encoding];
+        CFStringEncoding cfEncoding = CFStringConvertIANACharSetNameToEncoding((CFStringRef) encodingString);
+        if (cfEncoding != kCFStringEncodingInvalidId) {
+            _encoding = CFStringConvertEncodingToNSStringEncoding(cfEncoding);
+        }
+    }
+    return _encoding;
 }
 
 #pragma mark - NSObject
@@ -693,7 +707,13 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
     xmlXPathContextPtr context = xmlXPathNewContext(self.xmlNode->doc);
     if (context) {
         context->node = self.xmlNode;
-
+        xmlNsPtr ns = self.xmlNode->ns;
+        while (ns != NULL) {
+            if (ns->prefix) {
+                xmlXPathRegisterNs(context, ns->prefix, ns->href);
+            }
+            ns = ns->next;
+        }
         xmlXPathObjectPtr xmlXPath = xmlXPathEvalExpression((xmlChar *)[XPath cStringUsingEncoding:NSUTF8StringEncoding], context);
         enumerator = [self.document enumeratorWithXPathObject:xmlXPath];
 
