@@ -133,7 +133,7 @@
 /**
  The string encoding for the document. This is 0 if no encoding is set, or it cannot be calculated.
  */
-@property (readonly, nonatomic, assign) NSStringEncoding encoding;
+@property (readonly, nonatomic, assign) NSStringEncoding stringEncoding;
 
 
 ///---------------------------------

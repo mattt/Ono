@@ -151,7 +151,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 @property (readwrite, nonatomic, assign) xmlDocPtr xmlDocument;
 @property (readwrite, nonatomic, strong) ONOXMLElement *rootElement;
 @property (readwrite, nonatomic, copy) NSString *version;
-@property (readwrite, nonatomic, assign) NSStringEncoding encoding;
+@property (readwrite, nonatomic, assign) NSStringEncoding stringEncoding;
 @property (readwrite, nonatomic, strong) NSNumberFormatter *numberFormatter;
 @property (readwrite, nonatomic, strong) NSDateFormatter *dateFormatter;
 
@@ -370,16 +370,16 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
     return _version;
 }
 
-- (NSStringEncoding)encoding
-{
-    if (_encoding == 0 && self.xmlDocument->encoding != NULL) {
-        NSString *encodingString = [NSString stringWithUTF8String:(const char *)self.xmlDocument->encoding];
-        CFStringEncoding cfEncoding = CFStringConvertIANACharSetNameToEncoding((CFStringRef) encodingString);
-        if (cfEncoding != kCFStringEncodingInvalidId) {
-            _encoding = CFStringConvertEncodingToNSStringEncoding(cfEncoding);
+- (NSStringEncoding)stringEncoding {
+    if (!_stringEncoding && self.xmlDocument->encoding != NULL) {
+        NSString *encodingName = [NSString stringWithUTF8String:(const char *)self.xmlDocument->encoding];
+        CFStringEncoding encoding = CFStringConvertIANACharSetNameToEncoding((CFStringRef)encodingName);
+        if (encoding != kCFStringEncodingInvalidId) {
+            self.stringEncoding = CFStringConvertEncodingToNSStringEncoding(encoding);
         }
     }
-    return _encoding;
+
+    return _stringEncoding;
 }
 
 #pragma mark - NSObject
