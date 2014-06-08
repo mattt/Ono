@@ -48,7 +48,7 @@
 }
 
 - (void)testXMLEncoding {
-    XCTAssertEqual(self.document.encoding, NSUTF8StringEncoding, @"XML encoding should be UTF-8");
+    XCTAssertEqual(self.document.stringEncoding, NSUTF8StringEncoding, @"XML encoding should be UTF-8");
 }
 
 - (void)testRootElement {
