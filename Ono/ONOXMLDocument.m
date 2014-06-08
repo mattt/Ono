@@ -707,13 +707,12 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
     xmlXPathContextPtr context = xmlXPathNewContext(self.xmlNode->doc);
     if (context) {
         context->node = self.xmlNode;
-        xmlNsPtr ns = self.xmlNode->ns;
-        while (ns != NULL) {
+        for (xmlNsPtr ns = self.xmlNode->ns; ns != NULL; ns = ns->next) {
             if (ns->prefix) {
                 xmlXPathRegisterNs(context, ns->prefix, ns->href);
             }
-            ns = ns->next;
         }
+
         xmlXPathObjectPtr xmlXPath = xmlXPathEvalExpression((xmlChar *)[XPath cStringUsingEncoding:NSUTF8StringEncoding], context);
         enumerator = [self.document enumeratorWithXPathObject:xmlXPath];
 
