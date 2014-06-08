@@ -460,7 +460,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 
 #ifdef __cplusplus
 - (NSString *)ns {
-    if (!_ns && self.xmlNode->ns != NULL) {
+    if (!_ns && self.xmlNode->ns != NULL && self.xmlNode->ns->prefix != NULL) {
         self.ns = [NSString stringWithUTF8String:(const char *)self.xmlNode->ns->prefix];
     }
 
@@ -468,7 +468,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 }
 #else
 - (NSString *)namespace {
-    if (!_namespace && self.xmlNode->ns != NULL) {
+    if (!_namespace && self.xmlNode->ns != NULL && self.xmlNode->ns->prefix != NULL) {
         self.namespace = [NSString stringWithUTF8String:(const char *)self.xmlNode->ns->prefix];
     }
 
