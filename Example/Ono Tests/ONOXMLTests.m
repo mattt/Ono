@@ -22,14 +22,47 @@
 
 #import <XCTest/XCTest.h>
 
-@interface ONOXMLTests : XCTestCase
+#import "Ono.h"
 
+@interface ONOXMLTests : XCTestCase
+@property (nonatomic, strong) ONOXMLDocument *document;
 @end
 
 @implementation ONOXMLTests
 
 - (void)setUp {
     [super setUp];
+
+    NSError *error = nil;
+    NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"xml" ofType:@"xml"];
+    self.document = [ONOXMLDocument XMLDocumentWithData:[NSData dataWithContentsOfFile:filePath] error:&error];
+
+    XCTAssertNotNil(self.document, @"Document should not be nil");
+    XCTAssertNil(error, @"Error should not be generated");
+}
+
+#pragma mark -
+
+- (void)testXMLVersion {
+    XCTAssertEqualObjects(self.document.version, @"1.0", @"XML version should be 1.0");
+}
+
+- (void)testXMLEncoding {
+    XCTAssertEqual(self.document.stringEncoding, NSUTF8StringEncoding, @"XML encoding should be UTF-8");
+}
+
+- (void)testRootElement {
+    XCTAssertEqualObjects(self.document.rootElement.tag, @"spec", @"root element should be spec");
+    XCTAssertEqualObjects(self.document.rootElement.attributes[@"w3c-doctype"], @"rec", @"w3c-doctype should be rec");
+    XCTAssertEqualObjects(self.document.rootElement.attributes[@"lang"], @"en", @"xml:lang should be en");
+}
+
+- (void)testTitle {
+    ONOXMLElement *titleElement = [[self.document.rootElement firstChildWithTag:@"header"] firstChildWithTag:@"title"];
+
+    XCTAssertNotNil(titleElement, @"title element should not be nil");
+    XCTAssertEqualObjects(titleElement.tag, @"title", @"tag should be `title`");
+    XCTAssertEqualObjects([titleElement stringValue], @"Extensible Markup Language (XML)", @"title string value should be 'Extensible Markup Language (XML)'");
 }
 
 @end
