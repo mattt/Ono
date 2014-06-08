@@ -477,7 +477,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 #endif
 
 - (NSString *)tag {
-    if (!_tag) {
+    if (!_tag && self.xmlNode->name != NULL) {
         self.tag = [NSString stringWithUTF8String:(const char *)self.xmlNode->name];
     }
 
@@ -489,11 +489,9 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 - (NSDictionary *)attributes {
     if (!_attributes) {
         NSMutableDictionary *mutableAttributes = [NSMutableDictionary dictionary];
-        xmlAttrPtr attribute = self.xmlNode->properties;
-        while (attribute) {
+        for (xmlAttrPtr attribute = self.xmlNode->properties; attribute != NULL; attribute = attribute->next) {
             NSString *key = [NSString stringWithUTF8String:(const char *)attribute->name];
             [mutableAttributes setObject:[self valueForAttribute:key] forKey:key];
-            attribute = attribute->next;
         }
 
         self.attributes = [NSDictionary dictionaryWithDictionary:mutableAttributes];
