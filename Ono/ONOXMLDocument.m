@@ -564,7 +564,6 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 - (NSArray *)childrenWithTag:(NSString *)tag
                  inNamespace:(NSString *)ns
 {
-
     return [self childrenAtIndexes:[self indexesOfChildrenPassingTest:^BOOL(xmlNodePtr node, BOOL *stop) {
         return ONOXMLNodeMatchesTagInNamespace(node, tag, ns);
     }]];
@@ -755,6 +754,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
     for (ONOXMLElement *element in [self XPath:XPath]) {
         return element;
     }
+
     return nil;
 }
 
