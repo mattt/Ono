@@ -50,15 +50,15 @@ NSString *author = [[document.rootElement firstChildWithTag:@"creator" inNamespa
 
 // Automatic Conversion for Number & Date Values
 NSDate *date = [[document.rootElement firstChildWithTag:@"created_at"] dateValue]; // ISO 8601 Timestamp
-NSInteger numberOfWords = [[document.rootElement firstChildWithTag:@"word_count"] numberValue] integerValue];
-BOOL isPublished = [[document.rootElement firstChildWithTag:@"is_published"] numberValue] boolValue];
+NSInteger numberOfWords = [[[document.rootElement firstChildWithTag:@"word_count"] numberValue] integerValue];
+BOOL isPublished = [[[document.rootElement firstChildWithTag:@"is_published"] numberValue] boolValue];
 
 // Convenient Accessors for Attributes
-NSString *unit = [document.rootElement firstChildWithTag:@"Length"][@"unit"]
+NSString *unit = [document.rootElement firstChildWithTag:@"Length"][@"unit"];
 NSDictionary *authorAttributes = [[document.rootElement firstChildWithTag:@"author"] attributes];
 
 // Support for XPath & CSS Queries
-[document enumerateElementsWithXPath:@"//Content" block:^(ONOXMLElement *element) {
+[document enumerateElementsWithXPath:@"//Content" usingBlock:^(ONOXMLElement *element, NSUInteger idx, BOOL *stop) {
     NSLog(@"%@", element);
 }];
 ```
