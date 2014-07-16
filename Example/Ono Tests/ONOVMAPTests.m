@@ -1,4 +1,4 @@
-// ONOXMLTests.m
+// ONOVMAPTests.m
 //
 // Copyright (c) 2014 Mattt Thompson (http://mattt.me/)
 //
@@ -24,17 +24,17 @@
 
 #import "Ono.h"
 
-@interface ONOXMLTests : XCTestCase
+@interface ONOVMAPTests : XCTestCase
 @property (nonatomic, strong) ONOXMLDocument *document;
 @end
 
-@implementation ONOXMLTests
+@implementation ONOVMAPTests
 
 - (void)setUp {
     [super setUp];
 
     NSError *error = nil;
-    NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"xml" ofType:@"xml"];
+    NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"vmap" ofType:@"xml"];
     self.document = [ONOXMLDocument XMLDocumentWithData:[NSData dataWithContentsOfFile:filePath] error:&error];
 
     XCTAssertNotNil(self.document, @"Document should not be nil");
@@ -43,36 +43,14 @@
 
 #pragma mark -
 
-- (void)testXMLVersion {
-    XCTAssertEqualObjects(self.document.version, @"1.0", @"XML version should be 1.0");
-}
-
-- (void)testXMLEncoding {
-    XCTAssertEqual(self.document.stringEncoding, NSUTF8StringEncoding, @"XML encoding should be UTF-8");
-}
-
-- (void)testRootElement {
-    XCTAssertEqualObjects(self.document.rootElement.tag, @"spec", @"root element should be spec");
-    XCTAssertEqualObjects(self.document.rootElement.attributes[@"w3c-doctype"], @"rec", @"w3c-doctype should be rec");
-    XCTAssertEqualObjects(self.document.rootElement.attributes[@"lang"], @"en", @"xml:lang should be en");
-}
-
-- (void)testTitle {
-    ONOXMLElement *titleElement = [[self.document.rootElement firstChildWithTag:@"header"] firstChildWithTag:@"title"];
-
-    XCTAssertNotNil(titleElement, @"title element should not be nil");
-    XCTAssertEqualObjects(titleElement.tag, @"title", @"tag should be `title`");
-    XCTAssertEqualObjects([titleElement stringValue], @"Extensible Markup Language (XML)", @"title string value should be 'Extensible Markup Language (XML)'");
-}
-
 - (void)testXPath {
-    NSString *path = @"/spec/header/title";
+    NSString *path = @"/vmap:VMAP/vmap:Extensions/uo:unicornOnce";
     id<NSFastEnumeration> elts = [self.document XPath:path];
     
     NSUInteger counter = 0;
     for (ONOXMLElement *elt in elts)
     {
-        XCTAssertEqualObjects(@"title", elt.tag, @"tag should be `title`");
+        XCTAssertEqualObjects(@"unicornOnce", elt.tag, @"tag should be `unicornOnce`");
         ++counter;
     }
     XCTAssertEqual(1, counter, @"at least one element should have been found at element path '%@'", path);
