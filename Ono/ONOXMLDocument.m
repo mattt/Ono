@@ -704,7 +704,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
     xmlXPathContextPtr context = xmlXPathNewContext(self.xmlNode->doc);
     if (context) {
         context->node = self.xmlNode;
-        for (xmlNsPtr ns = self.xmlNode->ns; ns != NULL; ns = ns->next) {
+        for (xmlNsPtr ns = self.xmlNode->nsDef; ns != NULL; ns = ns->next) {
             if (ns->prefix) {
                 xmlXPathRegisterNs(context, ns->prefix, ns->href);
             }
