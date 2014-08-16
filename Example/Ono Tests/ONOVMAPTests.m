@@ -43,17 +43,15 @@
 
 #pragma mark -
 
-- (void)testXPath {
-    NSString *path = @"/vmap:VMAP/vmap:Extensions/uo:unicornOnce";
-    id<NSFastEnumeration> elts = [self.document XPath:path];
-    
-    NSUInteger counter = 0;
-    for (ONOXMLElement *elt in elts)
-    {
-        XCTAssertEqualObjects(@"unicornOnce", elt.tag, @"tag should be `unicornOnce`");
-        ++counter;
+- (void)testXPathWithNamespace {
+    NSString *XPath = @"/vmap:VMAP/vmap:Extensions/uo:unicornOnce";
+    NSUInteger count = 0;
+    for (ONOXMLElement *element in [self.document XPath:XPath]) {
+        XCTAssertEqualObjects(@"unicornOnce", element.tag, @"tag should be `unicornOnce`");
+        count++;
     }
-    XCTAssertEqual(1, counter, @"at least one element should have been found at element path '%@'", path);
+
+    XCTAssertEqual(1, count, @"Element should be found at XPath '%@'", XPath);
 }
 
 @end
