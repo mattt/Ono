@@ -54,4 +54,11 @@
     XCTAssertEqual(1, count, @"Element should be found at XPath '%@'", XPath);
 }
 
+- (void)testUnicornOnceIsBlank {
+    NSString *XPath = @"/vmap:VMAP/vmap:Extensions/uo:unicornOnce";
+    ONOXMLElement *element = [self.document firstChildWithXPath:XPath];
+    XCTAssertNotNil(element, @"Element should not be nil");
+    XCTAssertTrue([element isBlank], @"Element should be blank");
+}
+
 @end
