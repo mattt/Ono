@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<elementType>
+    <multiCheckBox>
+        <checkBoxes>
+            <checkBox>
+                <text>Text 0</text>
+                <answerCode>Code 0</answerCode>
+            </checkBox>
+            <checkBox>
+                <text>Text 1</text>
+                <answerCode>Code 1</answerCode>
+            </checkBox>
+            <checkBox>
+                <text>Text 2</text>
+                <answerCode>Code 2</answerCode>
+            </checkBox>
+            <checkBox>
+                <text>Text 3</text>
+                <answerCode>Code 3</answerCode>
+            </checkBox>
+            <checkBox>
+                <text>Text 4</text>
+                <answerCode>Code 4</answerCode>
+            </checkBox>
+            <checkBox>
+                <text>Text 5</text>
+                <answerCode>Code 5</answerCode>
+            </checkBox>
+            <checkBox>
+                <text>Text 6</text>
+                <answerCode>Code 6</answerCode>
+            </checkBox>
+            <checkBox>
+                <text>Text 7</text>
+                <answerCode>Code 7</answerCode>
+            </checkBox>
+        </checkBoxes>
+    </multiCheckBox>
+</elementType>
