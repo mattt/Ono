@@ -440,6 +440,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 @interface ONOXMLElement ()
 @property (readwrite, nonatomic, copy) NSString *rawXMLString;
 @property (readwrite, nonatomic, copy) NSString *tag;
+@property (readwrite, nonatomic, assign) NSUInteger lineNumber;
 #ifdef __cplusplus
 @property (readwrite, nonatomic, copy) NSString *ns;
 #else
@@ -482,6 +483,14 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
     }
 
     return _tag;
+}
+
+- (NSUInteger)lineNumber {
+    if (!_lineNumber) {
+        self.lineNumber = xmlGetLineNo(self.xmlNode);
+    }
+
+    return _lineNumber;
 }
 
 #pragma mark -

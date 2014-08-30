@@ -78,4 +78,11 @@
     XCTAssertEqual(1, counter, @"at least one element should have been found at element path '%@'", path);
 }
 
+- (void)testLineNumber {
+    ONOXMLElement *headerElement = [self.document.rootElement firstChildWithTag:@"header"];
+
+    XCTAssertNotNil(headerElement, @"header element should not be nil");
+    XCTAssertEqual(headerElement.lineNumber, 123, @"header line number should be correct");
+}
+
 @end

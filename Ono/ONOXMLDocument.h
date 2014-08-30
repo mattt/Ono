@@ -245,6 +245,11 @@
  */
 @property (readonly, nonatomic, copy) NSString *tag;
 
+/**
+ The element's line number
+ */
+@property (readonly, nonatomic, assign) NSUInteger lineNumber;
+
 ///---------------------------
 /// @name Accessing Attributes
 ///---------------------------
