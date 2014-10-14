@@ -43,7 +43,7 @@
 
 #pragma mark -
 
-- (void)testXPathWithNamespace {
+- (void)testAbsoluteXPathWithNamespace {
     NSString *XPath = @"/vmap:VMAP/vmap:Extensions/uo:unicornOnce";
     NSUInteger count = 0;
     for (ONOXMLElement *element in [self.document XPath:XPath]) {
@@ -52,6 +52,20 @@
     }
 
     XCTAssertEqual(1, count, @"Element should be found at XPath '%@'", XPath);
+}
+
+- (void)testRelativeXPathWithNamespace {
+    NSString *absoluteXPath = @"/vmap:VMAP/vmap:Extensions";
+    NSString *relativeXPath = @"./uo:unicornOnce";
+    NSUInteger count = 0;
+    for (ONOXMLElement *absoluteElement in [self.document XPath:absoluteXPath]) {
+        for (ONOXMLElement *relativeElement in [absoluteElement XPath:relativeXPath]) {
+            XCTAssertEqualObjects(@"unicornOnce", relativeElement.tag, @"tag should be `unicornOnce`");
+            count++;
+        }
+    }
+    
+    XCTAssertEqual(1, count, @"Element should be found at XPath '%@' relative to XPath '%@'", relativeXPath, absoluteXPath);
 }
 
 - (void)testUnicornOnceIsBlank {
