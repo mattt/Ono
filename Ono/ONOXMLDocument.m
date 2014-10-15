@@ -713,12 +713,10 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
     xmlXPathContextPtr context = xmlXPathNewContext(self.xmlNode->doc);
     if (context) {
         context->node = self.xmlNode;
-        
-        // A bug in libxml2 can suppress namespaces from appearing in the
-        // `xmlNode->ns` linked list under certain conditions,
-        // so this iterates through the `xmlNode->nsDef` linked list, and then
-        // recurs for each of the node's ancestors.
-        for (xmlNodePtr node = self.xmlNode; NULL != node->parent; node = node->parent) {
+
+        // Due to a bug in libxml2, namespaces may not appear in `xmlNode->ns`.
+        // As a workaround, `xmlNode->nsDef` is recursed to explicitly register namespaces.
+        for (xmlNodePtr node = self.xmlNode; node->parent != NULL; node = node->parent) {
             for (xmlNsPtr ns = node->nsDef; ns != NULL; ns = ns->next) {
                 if (ns->prefix) {
                     xmlXPathRegisterNs(context, ns->prefix, ns->href);
