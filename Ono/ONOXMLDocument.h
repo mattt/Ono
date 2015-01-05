@@ -217,6 +217,14 @@
 + (instancetype)HTMLDocumentWithData:(NSData *)data
                                error:(NSError * __autoreleasing *)error;
 
+/**
+ Define a prefix for XML document's default namespace. It's necessary for XPath query in XML document that contains only default namespace.
+ 
+ @param prefix The prefix name
+ @param nspace The default namespace URI that declared in XML Document
+ */
+- (void)definePrefix:(NSString *)prefix forDefaultNamespace:(NSString *)nspace;
+
 @end
 
 #pragma mark -

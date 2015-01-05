@@ -10,6 +10,8 @@
 		3D4BE0B41902F4F700F99600 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F897F98F18BFC5860043A736 /* libxml2.dylib */; };
 		8DE24971197702E60093D6A0 /* ONOVMAPTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DE2496F197702D90093D6A0 /* ONOVMAPTests.m */; };
 		8DE24972197702F10093D6A0 /* vmap.xml in Resources */ = {isa = PBXBuildFile; fileRef = 8DE2496E1977028F0093D6A0 /* vmap.xml */; };
+		E0ECA13F1A5A42EE00922C7F /* ocf.xml in Resources */ = {isa = PBXBuildFile; fileRef = E0ECA13E1A5A42EE00922C7F /* ocf.xml */; };
+		E0ECA1411A5A434500922C7F /* ONODefaultNamespaceXPathTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E0ECA1401A5A434500922C7F /* ONODefaultNamespaceXPathTests.m */; };
 		F8301EA218CF1E4600085EC9 /* web.html in Resources */ = {isa = PBXBuildFile; fileRef = F8301EA118CF1E4600085EC9 /* web.html */; };
 		F8301EA518CF1E5700085EC9 /* ONOHTMLTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F8301EA418CF1E5700085EC9 /* ONOHTMLTests.m */; };
 		F87981311944D5C800D73412 /* xml.xml in Resources */ = {isa = PBXBuildFile; fileRef = F87981301944D5C800D73412 /* xml.xml */; };
@@ -51,6 +53,8 @@
 /* Begin PBXFileReference section */
 		8DE2496E1977028F0093D6A0 /* vmap.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = vmap.xml; sourceTree = "<group>"; };
 		8DE2496F197702D90093D6A0 /* ONOVMAPTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ONOVMAPTests.m; sourceTree = "<group>"; };
+		E0ECA13E1A5A42EE00922C7F /* ocf.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ocf.xml; sourceTree = "<group>"; };
+		E0ECA1401A5A434500922C7F /* ONODefaultNamespaceXPathTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ONODefaultNamespaceXPathTests.m; sourceTree = "<group>"; };
 		F8301EA118CF1E4600085EC9 /* web.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = web.html; sourceTree = "<group>"; };
 		F8301EA418CF1E5700085EC9 /* ONOHTMLTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ONOHTMLTests.m; sourceTree = "<group>"; };
 		F87981301944D5C800D73412 /* xml.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = xml.xml; sourceTree = "<group>"; };
@@ -173,6 +177,7 @@
 		F897F99E18BFCC9A0043A736 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				E0ECA1401A5A434500922C7F /* ONODefaultNamespaceXPathTests.m */,
 				8DE2496F197702D90093D6A0 /* ONOVMAPTests.m */,
 				F897F9A418BFCC9A0043A736 /* ONOXMLTests.m */,
 				F897F9AE18BFCED00043A736 /* ONOAtomTests.m */,
@@ -192,6 +197,7 @@
 				F897F9AC18BFCEB60043A736 /* atom.xml */,
 				8DE2496E1977028F0093D6A0 /* vmap.xml */,
 				F87981301944D5C800D73412 /* xml.xml */,
+				E0ECA13E1A5A42EE00922C7F /* ocf.xml */,
 				F8301EA118CF1E4600085EC9 /* web.html */,
 			);
 			name = "Supporting Files";
@@ -273,6 +279,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F897F9AD18BFCEB60043A736 /* atom.xml in Resources */,
+				E0ECA13F1A5A42EE00922C7F /* ocf.xml in Resources */,
 				8DE24972197702F10093D6A0 /* vmap.xml in Resources */,
 				F897F9A318BFCC9A0043A736 /* InfoPlist.strings in Resources */,
 				F8301EA218CF1E4600085EC9 /* web.html in Resources */,
@@ -300,6 +307,7 @@
 				F8301EA518CF1E5700085EC9 /* ONOHTMLTests.m in Sources */,
 				F8DC5D9E18C78F9800D69DD8 /* ONOCSSTests.m in Sources */,
 				F897F9B118BFCFC20043A736 /* ONOXMLDocument.m in Sources */,
+				E0ECA1411A5A434500922C7F /* ONODefaultNamespaceXPathTests.m in Sources */,
 				F897F9A518BFCC9A0043A736 /* ONOXMLTests.m in Sources */,
 				F897F9AF18BFCED00043A736 /* ONOAtomTests.m in Sources */,
 			);
