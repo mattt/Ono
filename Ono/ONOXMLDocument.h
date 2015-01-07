@@ -24,6 +24,8 @@
 
 @class ONOXMLElement;
 
+@class ONOXPathFunctionResult;
+
 /**
  The `ONOSearching` protocol is adopted by `ONOXMLDocument` and `ONOXMLElement`, denoting that they can search for elements using XPath or CSS selectors.
 
@@ -44,6 +46,15 @@
  @return An enumerable collection of results.
  */
 - (id <NSFastEnumeration>)XPath:(NSString *)XPath;
+
+/**
+ Returns the result for an XPath selector that contains XPath function.
+ 
+ @param XPath The XPath selector
+ 
+ @return The function result
+ */
+- (ONOXPathFunctionResult *)functionResultByEvaluatingXPath:(NSString *)XPath;
 
 /**
  @deprecated Use `enumerateElementsWithXPath:usingBlock:` instead
@@ -223,7 +234,8 @@
  @param prefix The prefix name
  @param nspace The default namespace URI that declared in XML Document
  */
-- (void)definePrefix:(NSString *)prefix forDefaultNamespace:(NSString *)nspace;
+- (void)definePrefix:(NSString *)prefix
+ forDefaultNamespace:(NSString *)nspace;
 
 @end
 
@@ -405,6 +417,27 @@
 
 @end
 
+/**
+ `ONOXPathFunctionResult` represents a XPath function result in an `ONOXPathFunctionResult`.
+ */
+@interface ONOXPathFunctionResult : NSObject
+
+/**
+ represents `boolval` in `xmlXPathObject`
+ */
+@property (readonly, nonatomic) BOOL boolValue;
+
+/**
+ represents `floatval` in `xmlXPathObject`
+ */
+@property (readonly, nonatomic) double numericValue;
+
+/**
+ represents `stringval` in `xmlXPathObject`
+ */
+@property (readonly, nonatomic, copy) NSString *stringValue;
+
+@end
 
 ///---------------------------
 /// @name Constants

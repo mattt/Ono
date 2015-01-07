@@ -136,6 +136,12 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 @interface ONOXPathEnumerator : NSEnumerator <NSFastEnumeration>
 @end
 
+@interface ONOXPathFunctionResult()
+@property (readwrite, nonatomic) BOOL boolValue;
+@property (readwrite, nonatomic) double numericValue;
+@property (readwrite, nonatomic, copy) NSString *stringValue;
+@end
+
 @interface ONOXPathEnumerator ()
 @property (readwrite, nonatomic, assign) xmlXPathObjectPtr xmlXPath;
 @property (readwrite, nonatomic, assign) NSUInteger cursor;
@@ -145,6 +151,8 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 @interface ONOXMLElement ()
 @property (readwrite, nonatomic, assign) xmlNodePtr xmlNode;
 @property (readwrite, nonatomic, weak) ONOXMLDocument *document;
+
+- (xmlXPathObjectPtr)xmlXPathObjectPtrWithXPath:(NSString *)XPath;
 @end
 
 @interface ONOXMLDocument ()
@@ -154,7 +162,7 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 @property (readwrite, nonatomic, assign) NSStringEncoding stringEncoding;
 @property (readwrite, nonatomic, strong) NSNumberFormatter *numberFormatter;
 @property (readwrite, nonatomic, strong) NSDateFormatter *dateFormatter;
-@property (nonatomic, strong) NSMutableDictionary *defaultNamespaces;
+@property (readwrite, nonatomic, strong) NSMutableDictionary *defaultNamespaces;
 
 - (ONOXMLElement *)elementWithNode:(xmlNodePtr)node;
 - (ONOXPathEnumerator *)enumeratorWithXPathObject:(xmlXPathObjectPtr)XPath;
@@ -199,6 +207,12 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 
     return [self objectAtIndex:((NSUInteger)self.cursor++)];
 }
+
+@end
+
+#pragma mark -
+
+@implementation ONOXPathFunctionResult
 
 @end
 
@@ -287,6 +301,18 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 
 #pragma mark -
 
+- (void)definePrefix:(NSString *)prefix
+ forDefaultNamespace:(NSString *)nspace
+{
+    if (!self.defaultNamespaces) {
+        self.defaultNamespaces = [NSMutableDictionary dictionary];
+    }
+    
+    self.defaultNamespaces[nspace] = prefix;
+}
+
+#pragma mark - Private Methods
+
 - (ONOXMLElement *)elementWithNode:(xmlNodePtr)node {
     if (!node) {
         return nil;
@@ -311,22 +337,14 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
     return enumerator;
 }
 
-#pragma mark -
-
-- (void)definePrefix:(NSString *)prefix
- forDefaultNamespace:(NSString *)nspace
-{
-    if (!self.defaultNamespaces) {
-        self.defaultNamespaces = [NSMutableDictionary dictionary];
-    }
-    
-    self.defaultNamespaces[nspace] = prefix;
-}
-
 #pragma mark - ONOSearching
 
 - (id <NSFastEnumeration>)XPath:(NSString *)XPath {
     return [self.rootElement XPath:XPath];
+}
+
+- (ONOXPathFunctionResult *)functionResultByEvaluatingXPath:(NSString *)XPath {
+    return [self.rootElement functionResultByEvaluatingXPath:XPath];
 }
 
 - (void)enumerateElementsWithXPath:(NSString *)XPath
@@ -722,37 +740,26 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
         return nil;
     }
 
-    ONOXPathEnumerator *enumerator = nil;
-    xmlXPathContextPtr context = xmlXPathNewContext(self.xmlNode->doc);
-    if (context) {
-        context->node = self.xmlNode;
-
-        // Due to a bug in libxml2, namespaces may not appear in `xmlNode->ns`.
-        // As a workaround, `xmlNode->nsDef` is recursed to explicitly register namespaces.
-        for (xmlNodePtr node = self.xmlNode; node->parent != NULL; node = node->parent) {
-            for (xmlNsPtr ns = node->nsDef; ns != NULL; ns = ns->next) {
-                const xmlChar *prefix = ns->prefix;
-                if (!prefix && self.document.defaultNamespaces) {
-                    NSString *href = @((char *)ns->href);
-                    NSString *defPrefix = self.document.defaultNamespaces[href];
-                    if (defPrefix) {
-                        prefix = BAD_CAST [defPrefix UTF8String];
-                    }
-                }
-                
-                if (prefix) {
-                    xmlXPathRegisterNs(context, prefix, ns->href);
-                }
-            }
-        }
-        
-        xmlXPathObjectPtr xmlXPath = xmlXPathEvalExpression((xmlChar *)[XPath cStringUsingEncoding:NSUTF8StringEncoding], context);
-        enumerator = [self.document enumeratorWithXPathObject:xmlXPath];
-
-        xmlXPathFreeContext(context);
+    xmlXPathObjectPtr xmlXPath = [self xmlXPathObjectPtrWithXPath:XPath];
+    if (xmlXPath) {
+        return [self.document enumeratorWithXPathObject:xmlXPath];
     }
 
-    return enumerator;
+    return nil;
+}
+
+- (ONOXPathFunctionResult *)functionResultByEvaluatingXPath:(NSString *)XPath {
+    xmlXPathObjectPtr xmlXPath = [self xmlXPathObjectPtrWithXPath:XPath];
+    if (xmlXPath) {
+        ONOXPathFunctionResult *result = [[ONOXPathFunctionResult alloc] init];
+        result.boolValue = xmlXPath->boolval > 0 ? YES : NO;
+        result.numericValue = xmlXPath->floatval;
+        result.stringValue = xmlXPath->stringval ? @((char *)xmlXPath->stringval) : nil;
+        
+        return result;
+    }
+    
+    return nil;
 }
 
 - (void)enumerateElementsWithXPath:(NSString *)XPath
@@ -866,6 +873,42 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
     [coder encodeObject:self.attributes forKey:NSStringFromSelector(@selector(attributes))];
     [coder encodeObject:self.stringValue forKey:NSStringFromSelector(@selector(stringValue))];
     [coder encodeObject:self.children forKey:NSStringFromSelector(@selector(children))];
+}
+
+#pragma mark - Private Methods
+
+- (xmlXPathObjectPtr)xmlXPathObjectPtrWithXPath:(NSString *)XPath
+{
+    xmlXPathContextPtr context = xmlXPathNewContext(self.xmlNode->doc);
+    if (context) {
+        context->node = self.xmlNode;
+        
+        // Due to a bug in libxml2, namespaces may not appear in `xmlNode->ns`.
+        // As a workaround, `xmlNode->nsDef` is recursed to explicitly register namespaces.
+        for (xmlNodePtr node = self.xmlNode; node->parent != NULL; node = node->parent) {
+            for (xmlNsPtr ns = node->nsDef; ns != NULL; ns = ns->next) {
+                const xmlChar *prefix = ns->prefix;
+                if (!prefix && self.document.defaultNamespaces) {
+                    NSString *href = @((char *)ns->href);
+                    NSString *defPrefix = self.document.defaultNamespaces[href];
+                    if (defPrefix) {
+                        prefix = BAD_CAST [defPrefix UTF8String];
+                    }
+                }
+                
+                if (prefix) {
+                    xmlXPathRegisterNs(context, prefix, ns->href);
+                }
+            }
+        }
+        
+        xmlXPathObjectPtr xmlXPath = xmlXPathEvalExpression((xmlChar *)[XPath cStringUsingEncoding:NSUTF8StringEncoding], context);
+        xmlXPathFreeContext(context);
+        
+        return xmlXPath;
+    }
+    
+    return NULL;
 }
 
 @end
