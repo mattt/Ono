@@ -64,6 +64,14 @@
     XCTAssertEqualObjects([titleElement stringValue], @"Example Feed", @"title string value should be 'Example Feed'");
 }
 
+- (void)testXPathTitle {
+    ONOXMLElement *titleElement = [self.document.rootElement firstChildWithXPath:@"/feed/title"];
+    
+    XCTAssertNotNil(titleElement, @"title element should not be nil");
+    XCTAssertEqualObjects(titleElement.tag, @"title", @"tag should be `title`");
+    XCTAssertEqualObjects([titleElement stringValue], @"Example Feed", @"title string value should be 'Example Feed'");
+}
+
 - (void)testLinks {
     NSArray *linkElements = [self.document.rootElement childrenWithTag:@"link"];
 
