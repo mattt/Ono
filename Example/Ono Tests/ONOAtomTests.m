@@ -36,6 +36,7 @@
     NSError *error = nil;
     NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"atom" ofType:@"xml"];
     self.document = [ONOXMLDocument XMLDocumentWithData:[NSData dataWithContentsOfFile:filePath] error:&error];
+    [self.document definePrefix:@"atom" forDefaultNamespace:@"http://www.w3.org/2005/Atom"];
 
     XCTAssertNotNil(self.document, @"Document should not be nil");
     XCTAssertNil(error, @"Error should not be generated");
@@ -65,7 +66,7 @@
 }
 
 - (void)testXPathTitle {
-    ONOXMLElement *titleElement = [self.document.rootElement firstChildWithXPath:@"/feed/title"];
+    ONOXMLElement *titleElement = [self.document.rootElement firstChildWithXPath:@"/atom:feed/atom:title"];
     
     XCTAssertNotNil(titleElement, @"title element should not be nil");
     XCTAssertEqualObjects(titleElement.tag, @"title", @"tag should be `title`");
