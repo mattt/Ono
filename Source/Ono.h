@@ -20,8 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef __ONO__
-    #import "ONOXMLDocument.h"
+#import <Foundation/Foundation.h>
 
-    #define __ONO__
-#endif
+//! Project version number for Ono iOS.
+FOUNDATION_EXPORT double Ono_VersionNumber;
+
+//! Project version string for Ono iOS.
+FOUNDATION_EXPORT const unsigned char Ono_VersionString[];
+
+#import <Ono/OnoXMLDocument.h>

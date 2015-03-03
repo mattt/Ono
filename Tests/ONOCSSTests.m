@@ -22,8 +22,6 @@
 
 #import <XCTest/XCTest.h>
 
-#import "Ono.h"
-
 extern NSString * ONOXPathFromCSS(NSString *CSS);
 
 @interface ONOCSSTests : XCTestCase

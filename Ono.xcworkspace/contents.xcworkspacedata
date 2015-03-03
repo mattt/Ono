@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <Group
-      location = "group:Ono"
+      location = "group:Source"
       name = "Ono">
       <FileRef
          location = "group:Ono.h">
@@ -15,6 +15,9 @@
       </FileRef>
    </Group>
    <FileRef
-      location = "group:Example/Ono Example.xcodeproj">
+      location = "group:Ono.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Example/Example.xcodeproj">
    </FileRef>
 </Workspace>

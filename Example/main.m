@@ -22,7 +22,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "Ono.h"
+#import <Ono/Ono.h>
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
