@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.social_media_url = 'https://twitter.com/mattt'
   s.authors  = { 'Mattt Thompson' => 'm@mattt.me' }
   s.source   = { :git => 'https://github.com/mattt/Ono.git', :tag => s.version }
-  s.source_files = 'Ono'
+  s.source_files = 'Source'
   s.requires_arc = true
 
   s.ios.deployment_target = '5.0'
