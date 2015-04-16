@@ -218,6 +218,8 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 
 #pragma mark -
 
+NSString * const ONOXMLDocumentErrorDomain = @"com.ono.error.initialization";
+
 @implementation ONOXMLDocument
 
 + (instancetype)XMLDocumentWithString:(NSString *)string
@@ -232,6 +234,10 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 {
     xmlDocPtr document = xmlReadMemory([data bytes], (int)[data length], "", nil, XML_PARSE_NOWARNING | XML_PARSE_NOERROR | XML_PARSE_RECOVER);
     if (!document) {
+        xmlErrorPtr errorPtr = xmlGetLastError();
+        if (errorPtr) {
+            [self populateError:error errorPointer:errorPtr];
+        }
         return nil;
     }
 
@@ -250,10 +256,24 @@ static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSSt
 {
     xmlDocPtr document = htmlReadMemory([data bytes], (int)[data length], "", nil, HTML_PARSE_NOWARNING | HTML_PARSE_NOERROR | HTML_PARSE_RECOVER);
     if (!document) {
+        xmlErrorPtr errorPtr = xmlGetLastError();
+        if (errorPtr) {
+            [self populateError:error errorPointer:errorPtr];
+        }
         return nil;
     }
 
     return [[self alloc] initWithDocument:document];
+}
+
++ (void)populateError:(NSError * __autoreleasing *)error errorPointer:(xmlErrorPtr)errorPtr
+{
+    NSString *message = [NSString stringWithCString:(const char *)errorPtr->message encoding:NSUTF8StringEncoding];
+    message = [message stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSDictionary *userInfo = @{NSLocalizedFailureReasonErrorKey: message};
+    NSInteger code = errorPtr->code;
+    *error = [NSError errorWithDomain:ONOXMLDocumentErrorDomain code:code userInfo:userInfo];
+    xmlResetError(errorPtr);
 }
 
 #pragma mark -
