@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'Ono'
-  s.version  = '1.2.1'
+  s.version  = '1.2.2'
   s.license  = 'MIT'
   s.summary  = 'A sensible way to deal with XML & HTML for iOS & Mac OS X.'
   s.homepage = 'https://github.com/mattt/Ono'
