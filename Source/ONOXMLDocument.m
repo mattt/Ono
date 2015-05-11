@@ -381,8 +381,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     [self.rootElement enumerateElementsWithXPath:XPath usingBlock:block];
 }
 
-- (ONOXMLElement *)firstChildWithXPath:(NSString *)XPath
-{
+- (ONOXMLElement *)firstChildWithXPath:(NSString *)XPath {
     return [self.rootElement firstChildWithXPath:XPath];
 }
 
@@ -402,8 +401,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     [self.rootElement enumerateElementsWithCSS:CSS usingBlock:block];
 }
 
-- (ONOXMLElement *)firstChildWithCSS:(NSString *)CSS
-{
+- (ONOXMLElement *)firstChildWithCSS:(NSString *)CSS {
     return [self.rootElement firstChildWithCSS:CSS];
 }
 
