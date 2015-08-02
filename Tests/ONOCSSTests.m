@@ -83,6 +83,10 @@ extern NSString * ONOXPathFromCSS(NSString *CSS);
     XCTAssertEqualObjects(ONOXPathFromCSS(@"img[alt]"), @".//img[@alt]");
 }
 
+- (void)testCSSCombinedSelector {
+    XCTAssertEqualObjects(ONOXPathFromCSS(@"div#test .note span:first-child"), @".//div[@id = 'test']/descendant::*[contains(concat(' ',normalize-space(@class),' '),' note ')]/descendant::span:first-child");
+}
+
 /*
 - (void)testCSSAttributeContainsValueSelector {
     XCTAssertEqualObjects(ONOXPathFromCSS(@"i[href~=\"icon\"]"), @"//i[contains(concat(' ', @class, ' '),concat(' ', 'icon', ' '))]");
