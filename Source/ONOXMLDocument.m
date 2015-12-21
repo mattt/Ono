@@ -390,7 +390,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 }
 
 - (void)enumerateElementsWithCSS:(NSString *)CSS
-                           block:(void (^)(ONOXMLElement *))block
+                           block:(void (^)(ONOXMLElement *))block __deprecated
 {
     [self.rootElement enumerateElementsWithCSS:CSS block:block];
 }
