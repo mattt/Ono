@@ -315,7 +315,7 @@
 /**
  The element's children elements.
  */
-@property (readonly, nonatomic, strong) NSArray *children;
+@property (readonly, nonatomic, strong) NSArray<ONOXMLElement *> *children;
 
 /**
  The element's previous sibling.
