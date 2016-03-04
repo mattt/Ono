@@ -2,4 +2,7 @@ language: objective-c
 xcode_workspace: Ono.xcworkspace
 xcode_scheme: Ono Example
 xcode_sdk: macosx
-
+before_install:
+  - pip install codecov
+after_success:
+  - codecov
