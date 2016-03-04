@@ -79,3 +79,5 @@ Ono is compatible with iOS 5 and higher, as well as Mac OS X 10.7 and higher. It
 ## License
 
 Ono is available under the MIT license. See the LICENSE file for more info.
+
+## Codecov
