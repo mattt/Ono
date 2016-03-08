@@ -343,6 +343,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
 - (ONOXPathEnumerator *)enumeratorWithXPathObject:(xmlXPathObjectPtr)XPath {
     if (!XPath || xmlXPathNodeSetIsEmpty(XPath->nodesetval)) {
+        xmlXPathFreeObject(XPath);
         return nil;
     }
 
