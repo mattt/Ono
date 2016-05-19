@@ -592,6 +592,10 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     return [self childrenAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, NSIntegerMax)]];
 }
 
+- (NSArray *)childrenWithType:(xmlElementType)type{
+    return [self childrenAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, NSIntegerMax)] type:type];
+}
+
 - (ONOXMLElement *)firstChildWithTag:(NSString *)tag {
     return [self firstChildWithTag:tag inNamespace:nil];
 }
@@ -622,15 +626,21 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
         return ONOXMLNodeMatchesTagInNamespace(node, tag, ns);
     }]];
 }
-
-- (NSArray *)childrenAtIndexes:(NSIndexSet *)indexes {
+- (NSArray *)childrenAtIndexes:(NSIndexSet *)indexes{
+    return [self childrenAtIndexes:indexes type:XML_ELEMENT_NODE];
+}
+- (NSArray *)childrenAtIndexes:(NSIndexSet *)indexes type:(xmlElementType)type{
     NSMutableArray *mutableChildren = [NSMutableArray array];
 
     xmlNodePtr cursor = self.xmlNode->children;
     NSUInteger idx = 0;
     while (cursor) {
-        if ([indexes containsIndex:idx] && cursor->type == XML_ELEMENT_NODE) {
-            [mutableChildren addObject:[self.document elementWithNode:cursor]];
+        if ([indexes containsIndex:idx]) {
+            if (type == 0) {
+                [mutableChildren addObject:[self.document elementWithNode:cursor]];
+            }else if (cursor->type == type){
+                [mutableChildren addObject:[self.document elementWithNode:cursor]];
+            }
         }
 
         cursor = cursor->next;

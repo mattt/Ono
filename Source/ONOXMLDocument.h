@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-
+#import <libxml2/libxml/xpath.h>
 @class ONOXMLElement;
 
 @class ONOXPathFunctionResult;
@@ -249,7 +249,7 @@
  `ONOXMLElement` represents an element in an `ONOXMLDocument`.
  */
 @interface ONOXMLElement : NSObject <ONOSearching, NSCopying, NSCoding>
-
+@property (readonly, nonatomic, assign) xmlNodePtr xmlNode;
 /**
  The document containing the element.
  */
@@ -366,6 +366,12 @@
  */
 - (NSArray *)childrenWithTag:(NSString *)tag
                  inNamespace:(NSString *)ns;
+/**
+ Returns all children with specified elementType.
+ 
+ @param type  xmlElementType of children, `0` to all of type
+ */
+- (NSArray *)childrenWithType:(xmlElementType)type;
 
 ///------------------------
 /// @name Accessing Content
