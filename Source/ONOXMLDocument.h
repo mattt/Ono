@@ -366,6 +366,7 @@
  */
 - (NSArray *)childrenWithTag:(NSString *)tag
                  inNamespace:(NSString *)ns;
+
 /**
  Returns all children with specified elementType.
  
