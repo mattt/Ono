@@ -35,7 +35,7 @@ static NSRegularExpression * ONOIdRegularExpression() {
     dispatch_once(&onceToken, ^{
         _ONOIdRegularExpression = [NSRegularExpression regularExpressionWithPattern:@"\\#([\\w-_]+)" options:(NSRegularExpressionOptions)0 error:nil];
     });
-
+    
     return _ONOIdRegularExpression;
 }
 
@@ -45,7 +45,7 @@ static NSRegularExpression * ONOClassRegularExpression() {
     dispatch_once(&onceToken, ^{
         _ONOClassRegularExpression = [NSRegularExpression regularExpressionWithPattern:@"\\.([^\\.]+)" options:(NSRegularExpressionOptions)0 error:nil];
     });
-
+    
     return _ONOClassRegularExpression;
 }
 
@@ -55,7 +55,7 @@ static NSRegularExpression * ONOAttributeRegularExpression() {
     dispatch_once(&onceToken, ^{
         _ONOAttributeRegularExpression = [NSRegularExpression regularExpressionWithPattern:@"\\[(\\w+)\\]" options:(NSRegularExpressionOptions)0 error:nil];
     });
-
+    
     return _ONOAttributeRegularExpression;
 }
 
@@ -65,7 +65,7 @@ NSString * ONOXPathFromCSS(NSString *CSS) {
         if (expression && [expression length] > 0) {
             __block NSMutableArray *mutableXPathComponents = [NSMutableArray arrayWithObject:@"./"];
             __block NSString *prefix = nil;
-
+            
             [[[expression stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] enumerateObjectsUsingBlock:^(NSString *token, NSUInteger idx, __unused BOOL *stop) {
                 if ([token isEqualToString:@"*"] && idx != 0) {
                     [mutableXPathComponents addObject:@"/*"];
@@ -79,19 +79,19 @@ NSString * ONOXPathFromCSS(NSString *CSS) {
                     if (!prefix && idx != 0) {
                         prefix = @"descendant::";
                     }
-
+                    
                     NSRange symbolRange = [token rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"#.[]"]];
                     if (symbolRange.location != NSNotFound) {
                         NSMutableString *mutableXPathComponent = [NSMutableString stringWithString:[token substringToIndex:symbolRange.location]];
                         NSRange range = NSMakeRange(0, [token length]);
-
+                        
                         {
                             NSTextCheckingResult *result = [ONOIdRegularExpression() firstMatchInString:CSS options:(NSMatchingOptions)0 range:range];
                             if ([result numberOfRanges] > 1) {
                                 [mutableXPathComponent appendFormat:@"%@[@id = '%@']", (symbolRange.location == 0) ? @"*" : @"", [token substringWithRange:[result rangeAtIndex:1]]];
                             }
                         }
-
+                        
                         {
                             for (NSTextCheckingResult *result in [ONOClassRegularExpression() matchesInString:token options:(NSMatchingOptions)0 range:range]) {
                                 if ([result numberOfRanges] > 1) {
@@ -99,7 +99,7 @@ NSString * ONOXPathFromCSS(NSString *CSS) {
                                 }
                             }
                         }
-
+                        
                         {
                             for (NSTextCheckingResult *result in [ONOAttributeRegularExpression() matchesInString:token options:(NSMatchingOptions)0 range:range]) {
                                 if ([result numberOfRanges] > 1) {
@@ -107,31 +107,31 @@ NSString * ONOXPathFromCSS(NSString *CSS) {
                                 }
                             }
                         }
-
+                        
                         token = mutableXPathComponent;
                     }
-
+                    
                     if (prefix) {
                         token = [prefix stringByAppendingString:token];
                         prefix = nil;
                     }
-
+                    
                     [mutableXPathComponents addObject:token];
                 }
             }];
-
+            
             [mutableXPathExpressions addObject:[mutableXPathComponents componentsJoinedByString:@"/"]];
         }
     }];
-
+    
     return [mutableXPathExpressions componentsJoinedByString:@" | "];
 }
 
 static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSString *ns) {
     BOOL matchingTag = !tag || [@((const char *)node->name) compare:tag options:NSCaseInsensitiveSearch] == NSOrderedSame;
-
+    
     BOOL matchingNamespace = !ns ? YES : (((node->ns != NULL) && (node->ns->prefix != NULL)) ? [@((const char *)node->ns->prefix) compare:ns options:NSCaseInsensitiveSearch] == NSOrderedSame : NO);
-
+    
     return matchingTag && matchingNamespace;
 }
 
@@ -194,7 +194,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (idx >= (NSUInteger)xmlXPathNodeSetGetLength(self.xmlXPath->nodesetval)) {
         return nil;
     }
-
+    
     return [self.document elementWithNode:self.xmlXPath->nodesetval->nodeTab[idx]];
 }
 
@@ -208,7 +208,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
             [mutableObjects addObject:element];
         }
     }
-
+    
     return [NSArray arrayWithArray:mutableObjects];
 }
 
@@ -216,7 +216,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (self.cursor >= (NSUInteger)self.xmlXPath->nodesetval->nodeNr) {
         return nil;
     }
-
+    
     return [self objectAtIndex:((NSUInteger)self.cursor++)];
 }
 
@@ -247,7 +247,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
         ONOSetErrorFromXMLErrorPtr(error, xmlGetLastError());
         return nil;
     }
-
+    
     return [[self alloc] initWithDocument:document];
 }
 
@@ -266,7 +266,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
         ONOSetErrorFromXMLErrorPtr(error, xmlGetLastError());
         return nil;
     }
-
+    
     return [[self alloc] initWithDocument:document];
 }
 
@@ -277,12 +277,12 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (!self) {
         return nil;
     }
-
+    
     _xmlDocument = document;
     if (self.xmlDocument) {
         self.rootElement = [self elementWithNode:xmlDocGetRootElement(self.xmlDocument)];
     }
-
+    
     return self;
 }
 
@@ -300,7 +300,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
         [numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
         self.numberFormatter = numberFormatter;
     }
-
+    
     return _numberFormatter;
 }
 
@@ -311,7 +311,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
         [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
         self.dateFormatter = dateFormatter;
     }
-
+    
     return _dateFormatter;
 }
 
@@ -333,11 +333,11 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (!node) {
         return nil;
     }
-
+    
     ONOXMLElement *element = [[ONOXMLElement alloc] init];
     element.xmlNode = node;
     element.document = self;
-
+    
     return element;
 }
 
@@ -345,11 +345,11 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (!XPath || xmlXPathNodeSetIsEmpty(XPath->nodesetval)) {
         return nil;
     }
-
+    
     ONOXPathEnumerator *enumerator = [[ONOXPathEnumerator alloc] init];
     enumerator.xmlXPath = XPath;
     enumerator.document = self;
-
+    
     return enumerator;
 }
 
@@ -369,7 +369,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (!block) {
         return;
     }
-
+    
     [self.rootElement enumerateElementsWithXPath:XPath usingBlock:^(ONOXMLElement *element, __unused NSUInteger idx, __unused BOOL *stop) {
         block(element);
     }];
@@ -411,7 +411,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (!_version && self.xmlDocument->version != NULL) {
         self.version = @((const char *)self.xmlDocument->version);
     }
-
+    
     return _version;
 }
 
@@ -423,7 +423,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
             self.stringEncoding = CFStringConvertEncodingToNSStringEncoding(encoding);
         }
     }
-
+    
     return _stringEncoding;
 }
 
@@ -437,11 +437,11 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (self == object) {
         return YES;
     }
-
+    
     if (![object isKindOfClass:[self class]]) {
         return NO;
     }
-
+    
     return [self hash] == [object hash];
 }
 
@@ -455,7 +455,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     ONOXMLDocument *document = [[[self class] allocWithZone:zone] init];
     document.version = self.version;
     document.rootElement = self.rootElement;
-
+    
     return document;
 }
 
@@ -466,10 +466,10 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (!self) {
         return nil;
     }
-
+    
     self.version = [decoder decodeObjectForKey:NSStringFromSelector(@selector(version))];
     self.rootElement = [decoder decodeObjectForKey:NSStringFromSelector(@selector(rootElement))];
-
+    
     return self;
 }
 
@@ -509,7 +509,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (!_ns && self.xmlNode->ns != NULL && self.xmlNode->ns->prefix != NULL) {
         self.ns = @((const char *)self.xmlNode->ns->prefix);
     }
-
+    
     return _ns;
 }
 #else
@@ -517,7 +517,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (!_namespace && self.xmlNode->ns != NULL && self.xmlNode->ns->prefix != NULL) {
         self.namespace = @((const char *)self.xmlNode->ns->prefix);
     }
-
+    
     return _namespace;
 }
 #endif
@@ -526,7 +526,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (!_tag && self.xmlNode->name != NULL) {
         self.tag = @((const char *)self.xmlNode->name);
     }
-
+    
     return _tag;
 }
 
@@ -534,7 +534,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (!_lineNumber) {
         self.lineNumber = xmlGetLineNo(self.xmlNode);
     }
-
+    
     return _lineNumber;
 }
 
@@ -547,10 +547,10 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
             NSString *key = @((const char *)attribute->name);
             [mutableAttributes setObject:[self valueForAttribute:key] forKey:key];
         }
-
+        
         self.attributes = [NSDictionary dictionaryWithDictionary:mutableAttributes];
     }
-
+    
     return _attributes;
 }
 
@@ -561,7 +561,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
         value = @((const char *)xmlValue);
         xmlFree((void *)xmlValue);
     }
-
+    
     return value;
 }
 
@@ -574,7 +574,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
         value = @((const char *)xmlValue);
         xmlFree((void *)xmlValue);
     }
-
+    
     return value;
 }
 
@@ -584,7 +584,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (!_parent) {
         self.parent = [self.document elementWithNode:self.xmlNode->parent];
     }
-
+    
     return _parent;
 }
 
@@ -603,11 +603,11 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
         *stop = ONOXMLNodeMatchesTagInNamespace(node, tag, ns);
         return *stop;
     }]];
-
+    
     if ([children count] == 0) {
         return nil;
     }
-
+    
     return [children objectAtIndex:0];
 }
 
@@ -625,18 +625,18 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
 - (NSArray *)childrenAtIndexes:(NSIndexSet *)indexes {
     NSMutableArray *mutableChildren = [NSMutableArray array];
-
+    
     xmlNodePtr cursor = self.xmlNode->children;
     NSUInteger idx = 0;
     while (cursor) {
         if ([indexes containsIndex:idx] && cursor->type == XML_ELEMENT_NODE) {
             [mutableChildren addObject:[self.document elementWithNode:cursor]];
         }
-
+        
         cursor = cursor->next;
         idx++;
     }
-
+    
     return [NSArray arrayWithArray:mutableChildren];
 }
 
@@ -644,9 +644,9 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (!block) {
         return nil;
     }
-
+    
     NSMutableIndexSet *mutableIndexSet = [NSMutableIndexSet indexSet];
-
+    
     xmlNodePtr cursor = self.xmlNode->children;
     NSUInteger idx = 0;
     BOOL stop = NO;
@@ -654,11 +654,11 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
         if (block(cursor, &stop)) {
             [mutableIndexSet addIndex:idx];
         }
-
+        
         cursor = cursor->next;
         idx++;
     }
-
+    
     return mutableIndexSet;
 }
 
@@ -666,7 +666,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (!_previousSibling) {
         self.previousSibling = [self.document elementWithNode:self.xmlNode->prev];
     }
-
+    
     return _previousSibling;
 }
 
@@ -674,7 +674,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (!_nextSibling) {
         self.nextSibling = [self.document elementWithNode:self.xmlNode->next];
     }
-
+    
     return _nextSibling;
 }
 
@@ -690,7 +690,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
         self.stringValue = key ? @((const char *)key) : @"";
         xmlFree(key);
     }
-
+    
     return _stringValue;
 }
 
@@ -698,7 +698,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (!_numberValue) {
         self.numberValue = [self.document.numberFormatter numberFromString:[self stringValue]];
     }
-
+    
     return _numberValue;
 }
 
@@ -706,7 +706,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (!_dateValue) {
         self.dateValue = [self.document.dateFormatter dateFromString:[self stringValue]];
     }
-
+    
     return _dateValue;
 }
 
@@ -727,7 +727,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     xmlNodeDump(buffer, self.xmlNode->doc, self.xmlNode, 0, false);
     NSString *rawXMLString = @((const char *)xmlBufferContent(buffer));
     xmlBufferFree(buffer);
-
+    
     return rawXMLString;
 }
 
@@ -735,11 +735,11 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (self == object) {
         return YES;
     }
-
+    
     if (![object isKindOfClass:[self class]]) {
         return NO;
     }
-
+    
     return [self hash] == [object hash];
 }
 
@@ -753,12 +753,12 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (!XPath) {
         return nil;
     }
-
+    
     xmlXPathObjectPtr xmlXPath = [self xmlXPathObjectPtrWithXPath:XPath];
     if (xmlXPath) {
         return [self.document enumeratorWithXPathObject:xmlXPath];
     }
-
+    
     return nil;
 }
 
@@ -782,7 +782,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (!block) {
         return;
     }
-
+    
     [self enumerateElementsWithXPath:XPath usingBlock:^(ONOXMLElement *element, __unused NSUInteger idx, __unused BOOL *stop) {
         block(element);
     }];
@@ -799,7 +799,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     BOOL stop = NO;
     for (ONOXMLElement *element in [self XPath:XPath]) {
         block(element, idx++, &stop);
-
+        
         if (stop) {
             break;
         }
@@ -811,7 +811,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     for (ONOXMLElement *element in [self XPath:XPath]) {
         return element;
     }
-
+    
     return nil;
 }
 
@@ -825,7 +825,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (!block) {
         return;
     }
-
+    
     [self enumerateElementsWithCSS:ONOXPathFromCSS(CSS) usingBlock:^(ONOXMLElement *element, __unused NSUInteger idx, __unused BOOL *stop) {
         block(element);
     }];
@@ -853,7 +853,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     xmlXPathContextPtr context = xmlXPathNewContext(self.xmlNode->doc);
     if (context) {
         context->node = self.xmlNode;
-
+        
         // Due to a bug in libxml2, namespaces may not appear in `xmlNode->ns`.
         // As a workaround, `xmlNode->nsDef` is recursed to explicitly register namespaces.
         for (xmlNodePtr node = self.xmlNode; node->parent != NULL; node = node->parent) {
@@ -866,19 +866,19 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
                         prefix = (xmlChar *)[defaultPrefix UTF8String];
                     }
                 }
-
+                
                 if (prefix) {
                     xmlXPathRegisterNs(context, prefix, ns->href);
                 }
             }
         }
-
+        
         xmlXPathObjectPtr xmlXPath = xmlXPathEvalExpression((xmlChar *)[XPath UTF8String], context);
         xmlXPathFreeContext(context);
-
+        
         return xmlXPath;
     }
-
+    
     return NULL;
 }
 
@@ -898,7 +898,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     ONOXMLElement *element = [[[self class] allocWithZone:zone] init];
     element.xmlNode = self.xmlNode;
     element.document = self.document;
-
+    
     return element;
 }
 
@@ -909,12 +909,12 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (!self) {
         return nil;
     }
-
+    
     self.tag = [decoder decodeObjectForKey:NSStringFromSelector(@selector(tag))];
     self.attributes = [decoder decodeObjectForKey:NSStringFromSelector(@selector(attributes))];
     self.stringValue = [decoder decodeObjectForKey:NSStringFromSelector(@selector(stringValue))];
     self.children = [decoder decodeObjectForKey:NSStringFromSelector(@selector(children))];
-
+    
     return self;
 }
 
