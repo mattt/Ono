@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'Ono'
-  s.version  = '1.2.2'
+  s.version  = '1.2.3'
   s.license  = 'MIT'
   s.summary  = 'A sensible way to deal with XML & HTML for iOS & Mac OS X.'
   s.homepage = 'https://github.com/mattt/Ono'
@@ -14,5 +14,5 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = '10.7'
 
   s.libraries = 'xml2'
-  s.xcconfig  = { 'HEADER_SEARCH_PATHS' => '$(SDKROOT)/usr/include/libxml2' }
+  s.xcconfig  = { 'HEADER_SEARCH_PATHS' => '"$(SDKROOT)/usr/include/libxml2"' }
 end
