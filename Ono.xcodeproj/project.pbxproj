@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6AA84E3A1EA9011A009ED670 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AA84E381EA90104009ED670 /* libxml2.tbd */; };
-		6AA84E3C1EA90134009ED670 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AA84E3B1EA90134009ED670 /* libxml2.tbd */; };
+		6AA84E3E1EA9061C009ED670 /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AA84E3D1EA9061C009ED670 /* libxml2.2.dylib */; };
+		6AA84E3F1EA9062D009ED670 /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AA84E3D1EA9061C009ED670 /* libxml2.2.dylib */; };
 		F82D395A1AA6199E00DAC057 /* Ono.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F82D394E1AA6199E00DAC057 /* Ono.framework */; };
 		F82D397B1AA61A0B00DAC057 /* Ono.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F82D39701AA61A0B00DAC057 /* Ono.framework */; };
 		F82D398B1AA61A7700DAC057 /* ONOXMLDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = F82D39891AA61A7700DAC057 /* ONOXMLDocument.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -61,8 +61,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6AA84E381EA90104009ED670 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
-		6AA84E3B1EA90134009ED670 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/usr/lib/libxml2.tbd; sourceTree = DEVELOPER_DIR; };
+		6AA84E3D1EA9061C009ED670 /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = ../../../../../usr/lib/libxml2.2.dylib; sourceTree = "<group>"; };
 		F82D394E1AA6199E00DAC057 /* Ono.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Ono.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F82D39521AA6199E00DAC057 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Source/Info.plist; sourceTree = "<group>"; };
 		F82D39591AA6199E00DAC057 /* Ono iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Ono iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -91,7 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6AA84E3A1EA9011A009ED670 /* libxml2.tbd in Frameworks */,
+				6AA84E3E1EA9061C009ED670 /* libxml2.2.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,7 +106,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6AA84E3C1EA90134009ED670 /* libxml2.tbd in Frameworks */,
+				6AA84E3F1EA9062D009ED670 /* libxml2.2.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,8 +124,7 @@
 		6AA84E371EA90104009ED670 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				6AA84E3B1EA90134009ED670 /* libxml2.tbd */,
-				6AA84E381EA90104009ED670 /* libxml2.tbd */,
+				6AA84E3D1EA9061C009ED670 /* libxml2.2.dylib */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -552,8 +550,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SDK_DIR)\"/usr/include/libxml2",
+					"${SDKROOT}/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = Source/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -574,8 +571,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SDK_DIR)\"/usr/include/libxml2",
+					"${SDKROOT}/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = Source/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -633,8 +629,7 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SDK_DIR)\"/usr/include/libxml2",
+					"${SDKROOT}/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = Source/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -659,8 +654,7 @@
 				FRAMEWORK_VERSION = A;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SDK_DIR)\"/usr/include/libxml2",
+					"${SDKROOT}/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = Source/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
