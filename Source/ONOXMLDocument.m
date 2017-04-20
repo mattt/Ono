@@ -343,6 +343,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
 - (ONOXPathEnumerator *)enumeratorWithXPathObject:(xmlXPathObjectPtr)XPath {
     if (!XPath || xmlXPathNodeSetIsEmpty(XPath->nodesetval)) {
+        xmlXPathFreeObject(XPath);
         return nil;
     }
 
@@ -390,7 +391,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 }
 
 - (void)enumerateElementsWithCSS:(NSString *)CSS
-                           block:(void (^)(ONOXMLElement *))block
+                           block:(void (^)(ONOXMLElement *))block __deprecated
 {
     [self.rootElement enumerateElementsWithCSS:CSS block:block];
 }
