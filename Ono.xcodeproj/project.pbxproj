@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6AA84E3A1EA9011A009ED670 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AA84E381EA90104009ED670 /* libxml2.tbd */; };
+		6AA84E3C1EA90134009ED670 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AA84E3B1EA90134009ED670 /* libxml2.tbd */; };
 		F82D395A1AA6199E00DAC057 /* Ono.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F82D394E1AA6199E00DAC057 /* Ono.framework */; };
 		F82D397B1AA61A0B00DAC057 /* Ono.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F82D39701AA61A0B00DAC057 /* Ono.framework */; };
 		F82D398B1AA61A7700DAC057 /* ONOXMLDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = F82D39891AA61A7700DAC057 /* ONOXMLDocument.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F82D398C1AA61A7700DAC057 /* ONOXMLDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = F82D39891AA61A7700DAC057 /* ONOXMLDocument.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F82D398D1AA61A7700DAC057 /* ONOXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D398A1AA61A7700DAC057 /* ONOXMLDocument.m */; };
 		F82D398E1AA61A7700DAC057 /* ONOXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D398A1AA61A7700DAC057 /* ONOXMLDocument.m */; };
-		F82D39941AA61A9600DAC057 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F82D39931AA61A9600DAC057 /* libxml2.dylib */; };
-		F82D39961AA61A9B00DAC057 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F82D39951AA61A9B00DAC057 /* libxml2.dylib */; };
 		F82D399F1AA61AD000DAC057 /* ONOAtomTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39981AA61AD000DAC057 /* ONOAtomTests.m */; };
 		F82D39A01AA61AD000DAC057 /* ONOAtomTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39981AA61AD000DAC057 /* ONOAtomTests.m */; };
 		F82D39A11AA61AD000DAC057 /* ONOCSSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39991AA61AD000DAC057 /* ONOCSSTests.m */; };
@@ -61,6 +61,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6AA84E381EA90104009ED670 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
+		6AA84E3B1EA90134009ED670 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/usr/lib/libxml2.tbd; sourceTree = DEVELOPER_DIR; };
 		F82D394E1AA6199E00DAC057 /* Ono.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Ono.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F82D39521AA6199E00DAC057 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Source/Info.plist; sourceTree = "<group>"; };
 		F82D39591AA6199E00DAC057 /* Ono iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Ono iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -69,8 +71,6 @@
 		F82D397A1AA61A0B00DAC057 /* Ono OS X Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Ono OS X Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F82D39891AA61A7700DAC057 /* ONOXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ONOXMLDocument.h; path = Source/ONOXMLDocument.h; sourceTree = SOURCE_ROOT; };
 		F82D398A1AA61A7700DAC057 /* ONOXMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ONOXMLDocument.m; path = Source/ONOXMLDocument.m; sourceTree = SOURCE_ROOT; };
-		F82D39931AA61A9600DAC057 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
-		F82D39951AA61A9B00DAC057 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk/usr/lib/libxml2.dylib; sourceTree = DEVELOPER_DIR; };
 		F82D39981AA61AD000DAC057 /* ONOAtomTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ONOAtomTests.m; path = Tests/ONOAtomTests.m; sourceTree = SOURCE_ROOT; };
 		F82D39991AA61AD000DAC057 /* ONOCSSTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ONOCSSTests.m; path = Tests/ONOCSSTests.m; sourceTree = SOURCE_ROOT; };
 		F82D399A1AA61AD000DAC057 /* ONODefaultNamespaceXPathTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ONODefaultNamespaceXPathTests.m; path = Tests/ONODefaultNamespaceXPathTests.m; sourceTree = SOURCE_ROOT; };
@@ -91,7 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F82D39941AA61A9600DAC057 /* libxml2.dylib in Frameworks */,
+				6AA84E3A1EA9011A009ED670 /* libxml2.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,7 +107,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F82D39961AA61A9B00DAC057 /* libxml2.dylib in Frameworks */,
+				6AA84E3C1EA90134009ED670 /* libxml2.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,13 +122,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6AA84E371EA90104009ED670 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6AA84E3B1EA90134009ED670 /* libxml2.tbd */,
+				6AA84E381EA90104009ED670 /* libxml2.tbd */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		F82D39441AA6199E00DAC057 = {
 			isa = PBXGroup;
 			children = (
 				F82D39501AA6199E00DAC057 /* Source */,
 				F82D395D1AA6199E00DAC057 /* Tests */,
-				F82D39971AA61AA600DAC057 /* Vendor */,
 				F82D394F1AA6199E00DAC057 /* Products */,
+				6AA84E371EA90104009ED670 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -186,15 +195,6 @@
 				F82D395F1AA6199E00DAC057 /* Info.plist */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		F82D39971AA61AA600DAC057 /* Vendor */ = {
-			isa = PBXGroup;
-			children = (
-				F82D39951AA61A9B00DAC057 /* libxml2.dylib */,
-				F82D39931AA61A9600DAC057 /* libxml2.dylib */,
-			);
-			name = Vendor;
 			sourceTree = "<group>";
 		};
 		F82D39BC1AA61ADE00DAC057 /* Resources */ = {
@@ -311,7 +311,7 @@
 		F82D39451AA6199E00DAC057 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Mattt Thompson";
 				TargetAttributes = {
 					F82D394D1AA6199E00DAC057 = {
@@ -319,6 +319,7 @@
 					};
 					F82D39581AA6199E00DAC057 = {
 						CreatedOnToolsVersion = 6.1.1;
+						ProvisioningStyle = Automatic;
 					};
 					F82D396F1AA61A0B00DAC057 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -463,8 +464,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -474,6 +477,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -509,8 +513,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -519,6 +525,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -538,6 +545,7 @@
 		F82D39651AA6199E00DAC057 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -559,6 +567,7 @@
 		F82D39661AA6199E00DAC057 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -580,10 +589,9 @@
 		F82D39681AA6199E00DAC057 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -592,20 +600,21 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mattt.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
 		F82D39691AA6199E00DAC057 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mattt.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};
