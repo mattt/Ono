@@ -8,7 +8,6 @@ Pod::Spec.new do |s|
   s.authors  = { 'Mattt Thompson' => 'm@mattt.me' }
   s.source   = { :git => 'https://github.com/mattt/Ono.git', :tag => s.version }
   s.source_files = 'Source'
-  s.public_header_files = 'Source/*.{h}'
   s.requires_arc = true
 
   s.ios.deployment_target = '5.0'
