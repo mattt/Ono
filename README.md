@@ -1,4 +1,5 @@
 # Ono (斧)
+
 **A sensible way to deal with XML & HTML for iOS & Mac OS X**
 
 XML support in Cocoa isn't great (unless, of course, the XML in question is a `.plist`). `NSXMLParser` forces a cumbersome delegate model, which is extremely inconvenient to implement. `NSXMLDocument` is a bit nicer to use, but only works on Mac OS X, and has a large memory footprint.
@@ -9,18 +10,16 @@ Whether your app needs to interface with a XML-RPC webservice, scrape a website,
 
 > Ono (斧) means "axe", in homage to [Nokogiri](http://nokogiri.org) (鋸), which means "saw".
 
-> Using [AFNetworking](https://github.com/AFNetworking/AFNetworking)? Easily integrate Ono into your networking stack with [AFOnoResponseSerializer](https://github.com/AFNetworking/AFOnoResponseSerializer).
-
 ## Features
 
-- Simple, modern API following standard Objective-C conventions, including extensive use of blocks and `NSFastEnumeration`
-- Extremely performant document parsing and traversal, powered by `libxml2`
-- Support for both [XPath](http://en.wikipedia.org/wiki/XPath) and [CSS](http://en.wikipedia.org/wiki/Cascading_Style_Sheets) queries
-- Automatic conversion of date and number values
-- Correct, common-sense handling of XML namespaces for elements and attributes
-- Ability to load HTML and XML documents from either `NSString` or `NSData`
-- Full documentation
-- Comprehensive test suite
+* Simple, modern API following standard Objective-C conventions, including extensive use of blocks and `NSFastEnumeration`
+* Extremely performant document parsing and traversal, powered by `libxml2`
+* Support for both [XPath](http://en.wikipedia.org/wiki/XPath) and [CSS](http://en.wikipedia.org/wiki/Cascading_Style_Sheets) queries
+* Automatic conversion of date and number values
+* Correct, common-sense handling of XML namespaces for elements and attributes
+* Ability to load HTML and XML documents from either `NSString` or `NSData`
+* Full documentation
+* Comprehensive test suite
 
 ## Installation
 
