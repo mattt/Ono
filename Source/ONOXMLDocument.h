@@ -161,12 +161,16 @@
 ///------------------------------------
 
 /**
- The formatter used to determine `numberValue` for elements in the document. By default, this is an `NSNumberFormatter` instance with `NSNumberFormatterDecimalStyle`.
+ The formatter used to determine `numberValue` for elements in the document.
+ 
+ By default, this is an `NSNumberFormatter` instance with `NSNumberFormatterDecimalStyle`.
  */
 @property (readonly, nonatomic, strong) NSNumberFormatter *numberFormatter;
 
 /**
- The formatter used to determine `dateValue` for elements in the document. By default, this is an `NSDateFormatter` instance configured to accept ISO 8601 formatted timestamps.
+ The formatter used to determine `dateValue` for elements in the document.
+ 
+ By default, this is an `NSDateFormatter` instance configured to accept ISO 8601 formatted timestamps.
  
  @see http://en.wikipedia.org/wiki/ISO_8601
  */
