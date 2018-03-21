@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'Ono'
-  s.version  = '1.2.2'
+  s.version  = '2.0.0'
   s.license  = 'MIT'
   s.summary  = 'A sensible way to deal with XML & HTML.'
   s.homepage = 'https://github.com/mattt/Ono'
@@ -10,8 +10,8 @@ Pod::Spec.new do |s|
   s.source_files = 'Source'
   s.requires_arc = true
 
-  s.ios.deployment_target = '5.0'
-  s.osx.deployment_target = '10.7'
+  s.ios.deployment_target = '6.0'
+  s.osx.deployment_target = '10.8'
   s.watchos.deployment_target = '2.0'
   s.tvos.deployment_target = '9.0'
   
