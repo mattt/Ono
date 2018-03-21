@@ -73,8 +73,7 @@ Ono is compatible with iOS 5 and higher, as well as Mac OS X 10.7 and higher. It
 
 ### Contact
 
-[Mattt Thompson](http://github.com/mattt)
-[@mattt](https://twitter.com/mattt)
+[Mattt](https://twitter.com/mattt)
 
 ## License
 
