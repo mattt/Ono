@@ -2,10 +2,10 @@ Pod::Spec.new do |s|
   s.name     = 'Ono'
   s.version  = '1.2.2'
   s.license  = 'MIT'
-  s.summary  = 'A sensible way to deal with XML & HTML for iOS & Mac OS X.'
+  s.summary  = 'A sensible way to deal with XML & HTML.'
   s.homepage = 'https://github.com/mattt/Ono'
   s.social_media_url = 'https://twitter.com/mattt'
-  s.authors  = { 'Mattt Thompson' => 'm@mattt.me' }
+  s.authors  = { 'Mattt' => 'mattt@me.com' }
   s.source   = { :git => 'https://github.com/mattt/Ono.git', :tag => s.version }
   s.source_files = 'Source'
   s.requires_arc = true
