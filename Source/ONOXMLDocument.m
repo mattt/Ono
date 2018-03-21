@@ -392,7 +392,10 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 - (void)enumerateElementsWithCSS:(NSString *)CSS
                            block:(void (^)(ONOXMLElement *))block
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     [self.rootElement enumerateElementsWithCSS:CSS block:block];
+#pragma GCC diagnostic pop
 }
 
 - (void)enumerateElementsWithCSS:(NSString *)CSS
