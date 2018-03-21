@@ -27,6 +27,8 @@
 #import <libxml2/libxml/xpathInternals.h>
 #import <libxml2/libxml/HTMLparser.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 NSString * const ONOXMLDocumentErrorDomain = @"com.ono.error";
 
 static NSRegularExpression * ONOIdRegularExpression() {
@@ -174,8 +176,8 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 @property (readwrite, nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (readwrite, nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *defaultNamespaces;
 
-- (ONOXMLElement *)elementWithNode:(xmlNodePtr)node;
-- (ONOXPathEnumerator *)enumeratorWithXPathObject:(xmlXPathObjectPtr)XPath;
+- (nullable ONOXMLElement *)elementWithNode:(xmlNodePtr)node;
+- (nullable ONOXPathEnumerator *)enumeratorWithXPathObject:(xmlXPathObjectPtr)XPath;
 @end
 
 #pragma mark -
@@ -188,7 +190,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     }
 }
 
-- (id)objectAtIndex:(NSUInteger)idx {
+- (nullable id)objectAtIndex:(NSUInteger)idx {
     if (idx >= (NSUInteger)xmlXPathNodeSetGetLength(self.xmlXPath->nodesetval)) {
         return nil;
     }
@@ -210,7 +212,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     return [NSArray arrayWithArray:mutableObjects];
 }
 
-- (id)nextObject {
+- (nullable id)nextObject {
     if (self.cursor >= (NSUInteger)self.xmlXPath->nodesetval->nodeNr) {
         return nil;
     }
@@ -238,7 +240,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     return self.xmlXPath->floatval;
 }
 
-- (NSNumber *)numberValue {
+- (nullable NSNumber *)numberValue {
     if (self.xmlXPath->floatval) {
         return [NSNumber numberWithFloat:self.xmlXPath->floatval];
     }
@@ -246,7 +248,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     return nil;
 }
 
-- (NSString *)stringValue {
+- (nullable NSString *)stringValue {
     if (self.xmlXPath->stringval) {
         return [NSString stringWithCString:(char *)self.xmlXPath->stringval encoding:NSUTF8StringEncoding];
     }
@@ -358,7 +360,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
 #pragma mark - Private Methods
 
-- (ONOXMLElement *)elementWithNode:(xmlNodePtr)node {
+- (nullable ONOXMLElement *)elementWithNode:(xmlNodePtr)node {
     if (!node) {
         return nil;
     }
@@ -370,7 +372,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     return element;
 }
 
-- (ONOXPathEnumerator *)enumeratorWithXPathObject:(xmlXPathObjectPtr)XPath {
+- (nullable ONOXPathEnumerator *)enumeratorWithXPathObject:(xmlXPathObjectPtr)XPath {
     if (!XPath || xmlXPathNodeSetIsEmpty(XPath->nodesetval)) {
         xmlXPathFreeObject(XPath);
         return nil;
@@ -389,7 +391,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     return [self.rootElement XPath:XPath];
 }
 
-- (ONOXPathFunctionResult *)functionResultByEvaluatingXPath:(NSString *)XPath {
+- (nullable ONOXPathFunctionResult *)functionResultByEvaluatingXPath:(NSString *)XPath {
     return [self.rootElement functionResultByEvaluatingXPath:XPath];
 }
 
@@ -411,7 +413,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     [self.rootElement enumerateElementsWithXPath:XPath usingBlock:block];
 }
 
-- (ONOXMLElement *)firstChildWithXPath:(NSString *)XPath {
+- (nullable ONOXMLElement *)firstChildWithXPath:(NSString *)XPath {
     return [self.rootElement firstChildWithXPath:XPath];
 }
 
@@ -434,7 +436,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     [self.rootElement enumerateElementsWithCSS:CSS usingBlock:block];
 }
 
-- (ONOXMLElement *)firstChildWithCSS:(NSString *)CSS {
+- (nullable ONOXMLElement *)firstChildWithCSS:(NSString *)CSS {
     return [self.rootElement firstChildWithCSS:CSS];
 }
 
@@ -484,7 +486,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
 #pragma mark - NSCopying
 
-- (id)copyWithZone:(NSZone *)zone {
+- (id)copyWithZone:(nullable NSZone *)zone {
     ONOXMLDocument *document = [[[self class] allocWithZone:zone] init];
     document.version = self.version;
     document.rootElement = self.rootElement;
@@ -494,7 +496,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
 #pragma mark - NSCoding
 
-- (id)initWithCoder:(NSCoder *)decoder {
+- (nullable id)initWithCoder:(NSCoder *)decoder {
     self = [super init];
     if (!self) {
         return nil;
@@ -520,25 +522,25 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 @property (readwrite, nonatomic, copy) NSString *tag;
 @property (readwrite, nonatomic, assign) NSUInteger lineNumber;
 #ifdef __cplusplus
-@property (readwrite, nonatomic, copy) NSString *ns;
+@property (nullable, readwrite, nonatomic, copy) NSString *ns;
 #else
-@property (readwrite, nonatomic, copy) NSString *namespace;
+@property (nullable, readwrite, nonatomic, copy) NSString *namespace;
 #endif
-@property (readwrite, nonatomic, strong) ONOXMLElement *parent;
+@property (nullable, readwrite, nonatomic, strong) ONOXMLElement *parent;
 @property (readwrite, nonatomic, strong) NSArray<ONOXMLElement *> *children;
-@property (readwrite, nonatomic, strong) ONOXMLElement *previousSibling;
-@property (readwrite, nonatomic, strong) ONOXMLElement *nextSibling;
+@property (nullable, readwrite, nonatomic, strong) ONOXMLElement *previousSibling;
+@property (nullable, readwrite, nonatomic, strong) ONOXMLElement *nextSibling;
 @property (readwrite, nonatomic, strong) NSDictionary *attributes;
-@property (readwrite, nonatomic, copy) NSString *stringValue;
-@property (readwrite, nonatomic, copy) NSNumber *numberValue;
-@property (readwrite, nonatomic, copy) NSDate *dateValue;
+@property (nullable, readwrite, nonatomic, copy) NSString *stringValue;
+@property (nullable, readwrite, nonatomic, copy) NSNumber *numberValue;
+@property (nullable, readwrite, nonatomic, copy) NSDate *dateValue;
 @end
 
 @implementation ONOXMLElement
 @dynamic children;
 
 #ifdef __cplusplus
-- (NSString *)ns {
+- (nullable NSString *)ns {
     if (!_ns && self.xmlNode->ns != NULL && self.xmlNode->ns->prefix != NULL) {
         self.ns = @((const char *)self.xmlNode->ns->prefix);
     }
@@ -546,7 +548,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     return _ns;
 }
 #else
-- (NSString *)namespace {
+- (nullable NSString *)namespace {
     if (!_namespace && self.xmlNode->ns != NULL && self.xmlNode->ns->prefix != NULL) {
         self.namespace = @((const char *)self.xmlNode->ns->prefix);
     }
@@ -587,7 +589,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     return _attributes;
 }
 
-- (id)valueForAttribute:(NSString *)attribute {
+- (nullable id)valueForAttribute:(NSString *)attribute {
     id value = nil;
     const unsigned char *xmlValue = xmlGetProp(self.xmlNode, (const xmlChar *)[attribute UTF8String]);
     if (xmlValue) {
@@ -598,8 +600,8 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     return value;
 }
 
-- (id)valueForAttribute:(NSString *)attribute
-            inNamespace:(NSString *)ns
+- (nullable id)valueForAttribute:(NSString *)attribute
+                     inNamespace:(nullable NSString *)ns
 {
     id value = nil;
     const unsigned char *xmlValue = xmlGetNsProp(self.xmlNode, (const xmlChar *)[attribute UTF8String], (const xmlChar *)[ns UTF8String]);
@@ -613,7 +615,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
 #pragma mark -
 
-- (ONOXMLElement *)parent {
+- (nullable ONOXMLElement *)parent {
     if (!_parent) {
         self.parent = [self.document elementWithNode:self.xmlNode->parent];
     }
@@ -625,12 +627,12 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     return [self childrenAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, NSIntegerMax)]];
 }
 
-- (ONOXMLElement *)firstChildWithTag:(NSString *)tag {
+- (nullable ONOXMLElement *)firstChildWithTag:(NSString *)tag {
     return [self firstChildWithTag:tag inNamespace:nil];
 }
 
-- (ONOXMLElement *)firstChildWithTag:(NSString *)tag
-                         inNamespace:(NSString *)ns
+- (nullable ONOXMLElement *)firstChildWithTag:(NSString *)tag
+                         inNamespace:(nullable NSString *)ns
 {
     NSArray<ONOXMLElement *> *children = [self childrenAtIndexes:[self indexesOfChildrenPassingTest:^BOOL(xmlNodePtr node, BOOL *stop) {
         *stop = ONOXMLNodeMatchesTagInNamespace(node, tag, ns);
@@ -649,7 +651,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 }
 
 - (NSArray<ONOXMLElement *> *)childrenWithTag:(NSString *)tag
-                 inNamespace:(NSString *)ns
+                                  inNamespace:(nullable NSString *)ns
 {
     return [self childrenAtIndexes:[self indexesOfChildrenPassingTest:^BOOL(xmlNodePtr node, BOOL *stop) {
         return ONOXMLNodeMatchesTagInNamespace(node, tag, ns);
@@ -673,7 +675,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     return [NSArray arrayWithArray:mutableChildren];
 }
 
-- (NSIndexSet *)indexesOfChildrenPassingTest:(BOOL (^)(xmlNodePtr node, BOOL *stop))block {
+- (nullable NSIndexSet *)indexesOfChildrenPassingTest:(BOOL (^)(xmlNodePtr node, BOOL *stop))block {
     if (!block) {
         return nil;
     }
@@ -695,7 +697,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     return mutableIndexSet;
 }
 
-- (ONOXMLElement *)previousSibling {
+- (nullable ONOXMLElement *)previousSibling {
     if (!_previousSibling) {
         self.previousSibling = [self.document elementWithNode:self.xmlNode->prev];
     }
@@ -703,7 +705,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     return _previousSibling;
 }
 
-- (ONOXMLElement *)nextSibling {
+- (nullable ONOXMLElement *)nextSibling {
     if (!_nextSibling) {
         self.nextSibling = [self.document elementWithNode:self.xmlNode->next];
     }
@@ -717,27 +719,29 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     return [[self stringValue] length] == 0;
 }
 
-- (NSString *)stringValue {
+- (nullable NSString *)stringValue {
     if (!_stringValue) {
         xmlChar *key = xmlNodeGetContent(self.xmlNode);
-        self.stringValue = key ? @((const char *)key) : @"";
+        if (key) {
+            self.stringValue = [NSString stringWithCString:(const char *)key encoding:NSUTF8StringEncoding];
+        }
         xmlFree(key);
     }
 
     return _stringValue;
 }
 
-- (NSNumber *)numberValue {
+- (nullable NSNumber *)numberValue {
     if (!_numberValue) {
-        self.numberValue = [self.document.numberFormatter numberFromString:[self stringValue]];
+        self.numberValue = [self.document.numberFormatter numberFromString:self.stringValue];
     }
 
     return _numberValue;
 }
 
-- (NSDate *)dateValue {
+- (nullable NSDate *)dateValue {
     if (!_dateValue) {
-        self.dateValue = [self.document.dateFormatter dateFromString:[self stringValue]];
+        self.dateValue = [self.document.dateFormatter dateFromString:self.stringValue];
     }
 
     return _dateValue;
@@ -784,7 +788,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
 - (id <NSFastEnumeration>)XPath:(NSString *)XPath {
     if (!XPath) {
-        return nil;
+        return [[NSArray array] objectEnumerator];
     }
 
     xmlXPathObjectPtr xmlXPath = [self xmlXPathObjectPtrWithXPath:XPath];
@@ -795,7 +799,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     return nil;
 }
 
-- (ONOXPathFunctionResult *)functionResultByEvaluatingXPath:(NSString *)XPath {
+- (nullable ONOXPathFunctionResult *)functionResultByEvaluatingXPath:(NSString *)XPath {
     xmlXPathObjectPtr xmlXPath = [self xmlXPathObjectPtrWithXPath:XPath];
     if (xmlXPath) {
         ONOXPathFunctionResult *result = [[ONOXPathFunctionResult alloc] init];
@@ -837,7 +841,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     }
 }
 
-- (ONOXMLElement *)firstChildWithXPath:(NSString *)XPath
+- (nullable ONOXMLElement *)firstChildWithXPath:(NSString *)XPath
 {
     for (ONOXMLElement *element in [self XPath:XPath]) {
         return element;
@@ -868,7 +872,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     [self enumerateElementsWithXPath:ONOXPathFromCSS(CSS) usingBlock:block];
 }
 
-- (ONOXMLElement *)firstChildWithCSS:(NSString *)CSS
+- (nullable ONOXMLElement *)firstChildWithCSS:(NSString *)CSS
 {
     for (ONOXMLElement *element in [self CSS:CSS]) {
         return element;
@@ -925,7 +929,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
 #pragma mark - NSCopying
 
-- (id)copyWithZone:(NSZone *)zone {
+- (id)copyWithZone:(nullable NSZone *)zone {
     ONOXMLElement *element = [[[self class] allocWithZone:zone] init];
     element.xmlNode = self.xmlNode;
     element.document = self.document;
@@ -935,7 +939,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
 #pragma mark - NSCoding
 
-- (id)initWithCoder:(NSCoder *)decoder {
+- (nullable id)initWithCoder:(NSCoder *)decoder {
     self = [super init];
     if (!self) {
         return nil;
@@ -957,3 +961,5 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

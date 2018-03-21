@@ -85,11 +85,4 @@
     XCTAssertEqual(headerElement.lineNumber, 123, @"header line number should be correct");
 }
 
-- (void)testReturnsErrorWithNilXMLDocument {
-    NSError *error;
-    self.document = [ONOXMLDocument XMLDocumentWithData:nil error:&error];
-    XCTAssertNotNil(error, @"error should not be nil");
-    XCTAssertNotNil(error.userInfo[NSLocalizedFailureReasonErrorKey], @"error should have a localized failure reason");
-}
-
 @end

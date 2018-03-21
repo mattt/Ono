@@ -85,11 +85,4 @@
     XCTAssertTrue(idx == 1, @"fewer than one element found");
 }
 
-- (void)testReturnsErrorWithNilHTMLDocument {
-    NSError *error;
-    self.document = [ONOXMLDocument HTMLDocumentWithData:nil error:&error];
-    XCTAssertNotNil(error, @"error should not be nil");
-    XCTAssertNotNil(error.userInfo[NSLocalizedFailureReasonErrorKey], @"error should have a localized failure reason");
-}
-
 @end

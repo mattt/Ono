@@ -28,7 +28,8 @@ int main(int argc, const char * argv[]) {
     @autoreleasepool {
         NSError *error = nil;
         NSString *XMLFilePath = [[@(__FILE__) stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"nutrition.xml"];
-        ONOXMLDocument *document = [ONOXMLDocument XMLDocumentWithData:[NSData dataWithContentsOfFile:XMLFilePath] error:&error];
+        NSData *data = [NSData dataWithContentsOfFile:XMLFilePath];
+        ONOXMLDocument *document = [ONOXMLDocument XMLDocumentWithData:data error:&error];
         if (error) {
             NSLog(@"[Error] %@", error);
             return 0;

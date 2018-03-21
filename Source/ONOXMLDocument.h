@@ -22,6 +22,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class ONOXMLElement;
 
 @class ONOXPathFunctionResult;
@@ -54,7 +56,7 @@
  
  @return The function result
  */
-- (ONOXPathFunctionResult *)functionResultByEvaluatingXPath:(NSString *)XPath;
+- (nullable ONOXPathFunctionResult *)functionResultByEvaluatingXPath:(NSString *)XPath;
 
 /**
  @deprecated Use `enumerateElementsWithXPath:usingBlock:` instead
@@ -81,7 +83,7 @@
  
  @return The child element.
  */
-- (ONOXMLElement *)firstChildWithXPath:(NSString *)XPath;
+- (nullable ONOXMLElement *)firstChildWithXPath:(NSString *)XPath;
 
 ///---------------------------
 /// @name Searching with CSS
@@ -121,7 +123,7 @@
  
  @return The child element.
  */
-- (ONOXMLElement *)firstChildWithCSS:(NSString *)CSS;
+- (nullable ONOXMLElement *)firstChildWithCSS:(NSString *)CSS;
 
 @end
 
@@ -263,9 +265,9 @@
  The element's namespace.
  */
 #ifdef __cplusplus
-@property (readonly, nonatomic, copy) NSString *ns;
+@property (nullable, readonly, nonatomic, copy) NSString *ns;
 #else
-@property (readonly, nonatomic, copy) NSString *namespace;
+@property (nullable, readonly, nonatomic, copy) NSString *namespace;
 #endif
 
 /**
@@ -294,7 +296,7 @@
  
  @return The associated value.
  */
-- (id)valueForAttribute:(NSString *)attribute;
+- (nullable id)valueForAttribute:(NSString *)attribute;
 
 /**
  Returns the value for an attribute in a particular namespace.
@@ -304,8 +306,8 @@
 
  @return The associated value.
  */
-- (id)valueForAttribute:(NSString *)attribute
-            inNamespace:(NSString *)ns;
+- (nullable id)valueForAttribute:(NSString *)attribute
+                     inNamespace:(nullable NSString *)ns;
 
 ///----------------------------------------------------
 /// @name Accessing Parent, Child, and Sibling Elements
@@ -314,7 +316,7 @@
 /**
  The element's parent element.
  */
-@property (readonly, nonatomic, strong) ONOXMLElement *parent;
+@property (nullable, readonly, nonatomic, strong) ONOXMLElement *parent;
 
 /**
  The element's children elements.
@@ -324,12 +326,12 @@
 /**
  The element's previous sibling.
  */
-@property (readonly, nonatomic, strong) ONOXMLElement *previousSibling;
+@property (nullable, readonly, nonatomic, strong) ONOXMLElement *previousSibling;
 
 /**
  The element's next sibling.
  */
-@property (readonly, nonatomic, strong) ONOXMLElement *nextSibling;
+@property (nullable, readonly, nonatomic, strong) ONOXMLElement *nextSibling;
 
 /**
  Returns the first child element with the specified tag, or `nil` if no such element exists.
@@ -338,7 +340,7 @@
  
  @return The child element.
  */
-- (ONOXMLElement *)firstChildWithTag:(NSString *)tag;
+- (nullable ONOXMLElement *)firstChildWithTag:(NSString *)tag;
 
 /**
  Returns the first child element with a tag in a particular namespace, or `nil` if no such element exists.
@@ -348,8 +350,8 @@
 
  @return The child element.
  */
-- (ONOXMLElement *)firstChildWithTag:(NSString *)tag
-                         inNamespace:(NSString *)ns;
+- (nullable ONOXMLElement *)firstChildWithTag:(NSString *)tag
+                                  inNamespace:(nullable NSString *)ns;
 
 /**
  Returns all children elements with the specified tag.
@@ -358,7 +360,7 @@
 
  @return The children elements.
  */
-- (NSArray *)childrenWithTag:(NSString *)tag;
+- (NSArray<ONOXMLElement *> *)childrenWithTag:(NSString *)tag;
 
 /**
  Returns all children elements with the specified tag.
@@ -368,8 +370,8 @@
 
  @return The children elements.
  */
-- (NSArray *)childrenWithTag:(NSString *)tag
-                 inNamespace:(NSString *)ns;
+- (NSArray<ONOXMLElement *> *)childrenWithTag:(NSString *)tag
+                                  inNamespace:(nullable NSString *)ns;
 
 ///------------------------
 /// @name Accessing Content
@@ -383,17 +385,17 @@
 /**
  A string representation of the element's value.
  */
-@property (readonly, nonatomic, copy) NSString *stringValue;
+@property (nullable, readonly, nonatomic, copy) NSString *stringValue;
 
 /**
  A number representation of the element's value, which is generated from the document's `numberFormatter` property.
  */
-@property (readonly, nonatomic, copy) NSNumber *numberValue;
+@property (nullable, readonly, nonatomic, copy) NSNumber *numberValue;
 
 /**
  A date representation of the element's value, which is generated from the document's `dateFormatter` property.
  */
-@property (readonly, nonatomic, copy) NSDate *dateValue;
+@property (nullable, readonly, nonatomic, copy) NSDate *dateValue;
 
 ///--------------------------------------
 /// @name Subscripted Convenience Methods
@@ -439,12 +441,12 @@
 /**
  The numeric value of the function result.
  */
-@property (readonly, nonatomic, copy) NSNumber *numberValue;
+@property (nullable, readonly, nonatomic, copy) NSNumber *numberValue;
 
 /**
  The string value of the function result.
  */
-@property (readonly, nonatomic, copy) NSString *stringValue;
+@property (nullable, readonly, nonatomic, copy) NSString *stringValue;
 
 @end
 
@@ -465,3 +467,5 @@
  Ono errors. Error codes for `ONOErrorDomain` are not currently defined.
  */
 extern NSString * const ONOErrorDomain;
+
+NS_ASSUME_NONNULL_END
