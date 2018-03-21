@@ -811,6 +811,8 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     return nil;
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 - (void)enumerateElementsWithXPath:(NSString *)XPath
                              block:(void (^)(ONOXMLElement *element))block
 {
@@ -822,6 +824,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
         block(element);
     }];
 }
+#pragma GCC diagnostic pop
 
 - (void)enumerateElementsWithXPath:(NSString *)XPath
                         usingBlock:(void (^)(ONOXMLElement *element, NSUInteger idx, BOOL *stop))block
@@ -854,6 +857,8 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     return [self XPath:ONOXPathFromCSS(CSS)];
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 - (void)enumerateElementsWithCSS:(NSString *)CSS
                            block:(void (^)(ONOXMLElement *element))block
 {
@@ -865,6 +870,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
         block(element);
     }];
 }
+#pragma GCC diagnostic pop
 
 - (void)enumerateElementsWithCSS:(NSString *)CSS
                       usingBlock:(void (^)(ONOXMLElement *element, NSUInteger idx, BOOL *stop))block
