@@ -47,13 +47,13 @@
 - (void)testFunctionResultBoolVaule {
     NSString *XPath = @"starts-with('Ono','O')";
     ONOXPathFunctionResult *result = [self.document.rootElement functionResultByEvaluatingXPath:XPath];
-    XCTAssertTrue(result.boolValue, "Result boolVaule should be true");
+    XCTAssertTrue(result.boolValue, "Result should be true");
 }
 
-- (void)testFunctionResultNumericValue {
+- (void)testFunctionResultNumberValue {
     NSString *XPath = @"count(./atom:link)";
     ONOXPathFunctionResult *result = [self.document.rootElement functionResultByEvaluatingXPath:XPath];
-    XCTAssertEqual(result.numericValue, 2, "Number of child links should be 2");
+    XCTAssertEqual([result.numberValue integerValue], 2, "Number of child links should be 2");
 }
 
 - (void)testFunctionResultStringVaule {
