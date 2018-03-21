@@ -281,7 +281,7 @@
 /**
  All attributes for the element.
  */
-@property (readonly, nonatomic, strong) NSDictionary *attributes;
+@property (readonly, nonatomic, strong) NSDictionary<NSString *, id> *attributes;
 
 /**
  Returns the value for the specified attribute.
@@ -315,7 +315,7 @@
 /**
  The element's children elements.
  */
-@property (readonly, nonatomic, strong) NSArray *children;
+@property (readonly, nonatomic, strong) NSArray<ONOXMLElement *> *children;
 
 /**
  The element's previous sibling.

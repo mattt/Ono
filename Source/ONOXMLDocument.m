@@ -60,10 +60,10 @@ static NSRegularExpression * ONOAttributeRegularExpression() {
 }
 
 NSString * ONOXPathFromCSS(NSString *CSS) {
-    NSMutableArray *mutableXPathExpressions = [NSMutableArray array];
+    NSMutableArray<NSString *> *mutableXPathExpressions = [NSMutableArray array];
     [[CSS componentsSeparatedByString:@","] enumerateObjectsUsingBlock:^(NSString *expression, NSUInteger idx, BOOL *stop) {
         if (expression && [expression length] > 0) {
-            __block NSMutableArray *mutableXPathComponents = [NSMutableArray arrayWithObject:@"./"];
+            __block NSMutableArray<NSString *> *mutableXPathComponents = [NSMutableArray arrayWithObject:@"./"];
             __block NSString *prefix = nil;
 
             [[[expression stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] enumerateObjectsUsingBlock:^(NSString *token, NSUInteger idx, __unused BOOL *stop) {
@@ -174,7 +174,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 @property (readwrite, nonatomic, assign) NSStringEncoding stringEncoding;
 @property (readwrite, nonatomic, strong) NSNumberFormatter *numberFormatter;
 @property (readwrite, nonatomic, strong) NSDateFormatter *dateFormatter;
-@property (readwrite, nonatomic, strong) NSMutableDictionary *defaultNamespaces;
+@property (readwrite, nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *defaultNamespaces;
 
 - (ONOXMLElement *)elementWithNode:(xmlNodePtr)node;
 - (ONOXPathEnumerator *)enumeratorWithXPathObject:(xmlXPathObjectPtr)XPath;
@@ -200,8 +200,8 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
 #pragma mark - NSEnumerator
 
-- (NSArray *)allObjects {
-    NSMutableArray *mutableObjects = [NSMutableArray arrayWithCapacity:(NSUInteger)self.xmlXPath->nodesetval->nodeNr];
+- (NSArray<ONOXMLElement *> *)allObjects {
+    NSMutableArray<ONOXMLElement *> *mutableObjects = [NSMutableArray arrayWithCapacity:(NSUInteger)self.xmlXPath->nodesetval->nodeNr];
     for (NSInteger idx = 0; idx < xmlXPathNodeSetGetLength(self.xmlXPath->nodesetval); idx++) {
         ONOXMLElement *element = [self objectAtIndex:idx];
         if (element) {
@@ -495,7 +495,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 @property (readwrite, nonatomic, copy) NSString *namespace;
 #endif
 @property (readwrite, nonatomic, strong) ONOXMLElement *parent;
-@property (readwrite, nonatomic, strong) NSArray *children;
+@property (readwrite, nonatomic, strong) NSArray<ONOXMLElement *> *children;
 @property (readwrite, nonatomic, strong) ONOXMLElement *previousSibling;
 @property (readwrite, nonatomic, strong) ONOXMLElement *nextSibling;
 @property (readwrite, nonatomic, strong) NSDictionary *attributes;
@@ -543,9 +543,9 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
 #pragma mark -
 
-- (NSDictionary *)attributes {
+- (NSDictionary<NSString *, id> *)attributes {
     if (!_attributes) {
-        NSMutableDictionary *mutableAttributes = [NSMutableDictionary dictionary];
+        NSMutableDictionary<NSString *, id> *mutableAttributes = [NSMutableDictionary dictionary];
         for (xmlAttrPtr attribute = self.xmlNode->properties; attribute != NULL; attribute = attribute->next) {
             NSString *key = @((const char *)attribute->name);
             [mutableAttributes setObject:[self valueForAttribute:key] forKey:key];
@@ -591,7 +591,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     return _parent;
 }
 
-- (NSArray *)children {
+- (NSArray<ONOXMLElement *> *)children {
     return [self childrenAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, NSIntegerMax)]];
 }
 
@@ -602,7 +602,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 - (ONOXMLElement *)firstChildWithTag:(NSString *)tag
                          inNamespace:(NSString *)ns
 {
-    NSArray *children = [self childrenAtIndexes:[self indexesOfChildrenPassingTest:^BOOL(xmlNodePtr node, BOOL *stop) {
+    NSArray<ONOXMLElement *> *children = [self childrenAtIndexes:[self indexesOfChildrenPassingTest:^BOOL(xmlNodePtr node, BOOL *stop) {
         *stop = ONOXMLNodeMatchesTagInNamespace(node, tag, ns);
         return *stop;
     }]];
@@ -614,11 +614,11 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     return [children objectAtIndex:0];
 }
 
-- (NSArray *)childrenWithTag:(NSString *)tag {
+- (NSArray<ONOXMLElement *> *)childrenWithTag:(NSString *)tag {
     return [self childrenWithTag:tag inNamespace:nil];
 }
 
-- (NSArray *)childrenWithTag:(NSString *)tag
+- (NSArray<ONOXMLElement *> *)childrenWithTag:(NSString *)tag
                  inNamespace:(NSString *)ns
 {
     return [self childrenAtIndexes:[self indexesOfChildrenPassingTest:^BOOL(xmlNodePtr node, BOOL *stop) {
@@ -626,8 +626,8 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     }]];
 }
 
-- (NSArray *)childrenAtIndexes:(NSIndexSet *)indexes {
-    NSMutableArray *mutableChildren = [NSMutableArray array];
+- (NSArray<ONOXMLElement *> *)childrenAtIndexes:(NSIndexSet *)indexes {
+    NSMutableArray<ONOXMLElement *> *mutableChildren = [NSMutableArray array];
 
     xmlNodePtr cursor = self.xmlNode->children;
     NSUInteger idx = 0;
