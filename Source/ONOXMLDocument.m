@@ -496,7 +496,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
 #pragma mark - NSCoding
 
-- (nullable id)initWithCoder:(NSCoder *)decoder {
+- (nullable instancetype)initWithCoder:(NSCoder *)decoder {
     self = [super init];
     if (!self) {
         return nil;
@@ -939,7 +939,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
 #pragma mark - NSCoding
 
-- (nullable id)initWithCoder:(NSCoder *)decoder {
+- (nullable instancetype)initWithCoder:(NSCoder *)decoder {
     self = [super init];
     if (!self) {
         return nil;
