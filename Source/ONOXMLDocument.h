@@ -378,24 +378,18 @@
 
 /**
  A string representation of the element's value.
- 
- @return The string value.
  */
-- (NSString *)stringValue;
+@property (readonly, nonatomic, copy) NSString *stringValue;
 
 /**
  A number representation of the element's value, which is generated from the document's `numberFormatter` property.
- 
- @return The number value;
  */
-- (NSNumber *)numberValue;
+@property (readonly, nonatomic, copy) NSNumber *numberValue;
 
 /**
  A date representation of the element's value, which is generated from the document's `dateFormatter` property.
- 
- @return The date value.
  */
-- (NSDate *)dateValue;
+@property (readonly, nonatomic, copy) NSDate *dateValue;
 
 ///--------------------------------------
 /// @name Subscripted Convenience Methods
