@@ -422,22 +422,29 @@
 @end
 
 /**
- `ONOXPathFunctionResult` represents a XPath function result in an `ONOXPathFunctionResult`.
+ `ONOXPathFunctionResult` represents a XPath function result.
  */
 @interface ONOXPathFunctionResult : NSObject
 
 /**
- represents `boolval` in `xmlXPathObject`
- */
-@property (readonly, nonatomic) BOOL boolValue;
+ The Boolean value of the function result.
+  */
+@property (readonly, nonatomic, assign) BOOL boolValue;
 
 /**
- represents `floatval` in `xmlXPathObject`
+ The floating point value of the function result.
+ 
+ @deprecated Use the `numberValue` property instead.
  */
-@property (readonly, nonatomic) double numericValue;
+@property (readonly, nonatomic) double numericValue DEPRECATED_ATTRIBUTE;
 
 /**
- represents `stringval` in `xmlXPathObject`
+ The numeric value of the function result.
+ */
+@property (readonly, nonatomic, copy) NSNumber *numberValue;
+
+/**
+ The string value of the function result.
  */
 @property (readonly, nonatomic, copy) NSString *stringValue;
 

@@ -149,9 +149,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 @end
 
 @interface ONOXPathFunctionResult()
-@property (readwrite, nonatomic) BOOL boolValue;
-@property (readwrite, nonatomic) double numericValue;
-@property (readwrite, nonatomic, copy) NSString *stringValue;
+@property (readwrite, nonatomic, assign) xmlXPathObjectPtr xmlXPath;
 @end
 
 @interface ONOXPathEnumerator ()
@@ -225,6 +223,37 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 #pragma mark -
 
 @implementation ONOXPathFunctionResult
+
+- (void)dealloc {
+    if (_xmlXPath) {
+        xmlXPathFreeObject(_xmlXPath);
+    }
+}
+
+- (BOOL)boolValue {
+    return self.xmlXPath->boolval > 0;
+}
+
+- (double)numericValue {
+    return self.xmlXPath->floatval;
+}
+
+- (NSNumber *)numberValue {
+    if (self.xmlXPath->floatval) {
+        return [NSNumber numberWithFloat:self.xmlXPath->floatval];
+    }
+    
+    return nil;
+}
+
+- (NSString *)stringValue {
+    if (self.xmlXPath->stringval) {
+        return [NSString stringWithCString:(char *)self.xmlXPath->stringval encoding:NSUTF8StringEncoding];
+    }
+    
+    return nil;
+}
+
 
 @end
 
@@ -770,9 +799,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     xmlXPathObjectPtr xmlXPath = [self xmlXPathObjectPtrWithXPath:XPath];
     if (xmlXPath) {
         ONOXPathFunctionResult *result = [[ONOXPathFunctionResult alloc] init];
-        result.boolValue = xmlXPath->boolval > 0 ? YES : NO;
-        result.numericValue = xmlXPath->floatval;
-        result.stringValue = xmlXPath->stringval ? @((char *)xmlXPath->stringval) : nil;
+        result.xmlXPath = xmlXPath;
         
         return result;
     }
