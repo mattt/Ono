@@ -3,7 +3,7 @@ sudo: false
 language: objective-c
 
 before_install:
-    - gem install xcpretty
+  - gem install xcpretty
 
 script:
   - xcodebuild -workspace Ono.xcworkspace -scheme "Ono macOS" -sdk macosx | xcpretty
