@@ -1,5 +1,10 @@
-language: objective-c
-xcode_workspace: Ono.xcworkspace
-xcode_scheme: Ono macOS
-xcode_sdk: macosx
+sudo: false
 
+language: objective-c
+
+before_install:
+    - gem install xcpretty
+
+script:
+  - xcodebuild -workspace Ono.xcworkspace -scheme "Ono macOS" -sdk macosx | xcpretty
+  - xcodebuild test -workspace Ono.xcworkspace -scheme "Ono macOS" -sdk macosx | xcpretty
