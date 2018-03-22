@@ -300,6 +300,8 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
         return nil;
     }
 
+    xmlResetLastError();
+
     return [[self alloc] initWithDocument:document];
 }
 
