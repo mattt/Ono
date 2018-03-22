@@ -278,6 +278,8 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
         ONOSetErrorFromXMLErrorPtr(error, xmlGetLastError());
         return nil;
     }
+    
+    xmlResetLastError();
 
     return [[self alloc] initWithDocument:document];
 }
