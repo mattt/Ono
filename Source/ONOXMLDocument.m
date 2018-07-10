@@ -611,10 +611,10 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
 - (nullable id)valueForAttribute:(NSString *)attribute {
     id value = nil;
-    const unsigned char *xmlValue = xmlGetProp(self.xmlNode, (const xmlChar *)[attribute UTF8String]);
+    xmlChar *xmlValue = xmlGetProp(self.xmlNode, (const xmlChar *)[attribute UTF8String]);
     if (xmlValue) {
         value = @((const char *)xmlValue);
-        xmlFree((void *)xmlValue);
+        xmlFree(xmlValue);
     }
 
     return value;
@@ -624,10 +624,10 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
                      inNamespace:(nullable NSString *)ns
 {
     id value = nil;
-    const unsigned char *xmlValue = xmlGetNsProp(self.xmlNode, (const xmlChar *)[attribute UTF8String], (const xmlChar *)[ns UTF8String]);
+    xmlChar *xmlValue = xmlGetNsProp(self.xmlNode, (const xmlChar *)[attribute UTF8String], (const xmlChar *)[ns UTF8String]);
     if (xmlValue) {
         value = @((const char *)xmlValue);
-        xmlFree((void *)xmlValue);
+        xmlFree(xmlValue);
     }
 
     return value;
@@ -922,10 +922,10 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
             for (xmlNsPtr ns = node->nsDef; ns != NULL; ns = ns->next) {
                 const xmlChar *prefix = ns->prefix;
                 if (!prefix && self.document.defaultNamespaces) {
-                    NSString *href = @((char *)ns->href);
+                    NSString *href = @((const char *)ns->href);
                     NSString *defaultPrefix = self.document.defaultNamespaces[href];
                     if (defaultPrefix) {
-                        prefix = (xmlChar *)[defaultPrefix UTF8String];
+                        prefix = (const xmlChar *)[defaultPrefix UTF8String];
                     }
                 }
 
@@ -935,7 +935,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
             }
         }
 
-        xmlXPathObjectPtr xmlXPath = xmlXPathEvalExpression((xmlChar *)[XPath UTF8String], context);
+        xmlXPathObjectPtr xmlXPath = xmlXPathEvalExpression((const xmlChar *)[XPath UTF8String], context);
         xmlXPathFreeContext(context);
 
         return xmlXPath;
