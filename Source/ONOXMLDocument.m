@@ -65,6 +65,7 @@ static NSRegularExpression * ONOAttributeRegularExpression() {
     return _ONOAttributeRegularExpression;
 }
 
+NSString * ONOXPathFromCSS(NSString *CSS);
 NSString * ONOXPathFromCSS(NSString *CSS) {
     NSMutableArray<NSString *> *mutableXPathExpressions = [NSMutableArray array];
     [[CSS componentsSeparatedByString:@","] enumerateObjectsUsingBlock:^(NSString *expression, NSUInteger idx, BOOL *stop) {
