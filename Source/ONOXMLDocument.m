@@ -825,8 +825,8 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     }
 
     xmlXPathObjectPtr xmlXPath = [self xmlXPathObjectPtrWithXPath:XPath];
-    if (xmlXPath) {
-        return [self.document enumeratorWithXPathObject:xmlXPath];
+    if (!xmlXPath) {
+        return [[NSArray array] objectEnumerator];;
     }
     
     return (id <NSFastEnumeration>)[self.document enumeratorWithXPathObject:xmlXPath];
