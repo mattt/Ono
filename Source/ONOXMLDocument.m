@@ -600,7 +600,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
         NSMutableDictionary<NSString *, id> *mutableAttributes = [NSMutableDictionary dictionary];
         for (xmlAttrPtr attribute = self.xmlNode->properties; attribute != NULL; attribute = attribute->next) {
             NSString *key = @((const char *)attribute->name);
-            [mutableAttributes setObject:[self valueForAttribute:key] forKey:key];
+            [mutableAttributes setObject:(id)[self valueForAttribute:key] forKey:key];
         }
 
         self.attributes = [NSDictionary dictionaryWithDictionary:mutableAttributes];
