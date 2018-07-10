@@ -246,11 +246,11 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 }
 
 - (nullable NSNumber *)numberValue {
-    if (self.xmlXPath->floatval) {
-        return [NSNumber numberWithFloat:self.xmlXPath->floatval];
+    if (!self.xmlXPath) {
+        return nil;
     }
     
-    return nil;
+    return [NSNumber numberWithDouble:self.xmlXPath->floatval];
 }
 
 - (nullable NSString *)stringValue {
