@@ -514,9 +514,16 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (!self) {
         return nil;
     }
-
-    self.version = [decoder decodeObjectForKey:NSStringFromSelector(@selector(version))];
-    self.rootElement = [decoder decodeObjectForKey:NSStringFromSelector(@selector(rootElement))];
+    
+    NSString *version = [decoder decodeObjectForKey:NSStringFromSelector(@selector(version))];
+    ONOXMLElement *rootElement = [decoder decodeObjectForKey:NSStringFromSelector(@selector(rootElement))];
+    
+    if (!version || !rootElement) {
+        return nil;
+    }
+    
+    self.version = version;
+    self.rootElement = rootElement;
 
     return self;
 }
@@ -964,11 +971,20 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (!self) {
         return nil;
     }
-
-    self.tag = [decoder decodeObjectForKey:NSStringFromSelector(@selector(tag))];
-    self.attributes = [decoder decodeObjectForKey:NSStringFromSelector(@selector(attributes))];
-    self.stringValue = [decoder decodeObjectForKey:NSStringFromSelector(@selector(stringValue))];
-    self.children = [decoder decodeObjectForKey:NSStringFromSelector(@selector(children))];
+    
+    NSString *tag = [decoder decodeObjectForKey:NSStringFromSelector(@selector(tag))];
+    NSDictionary<NSString *, id> *attributes = [decoder decodeObjectForKey:NSStringFromSelector(@selector(attributes))];
+    NSString *stringValue = [decoder decodeObjectForKey:NSStringFromSelector(@selector(stringValue))];
+    NSArray<ONOXMLElement *> *children = [decoder decodeObjectForKey:NSStringFromSelector(@selector(children))];
+    
+    if (!tag || !attributes || !stringValue || !children) {
+        return nil;
+    }
+    
+    self.tag = tag;
+    self.attributes = attributes;
+    self.stringValue = stringValue;
+    self.children = children;
 
     return self;
 }
