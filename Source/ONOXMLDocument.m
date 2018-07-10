@@ -137,7 +137,7 @@ NSString * ONOXPathFromCSS(NSString *CSS) {
 static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSString * _Nullable ns) {
     BOOL matchingTag = !tag || [@((const char *)node->name) compare:tag options:NSCaseInsensitiveSearch] == NSOrderedSame;
 
-    BOOL matchingNamespace = !ns ? YES : (((node->ns != NULL) && (node->ns->prefix != NULL)) ? [@((const char *)node->ns->prefix) compare:ns options:NSCaseInsensitiveSearch] == NSOrderedSame : NO);
+    BOOL matchingNamespace = !ns ? YES : (((node->ns != NULL) && (node->ns->prefix != NULL)) ? [@((const char *)node->ns->prefix) compare:(NSString *)ns options:NSCaseInsensitiveSearch] == NSOrderedSame : NO);
 
     return matchingTag && matchingNamespace;
 }
@@ -320,7 +320,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
     _xmlDocument = document;
     if (self.xmlDocument) {
-        self.rootElement = [self elementWithNode:xmlDocGetRootElement(self.xmlDocument)];
+        self.rootElement = (ONOXMLElement * )[self elementWithNode:xmlDocGetRootElement(self.xmlDocument)];
     }
 
     return self;
@@ -457,7 +457,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
 - (NSString *)version {
     if (!_version && self.xmlDocument->version != NULL) {
-        self.version = @((const char *)self.xmlDocument->version);
+        self.version = (NSString *)@((const char *)self.xmlDocument->version);
     }
 
     return _version;
@@ -572,7 +572,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
 - (NSString *)tag {
     if (!_tag && self.xmlNode->name != NULL) {
-        self.tag = @((const char *)self.xmlNode->name);
+        self.tag = (NSString *)@((const char *)self.xmlNode->name);
     }
 
     return _tag;
@@ -808,8 +808,8 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     if (xmlXPath) {
         return [self.document enumeratorWithXPathObject:xmlXPath];
     }
-
-    return nil;
+    
+    return (id <NSFastEnumeration>)[self.document enumeratorWithXPathObject:xmlXPath];
 }
 
 - (nullable ONOXPathFunctionResult *)functionResultByEvaluatingXPath:(NSString *)XPath {
