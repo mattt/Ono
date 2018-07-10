@@ -964,7 +964,10 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 }
 
 - (void)forwardInvocation:(NSInvocation *)invocation {
-    [invocation invokeWithTarget:[self stringValue]];
+    NSString *stringValue = self.stringValue;
+    if (stringValue) {
+        [invocation invokeWithTarget:stringValue];
+    }
 }
 
 #pragma mark - NSCopying
