@@ -673,7 +673,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 - (NSArray<ONOXMLElement *> *)childrenWithTag:(NSString *)tag
                                   inNamespace:(nullable NSString *)ns
 {
-    return [self childrenAtIndexes:[self indexesOfChildrenPassingTest:^BOOL(xmlNodePtr node, BOOL *stop) {
+    return [self childrenAtIndexes:[self indexesOfChildrenPassingTest:^BOOL(xmlNodePtr node, __unused BOOL *stop) {
         return ONOXMLNodeMatchesTagInNamespace(node, tag, ns);
     }]];
 }
