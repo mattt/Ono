@@ -22,10 +22,10 @@
 
 #import "ONOXMLDocument.h"
 
-#import <libxml2/libxml/xmlreader.h>
-#import <libxml2/libxml/xpath.h>
-#import <libxml2/libxml/xpathInternals.h>
-#import <libxml2/libxml/HTMLparser.h>
+@import libxml2.xmlreader;
+@import libxml2.xpath;
+@import libxml2.xpathInternals;
+@import libxml2.HTMLparser;
 
 NS_ASSUME_NONNULL_BEGIN
 
