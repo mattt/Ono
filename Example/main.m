@@ -20,9 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
-
-#import <Ono/Ono.h>
+@import Foundation;
+@import Ono;
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
