@@ -222,7 +222,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
         return nil;
     }
 
-    return [self objectAtIndex:((NSUInteger)self.cursor++)];
+    return [self objectAtIndex:((NSInteger)self.cursor++)];
 }
 
 @end
@@ -580,7 +580,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
 - (NSUInteger)lineNumber {
     if (!_lineNumber) {
-        self.lineNumber = xmlGetLineNo(self.xmlNode);
+        self.lineNumber = (NSUInteger)xmlGetLineNo(self.xmlNode);
     }
 
     return _lineNumber;
