@@ -27,6 +27,10 @@
 @import libxml2.xpathInternals;
 @import libxml2.HTMLparser;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-missing-property-synthesis"
+#pragma clang diagnostic ignored "-Wobjc-messaging-id"
+
 NS_ASSUME_NONNULL_BEGIN
 
 NSString * const ONOXMLDocumentErrorDomain = @"com.ono.error";
@@ -979,3 +983,5 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 @end
 
 NS_ASSUME_NONNULL_END
+
+#pragma clang diagnostic pop

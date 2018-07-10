@@ -22,6 +22,9 @@
 
 @import Foundation;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-missing-property-synthesis"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class ONOXMLElement;
@@ -469,3 +472,5 @@ NS_ASSUME_NONNULL_BEGIN
 extern NSString * const ONOErrorDomain;
 
 NS_ASSUME_NONNULL_END
+
+#pragma clang diagnostic push
