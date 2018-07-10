@@ -254,11 +254,11 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 }
 
 - (nullable NSString *)stringValue {
-    if (self.xmlXPath->stringval) {
-        return [NSString stringWithCString:(char *)self.xmlXPath->stringval encoding:NSUTF8StringEncoding];
+    if (!self.xmlXPath) {
+        return nil;
     }
     
-    return nil;
+    return [NSString stringWithCString:(char *)self.xmlXPath->stringval encoding:NSUTF8StringEncoding];
 }
 
 
