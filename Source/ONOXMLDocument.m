@@ -133,7 +133,7 @@ NSString * ONOXPathFromCSS(NSString *CSS) {
     return [mutableXPathExpressions componentsJoinedByString:@" | "];
 }
 
-static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSString *ns) {
+static BOOL ONOXMLNodeMatchesTagInNamespace(xmlNodePtr node, NSString *tag, NSString * _Nullable ns) {
     BOOL matchingTag = !tag || [@((const char *)node->name) compare:tag options:NSCaseInsensitiveSearch] == NSOrderedSame;
 
     BOOL matchingNamespace = !ns ? YES : (((node->ns != NULL) && (node->ns->prefix != NULL)) ? [@((const char *)node->ns->prefix) compare:ns options:NSCaseInsensitiveSearch] == NSOrderedSame : NO);
@@ -168,7 +168,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 @property (readwrite, nonatomic, assign) xmlNodePtr xmlNode;
 @property (readwrite, nonatomic, weak) ONOXMLDocument *document;
 
-- (xmlXPathObjectPtr)xmlXPathObjectPtrWithXPath:(NSString *)XPath;
+- (nullable xmlXPathObjectPtr)xmlXPathObjectPtrWithXPath:(NSString *)XPath;
 @end
 
 @interface ONOXMLDocument ()
@@ -194,8 +194,8 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     }
 }
 
-- (nullable id)objectAtIndex:(NSUInteger)idx {
-    if (idx >= (NSUInteger)xmlXPathNodeSetGetLength(self.xmlXPath->nodesetval)) {
+- (nullable id)objectAtIndex:(NSInteger)idx {
+    if (idx >= (NSInteger)xmlXPathNodeSetGetLength(self.xmlXPath->nodesetval)) {
         return nil;
     }
 
@@ -267,15 +267,15 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
 @implementation ONOXMLDocument
 
-+ (instancetype)XMLDocumentWithString:(NSString *)string
-                             encoding:(NSStringEncoding)encoding
-                                error:(NSError * __autoreleasing *)error
++ (nullable instancetype)XMLDocumentWithString:(NSString *)string
+                                      encoding:(NSStringEncoding)encoding
+                                         error:(NSError * __autoreleasing *)error
 {
     return [self XMLDocumentWithData:[string dataUsingEncoding:encoding] error:error];
 }
 
-+ (instancetype)XMLDocumentWithData:(NSData *)data
-                              error:(NSError * __autoreleasing *)error
++ (nullable instancetype)XMLDocumentWithData:(nullable NSData *)data
+                                       error:(NSError * __autoreleasing *)error
 {
     xmlDocPtr document = xmlReadMemory([data bytes], (int)[data length], "", nil, XML_PARSE_NOWARNING | XML_PARSE_NOERROR | XML_PARSE_RECOVER);
     if (!document) {
@@ -288,15 +288,15 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     return [[self alloc] initWithDocument:document];
 }
 
-+ (instancetype)HTMLDocumentWithString:(NSString *)string
-                              encoding:(NSStringEncoding)encoding
-                                 error:(NSError * __autoreleasing *)error
++ (nullable instancetype)HTMLDocumentWithString:(NSString *)string
+                                       encoding:(NSStringEncoding)encoding
+                                          error:(NSError * __autoreleasing *)error
 {
     return [self HTMLDocumentWithData:[string dataUsingEncoding:encoding] error:error];
 }
 
-+ (instancetype)HTMLDocumentWithData:(NSData *)data
-                               error:(NSError * __autoreleasing *)error
++ (nullable instancetype)HTMLDocumentWithData:(nullable NSData *)data
+                                        error:(NSError * __autoreleasing *)error
 {
     xmlDocPtr document = htmlReadMemory([data bytes], (int)[data length], "", nil, HTML_PARSE_NOWARNING | HTML_PARSE_NOERROR | HTML_PARSE_RECOVER);
     if (!document) {
@@ -687,9 +687,9 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
     return [NSArray arrayWithArray:mutableChildren];
 }
 
-- (nullable NSIndexSet *)indexesOfChildrenPassingTest:(BOOL (^)(xmlNodePtr node, BOOL *stop))block {
+- (NSIndexSet *)indexesOfChildrenPassingTest:(BOOL (^)(xmlNodePtr node, BOOL *stop))block {
     if (!block) {
-        return nil;
+        return [NSIndexSet indexSet];
     }
 
     NSMutableIndexSet *mutableIndexSet = [NSMutableIndexSet indexSet];
@@ -761,11 +761,11 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
 #pragma mark -
 
-- (id)objectForKeyedSubscript:(id)key {
+- (nullable id)objectForKeyedSubscript:(id)key {
     return [self valueForAttribute:key];
 }
 
-- (id)objectAtIndexedSubscript:(NSUInteger)idx {
+- (nullable id)objectAtIndexedSubscript:(NSUInteger)idx {
     return [self.children objectAtIndex:idx];
 }
 
@@ -903,8 +903,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
 #pragma mark -
 
-- (xmlXPathObjectPtr)xmlXPathObjectPtrWithXPath:(NSString *)XPath
-{
+- (nullable xmlXPathObjectPtr)xmlXPathObjectPtrWithXPath:(NSString *)XPath {
     xmlXPathContextPtr context = xmlXPathNewContext(self.xmlNode->doc);
     if (context) {
         context->node = self.xmlNode;
@@ -939,7 +938,7 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
 #pragma mark - NSObject
 
-- (NSMethodSignature *)methodSignatureForSelector:(SEL)selector {
+- (nullable NSMethodSignature *)methodSignatureForSelector:(SEL)selector {
     return [[self stringValue] methodSignatureForSelector:selector];
 }
 

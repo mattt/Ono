@@ -194,9 +194,9 @@ NS_ASSUME_NONNULL_BEGIN
  
  @return An `ONOXMLDocument` with the contents of the specified XML string.
  */
-+ (instancetype)XMLDocumentWithString:(NSString *)string
-                             encoding:(NSStringEncoding)encoding
-                                error:(NSError * __autoreleasing *)error;
++ (nullable instancetype)XMLDocumentWithString:(NSString *)string
+                                      encoding:(NSStringEncoding)encoding
+                                         error:(NSError * __autoreleasing *)error;
 
 /**
  Creates and returns an instance of ONOXMLDocument from XML data.
@@ -206,8 +206,8 @@ NS_ASSUME_NONNULL_BEGIN
 
  @return An `ONOXMLDocument` with the contents of the specified XML data.
  */
-+ (instancetype)XMLDocumentWithData:(NSData *)data
-                              error:(NSError * __autoreleasing *)error;
++ (nullable instancetype)XMLDocumentWithData:(nullable NSData *)data
+                                       error:(NSError * __autoreleasing *)error;
 
 ///------------------------------
 /// @name Creating HTML Documents
@@ -222,9 +222,9 @@ NS_ASSUME_NONNULL_BEGIN
 
  @return An `ONOXMLDocument` with the contents of the specified HTML string.
  */
-+ (instancetype)HTMLDocumentWithString:(NSString *)string
-                              encoding:(NSStringEncoding)encoding
-                                 error:(NSError * __autoreleasing *)error;
++ (nullable instancetype)HTMLDocumentWithString:(NSString *)string
+                                       encoding:(NSStringEncoding)encoding
+                                          error:(NSError * __autoreleasing *)error;
 
 /**
  Creates and returns an instance of ONOXMLDocument from HTML data.
@@ -234,8 +234,8 @@ NS_ASSUME_NONNULL_BEGIN
 
  @return An `ONOXMLDocument` with the contents of the specified HTML string.
  */
-+ (instancetype)HTMLDocumentWithData:(NSData *)data
-                               error:(NSError * __autoreleasing *)error;
++ (nullable instancetype)HTMLDocumentWithData:(nullable NSData *)data
+                                        error:(NSError * __autoreleasing *)error;
 
 ///------------------------------------------
 /// @name Defining Default Namespace Prefixes
@@ -411,7 +411,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @return The child element.
  */
-- (id)objectAtIndexedSubscript:(NSUInteger)idx;
+- (nullable id)objectAtIndexedSubscript:(NSUInteger)idx;
 
 /**
  Returns the value for the attribute with the specified key.
@@ -420,7 +420,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @return The attribute value, or `nil` if the attribute is not defined.
  */
-- (id)objectForKeyedSubscript:(id)key;
+- (nullable id)objectForKeyedSubscript:(id)key;
 
 @end
 
