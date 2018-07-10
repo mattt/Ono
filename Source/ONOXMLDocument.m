@@ -33,7 +33,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-NSString * const ONOXMLDocumentErrorDomain = @"com.ono.error";
+static NSString * const ONOXMLDocumentErrorDomain = @"com.ono.error";
 
 static NSRegularExpression * ONOIdRegularExpression() {
     static NSRegularExpression *_ONOIdRegularExpression = nil;
