@@ -756,7 +756,12 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
 - (nullable NSNumber *)numberValue {
     if (!_numberValue) {
-        self.numberValue = [self.document.numberFormatter numberFromString:self.stringValue];
+        NSString *stringValue = self.stringValue;
+        if (!stringValue) {
+            return nil;
+        }
+        
+        self.numberValue = [self.document.numberFormatter numberFromString:stringValue];
     }
 
     return _numberValue;
@@ -764,7 +769,12 @@ static void ONOSetErrorFromXMLErrorPtr(NSError * __autoreleasing *error, xmlErro
 
 - (nullable NSDate *)dateValue {
     if (!_dateValue) {
-        self.dateValue = [self.document.dateFormatter dateFromString:self.stringValue];
+        NSString *stringValue = self.stringValue;
+        if (!stringValue) {
+            return nil;
+        }
+        
+        self.dateValue = [self.document.dateFormatter dateFromString:stringValue];
     }
 
     return _dateValue;
