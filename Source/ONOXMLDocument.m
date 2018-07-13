@@ -29,7 +29,9 @@
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wobjc-missing-property-synthesis"
+#if !defined(__has_warning) || __has_warning("-Wobjc-messaging-id")
 #pragma clang diagnostic ignored "-Wobjc-messaging-id"
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
