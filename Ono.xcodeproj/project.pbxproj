@@ -408,9 +408,10 @@
 		F82D39451AA6199E00DAC057 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = ONO;
 				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 1020;
-				ORGANIZATIONNAME = "Mattt Thompson";
+				ORGANIZATIONNAME = Mattt;
 				TargetAttributes = {
 					A18A843F21A34F9F00E9CC5E = {
 						CreatedOnToolsVersion = 10.1;
