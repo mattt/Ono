@@ -118,7 +118,7 @@ which is included automatically when installed with CocoaPods,
 or added manually by adding "libxml2.dylib"
 to the target's "Link Binary With Libraries" build phase.
 
-### Contact
+## Contact
 
 [Mattt](https://twitter.com/mattt)
 
