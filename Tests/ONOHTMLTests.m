@@ -75,6 +75,11 @@
     XCTAssertTrue(idx == 1, @"fewer than one element found");
 }
 
+- (void)testTitleCSSSpace {
+    ONOXMLElement *element = [self.document firstChildWithCSS:@".listEvent.sro"];
+    XCTAssertNotNil(element, @"Table should not be nil");
+}
+
 - (void)testIDCSS {
     NSUInteger idx = 0;
     for (ONOXMLElement *element in [self.document CSS:@"#account_settings"]) {
