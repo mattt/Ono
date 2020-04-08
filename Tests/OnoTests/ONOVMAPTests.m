@@ -1,4 +1,4 @@
-// ONOXPathFunctionResultTests.m
+// ONOVMAPTests.m
 //
 // Copyright (c) 2014 – 2018 Mattt (https://mat.tt)
 //
@@ -22,44 +22,57 @@
 
 #import <XCTest/XCTest.h>
 
-#import "Ono.h"
+@import Ono;
 
-@interface ONOXPathFunctionResultTests : XCTestCase
+@interface ONOVMAPTests : XCTestCase
 @property (nonatomic, strong) ONOXMLDocument *document;
 @end
 
-@implementation ONOXPathFunctionResultTests
+@implementation ONOVMAPTests
 
 - (void)setUp {
     [super setUp];
-    
+
     NSError *error = nil;
-    NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"atom" ofType:@"xml"];
+    NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"vmap" ofType:@"xml"];
     self.document = [ONOXMLDocument XMLDocumentWithData:[NSData dataWithContentsOfFile:filePath] error:&error];
-    [self.document definePrefix:@"atom" forDefaultNamespace:@"http://www.w3.org/2005/Atom"];
-    
+
     XCTAssertNotNil(self.document, @"Document should not be nil");
     XCTAssertNil(error, @"Error should not be generated");
 }
 
 #pragma mark -
 
-- (void)testFunctionResultBoolVaule {
-    NSString *XPath = @"starts-with('Ono','O')";
-    ONOXPathFunctionResult *result = [self.document.rootElement functionResultByEvaluatingXPath:XPath];
-    XCTAssertTrue(result.boolValue, "Result should be true");
+- (void)testAbsoluteXPathWithNamespace {
+    NSString *XPath = @"/vmap:VMAP/vmap:Extensions/uo:unicornOnce";
+    NSUInteger count = 0;
+    for (ONOXMLElement *element in [self.document XPath:XPath]) {
+        XCTAssertEqualObjects(@"unicornOnce", element.tag, @"tag should be `unicornOnce`");
+        count++;
+    }
+
+    XCTAssertEqual(1, count, @"Element should be found at XPath '%@'", XPath);
 }
 
-- (void)testFunctionResultNumberValue {
-    NSString *XPath = @"count(./atom:link)";
-    ONOXPathFunctionResult *result = [self.document.rootElement functionResultByEvaluatingXPath:XPath];
-    XCTAssertEqual([result.numberValue integerValue], 2, "Number of child links should be 2");
+- (void)testRelativeXPathWithNamespace {
+    NSString *absoluteXPath = @"/vmap:VMAP/vmap:Extensions";
+    NSString *relativeXPath = @"./uo:unicornOnce";
+    NSUInteger count = 0;
+    for (ONOXMLElement *absoluteElement in [self.document XPath:absoluteXPath]) {
+        for (ONOXMLElement *relativeElement in [absoluteElement XPath:relativeXPath]) {
+            XCTAssertEqualObjects(@"unicornOnce", relativeElement.tag, @"tag should be `unicornOnce`");
+            count++;
+        }
+    }
+    
+    XCTAssertEqual(1, count, @"Element should be found at XPath '%@' relative to XPath '%@'", relativeXPath, absoluteXPath);
 }
 
-- (void)testFunctionResultStringVaule {
-    NSString *XPath = @"string(./atom:entry[1]/dc:language[1]/text())";
-    ONOXPathFunctionResult *result = [self.document.rootElement functionResultByEvaluatingXPath:XPath];
-    XCTAssertEqualObjects(result.stringValue, @"en-us", "Result stringValue should be `en-us`");
+- (void)testUnicornOnceIsBlank {
+    NSString *XPath = @"/vmap:VMAP/vmap:Extensions/uo:unicornOnce";
+    ONOXMLElement *element = [self.document firstChildWithXPath:XPath];
+    XCTAssertNotNil(element, @"Element should not be nil");
+    XCTAssertTrue([element isBlank], @"Element should be blank");
 }
 
 @end

@@ -1,4 +1,4 @@
-// ONODefaultNamespaceXPathTests.m
+// ONOXPathFunctionResultTests.m
 //
 // Copyright (c) 2014 – 2018 Mattt (https://mat.tt)
 //
@@ -22,20 +22,21 @@
 
 #import <XCTest/XCTest.h>
 
-#import "Ono.h"
+@import Ono;
 
-@interface ONODefaultNamespaceXPathTests : XCTestCase
+@interface ONOXPathFunctionResultTests : XCTestCase
 @property (nonatomic, strong) ONOXMLDocument *document;
 @end
 
-@implementation ONODefaultNamespaceXPathTests
+@implementation ONOXPathFunctionResultTests
 
 - (void)setUp {
     [super setUp];
     
     NSError *error = nil;
-    NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"ocf" ofType:@"xml"];
+    NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"atom" ofType:@"xml"];
     self.document = [ONOXMLDocument XMLDocumentWithData:[NSData dataWithContentsOfFile:filePath] error:&error];
+    [self.document definePrefix:@"atom" forDefaultNamespace:@"http://www.w3.org/2005/Atom"];
     
     XCTAssertNotNil(self.document, @"Document should not be nil");
     XCTAssertNil(error, @"Error should not be generated");
@@ -43,31 +44,22 @@
 
 #pragma mark -
 
-- (void)testAbsoluteXPathWithDefaultNamespace {
-    [self.document definePrefix:@"ocf" forDefaultNamespace:@"urn:oasis:names:tc:opendocument:xmlns:container"];
-    NSString *XPath = @"/ocf:container/ocf:rootfiles/ocf:rootfile";
-    NSUInteger count = 0;
-    for (ONOXMLElement *element in [self.document XPath:XPath]) {
-        XCTAssertEqualObjects(@"rootfile", element.tag, @"tag should be `rootfile`");
-        count++;
-    }
-    
-    XCTAssertEqual(1, count, @"Element should be found at XPath '%@'", XPath);
+- (void)testFunctionResultBoolVaule {
+    NSString *XPath = @"starts-with('Ono','O')";
+    ONOXPathFunctionResult *result = [self.document.rootElement functionResultByEvaluatingXPath:XPath];
+    XCTAssertTrue(result.boolValue, "Result should be true");
 }
 
-- (void)testRelativeXPathWithDefaultNamespace {
-    [self.document definePrefix:@"ocf" forDefaultNamespace:@"urn:oasis:names:tc:opendocument:xmlns:container"];
-    NSString *absoluteXPath = @"/ocf:container/ocf:rootfiles";
-    NSString *relativeXPath = @"./ocf:rootfile";
-    NSUInteger count = 0;
-    for (ONOXMLElement *absoluteElement in [self.document XPath:absoluteXPath]) {
-        for (ONOXMLElement *relativeElement in [absoluteElement XPath:relativeXPath]) {
-            XCTAssertEqualObjects(@"rootfile", relativeElement.tag, @"tag should be `rootfile`");
-            count++;
-        }
-    }
-    
-    XCTAssertEqual(1, count, @"Element should be found at XPath '%@' relative to XPath '%@'", relativeXPath, absoluteXPath);
+- (void)testFunctionResultNumberValue {
+    NSString *XPath = @"count(./atom:link)";
+    ONOXPathFunctionResult *result = [self.document.rootElement functionResultByEvaluatingXPath:XPath];
+    XCTAssertEqual([result.numberValue integerValue], 2, "Number of child links should be 2");
+}
+
+- (void)testFunctionResultStringVaule {
+    NSString *XPath = @"string(./atom:entry[1]/dc:language[1]/text())";
+    ONOXPathFunctionResult *result = [self.document.rootElement functionResultByEvaluatingXPath:XPath];
+    XCTAssertEqualObjects(result.stringValue, @"en-us", "Result stringValue should be `en-us`");
 }
 
 @end
