@@ -5,17 +5,36 @@
       location = "group:Ono.playground">
    </FileRef>
    <Group
-      location = "group:Source"
-      name = "Ono">
-      <FileRef
-         location = "group:Ono.h">
-      </FileRef>
-      <FileRef
-         location = "group:ONOXMLDocument.h">
-      </FileRef>
-      <FileRef
-         location = "group:ONOXMLDocument.m">
-      </FileRef>
+      location = "group:Sources"
+      name = "Sources">
+      <Group
+         location = "group:Ono"
+         name = "Ono">
+         <Group
+            location = "group:include"
+            name = "include">
+            <FileRef
+               location = "group:ONOXMLDocument.h">
+            </FileRef>
+         </Group>
+         <FileRef
+            location = "group:Ono.h">
+         </FileRef>
+         <FileRef
+            location = "group:ONOXMLDocument.m">
+         </FileRef>
+      </Group>
+   </Group>
+   <Group
+      location = "group:Resources"
+      name = "Resources">
+      <Group
+         location = "group:Ono"
+         name = "Ono">
+         <FileRef
+            location = "group:Info.plist">
+         </FileRef>
+      </Group>
    </Group>
    <FileRef
       location = "group:Ono.xcodeproj">

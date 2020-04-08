@@ -22,7 +22,7 @@
 
 #import <XCTest/XCTest.h>
 
-#import "Ono.h"
+@import Ono;
 
 @interface ONOHTMLTests : XCTestCase
 @property (nonatomic, strong) ONOXMLDocument *document;

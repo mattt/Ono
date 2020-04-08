@@ -14,3 +14,6 @@ profile
 DerivedData
 *.hmap
 *.ipa
+.build/
+.swiftpm
+Package.resolved
